@@ -30,7 +30,7 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center gradient-bg overflow-hidden">
       {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden z-0">
         <motion.div
           animate={{ 
             rotate: 360,
@@ -64,13 +64,13 @@ export default function HeroSection() {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-8"
+            className="space-y-8 relative z-20"
           >
             {/* Hero Variant Toggle */}
-            <div className="flex space-x-2 mb-6">
+            <div className="flex space-x-2 mb-6 relative z-20">
               <button
                 onClick={() => setHeroVariant('primary')}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 relative z-20 ${
                   heroVariant === 'primary'
                     ? 'bg-keen-blue text-white shadow-lg'
                     : 'bg-white/20 text-keen-gray hover:bg-white/30'
@@ -80,7 +80,7 @@ export default function HeroSection() {
               </button>
               <button
                 onClick={() => setHeroVariant('risk-averse')}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 relative z-20 ${
                   heroVariant === 'risk-averse'
                     ? 'bg-keen-blue text-white shadow-lg'
                     : 'bg-white/20 text-keen-gray hover:bg-white/30'
