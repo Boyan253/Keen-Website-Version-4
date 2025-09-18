@@ -64,13 +64,13 @@ export default function HeroSection() {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-8 relative z-20"
+            className="space-y-8 hero-content"
           >
             {/* Hero Variant Toggle */}
-            <div className="flex space-x-2 mb-6 relative z-20">
+            <div className="hero-toggle-buttons">
               <button
                 onClick={() => setHeroVariant('primary')}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 relative z-20 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   heroVariant === 'primary'
                     ? 'bg-keen-blue text-white shadow-lg'
                     : 'bg-white/20 text-keen-gray hover:bg-white/30'
@@ -80,7 +80,7 @@ export default function HeroSection() {
               </button>
               <button
                 onClick={() => setHeroVariant('risk-averse')}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 relative z-20 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   heroVariant === 'risk-averse'
                     ? 'bg-keen-blue text-white shadow-lg'
                     : 'bg-white/20 text-keen-gray hover:bg-white/30'
