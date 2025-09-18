@@ -21,7 +21,8 @@ export default function HeroSection() {
 
   const riskAverseHero = {
     headline: "Practical AI, Real Results — No IT Overhaul Required",
-    subheadline: "We deploy AI agents that work with your existing systems and processes. No rip-and-replace. No vendor lock-in. Just measurable improvements and continuous support."
+    subheadline: "We deploy AI agents that work with your existing systems and processes. No rip-and-replace. No vendor lock-in. Just measurable improvements and continuous support.",
+    supportLine: "Seamless integration with your existing infrastructure."
   }
 
   const currentHero = heroVariant === 'primary' ? primaryHero : riskAverseHero
