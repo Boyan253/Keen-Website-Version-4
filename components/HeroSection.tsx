@@ -15,13 +15,13 @@ export default function HeroSection() {
 
   const primaryHero = {
     headline: "Meet Your New AI Employees — Always-on, Cost-effective, and Built for Your Business",
-    subheadline: "Keen Agents builds bespoke AI agents — digital employees trained to run your repeatable processes, reduce operational costs, and free your team to focus on growth.",
+    subheadline: "Keen Agents provides a powerful AI platform that builds bespoke AI agents — digital employees trained to run your repeatable processes, reduce operational costs, and free your team to focus on growth.",
     supportLine: "Deployment without IT headaches. Results in weeks."
   }
 
   const riskAverseHero = {
     headline: "Practical AI, Real Results — No IT Overhaul Required",
-    subheadline: "We deploy AI agents that work with your existing systems and processes. No rip-and-replace. No vendor lock-in. Just measurable improvements and continuous support.",
+    subheadline: "Our AI platform deploys agents that work with your existing systems and processes. No rip-and-replace. No vendor lock-in. Just measurable improvements and continuous support.",
     supportLine: "Seamless integration with your existing infrastructure."
   }
 

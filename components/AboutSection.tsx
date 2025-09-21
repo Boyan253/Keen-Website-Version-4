@@ -22,8 +22,8 @@ export default function AboutSection() {
   const leadership = [
     {
       name: "Petar Denev",
-      role: "Executive Sponsor & Strategy",
-      bio: "30+ years leading technology and digital transformation programs across enterprise and mid-market organisations. Career highlights include defining and running multi-country operations transformations, leading integrations at scale, and strong experience in data governance and change management.",
+      role: "Co-founder & CEO",
+      bio: "30+ years leading technology and digital transformation programs across enterprise and mid-market organisations. Petar was inspired to co-found Keen Agents after witnessing countless businesses struggle with manual, repetitive processes that could be automated. His vision is to democratize AI automation, making it accessible to businesses of all sizes without the complexity and cost barriers that have traditionally existed.",
       highlights: [
         "Multi-country operations transformations",
         "Large-scale integrations",
@@ -34,9 +34,9 @@ export default function AboutSection() {
       color: "from-keen-blue to-keen-gradient-end"
     },
     {
-      name: "Vic [Last Name]",
-      role: "Chief Technology & Product",
-      bio: "AI systems architect and product leader with experience deploying automation at scale. Career highlights include leading ML engineering teams, productionizing NLP and RPA hybrid solutions, and building resilient integration layers.",
+      name: "Viktor [Last Name]",
+      role: "Co-founder & CTO",
+      bio: "AI systems architect and product leader with experience deploying automation at scale. Viktor was driven to co-found Keen Agents by the gap between AI research and practical business implementation. Having seen the potential of AI agents in production environments, he was inspired to create a platform that makes AI automation accessible, reliable, and profitable for businesses without requiring deep technical expertise.",
       highlights: [
         "ML engineering team leadership",
         "NLP and RPA solutions",

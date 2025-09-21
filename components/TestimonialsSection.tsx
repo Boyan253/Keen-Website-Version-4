@@ -35,7 +35,7 @@ export default function TestimonialsSection() {
       color: "from-blue-500 to-cyan-500"
     },
     {
-      company: "Reno",
+      company: "Renault",
       industry: "Operations",
       challenge: "Slow back-office processing created order fulfillment delays",
       solution: "Built an order-processing agent that validated incoming orders, enriched records, and routed exceptions to human reviewers",
@@ -45,7 +45,7 @@ export default function TestimonialsSection() {
         errorRate: "40% reduction in error rate"
       },
       quote: "ROI was visible within weeks — the integration was seamless and low-risk.",
-      author: "Operations Director, Reno",
+      author: "Operations Director, Renault",
       color: "from-green-500 to-emerald-500"
     }
   ]
@@ -58,8 +58,8 @@ export default function TestimonialsSection() {
     },
     {
       quote: "Fast ROI, no IT drama, measurable impact.",
-      author: "Operations Director, Reno",
-      company: "Reno"
+      author: "Operations Director, Renault",
+      company: "Renault"
     }
   ]
 

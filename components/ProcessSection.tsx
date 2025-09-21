@@ -22,16 +22,6 @@ export default function ProcessSection() {
 
   const phases = [
     {
-      phase: 0,
-      title: "Pre-Qualification",
-      subtitle: "Rapidly identify high-impact opportunities",
-      icon: Search,
-      duration: "1 week",
-      deliverables: ["AI Readiness scorecard", "Prioritized use-case list", "Executive brief"],
-      color: "from-blue-500 to-cyan-500",
-      description: "We quickly assess your business processes to identify the highest-impact automation opportunities and establish technical feasibility."
-    },
-    {
       phase: 1,
       title: "Discovery & Process Mapping",
       subtitle: "Deeply understand workflows and data sources",
@@ -60,28 +50,28 @@ export default function ProcessSection() {
       deliverables: ["Pilot deployment", "Monitoring dashboard", "Pilot report with ROI analysis"],
       color: "from-orange-500 to-red-500",
       description: "We deploy the agent into a controlled pilot with live data, setting up telemetry, logging, and human escalation paths."
-    },
-    {
-      phase: 4,
-      title: "Scale & Operate",
-      subtitle: "Roll into production with ongoing optimization",
-      icon: Scale,
-      duration: "Ongoing",
-      deliverables: ["Production rollout", "Training materials", "Performance SLA", "Continuous optimization plan"],
-      color: "from-keen-blue to-keen-gradient-end",
-      description: "We roll the agent into production, document runbooks, and hand over an operations model or continue operating on your behalf."
     }
   ]
+
+  const continuousImprovement = {
+    title: "Continuous Improvement & Operations",
+    subtitle: "Roll into production with ongoing optimization",
+    icon: Scale,
+    duration: "Ongoing",
+    deliverables: ["Production rollout", "Training materials", "Performance SLA", "Continuous optimization plan"],
+    color: "from-keen-blue to-keen-gradient-end",
+    description: "We roll the agent into production, document runbooks, and hand over an operations model or continue operating on your behalf."
+  }
 
   const roles = [
     {
       title: "Client",
-      responsibilities: ["Provide access to subject-matter experts", "Approve process maps", "Participate in pilot acceptance"],
+      responsibilities: ["Describe current business processes", "Define business needs and requirements", "Provide access to subject-matter experts", "Approve process maps", "Participate in pilot acceptance"],
       icon: Users
     },
     {
       title: "Keen Agents",
-      responsibilities: ["Project manager", "Data engineer", "ML engineer", "Integration engineer", "Domain specialist"],
+      responsibilities: ["Understand and analyze business processes", "Optimize processes together with client (when needed)", "Deploy and configure our AI platform", "Set up agents to execute tasks according to client's specific processes"],
       icon: CheckCircle
     },
     {
@@ -105,7 +95,7 @@ export default function ProcessSection() {
             How We Do It
           </h2>
           <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-            Our five-phase implementation framework is engineered for speed and safety. Each phase maps to clear deliverables and acceptance criteria.
+            Our three-phase implementation framework is engineered for speed and safety. Each phase maps to clear deliverables and acceptance criteria.
           </p>
         </motion.div>
 
@@ -192,6 +182,76 @@ export default function ProcessSection() {
                 </div>
               </motion.div>
             ))}
+
+            {/* Continuous Improvement Section - Non-numbered */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="relative flex flex-col lg:flex-row lg:items-center gap-8"
+            >
+              {/* Icon without number */}
+              <div className="flex items-center space-x-4 lg:w-1/3">
+                <div className="relative">
+                  <div className={`w-16 h-16 bg-gradient-to-br ${continuousImprovement.color} rounded-2xl flex items-center justify-center shadow-lg`}>
+                    <continuousImprovement.icon className="w-8 h-8 text-white" />
+                  </div>
+                </div>
+                <div className="lg:hidden">
+                  <div className="flex items-center text-keen-gray/70">
+                    <Clock className="w-4 h-4 mr-1" />
+                    <span className="text-sm">{continuousImprovement.duration}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="lg:w-2/3">
+                <motion.div
+                  whileHover={{ y: -5 }}
+                  className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                >
+                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6">
+                    <div>
+                      <h3 className="text-2xl font-bold text-keen-gray mb-2">
+                        {continuousImprovement.title}
+                      </h3>
+                      <p className="text-keen-blue font-semibold mb-4">
+                        {continuousImprovement.subtitle}
+                      </p>
+                      <p className="text-keen-gray/70 leading-relaxed">
+                        {continuousImprovement.description}
+                      </p>
+                    </div>
+                    <div className="lg:text-right mt-4 lg:mt-0">
+                      <div className="inline-flex items-center px-4 py-2 bg-keen-blue/10 rounded-full">
+                        <Clock className="w-4 h-4 mr-2 text-keen-blue" />
+                        <span className="text-sm font-semibold text-keen-blue">
+                          {continuousImprovement.duration}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Deliverables */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-keen-gray mb-4">
+                      Deliverables:
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {continuousImprovement.deliverables.map((deliverable, idx) => (
+                        <div key={idx} className="flex items-center space-x-2">
+                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                          <span className="text-keen-gray/80 text-sm">
+                            {deliverable}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
           </div>
         </div>
 
