@@ -28,7 +28,7 @@ export default function HeroSection() {
   const currentHero = heroVariant === 'primary' ? primaryHero : riskAverseHero
 
   return (
-    <section className="relative min-h-screen flex items-center gradient-bg overflow-hidden">
+    <section className="relative min-h-screen flex items-center gradient-bg overflow-hidden pt-20">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <motion.div
@@ -156,7 +156,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1 }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-6"
             >
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(4, 165, 250, 0.3)" }}

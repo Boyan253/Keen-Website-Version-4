@@ -28,11 +28,11 @@
   }
   
   .btn-primary {
-    @apply bg-keen-blue text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:bg-blue-600 hover:shadow-lg hover:scale-105;
+    @apply bg-keen-blue text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:bg-blue-600 hover:shadow-lg hover:scale-105 my-2;
   }
   
   .btn-secondary {
-    @apply border-2 border-keen-blue text-keen-blue px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:bg-keen-blue hover:text-white hover:shadow-lg;
+    @apply border-2 border-keen-blue text-keen-blue px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:bg-keen-blue hover:text-white hover:shadow-lg my-2;
   }
   
   .section-padding {
