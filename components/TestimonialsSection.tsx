@@ -21,17 +21,17 @@ export default function TestimonialsSection() {
 
   const caseStudies = [
     {
-      company: "Unimaster",
-      industry: "Customer Service",
-      challenge: "High volumes of routine customer inquiries overwhelmed the support desk during peak hours",
-      solution: "Deployed a customer-service AI agent trained on Unimaster's historical tickets, internal KB, and ERP product catalog with phased rollout and human fallback",
+      company: "Unimasters Logistics",
+      industry: "Logistics & Customer Service",
+      challenge: "High volumes of routine customer inquiries overwhelmed the support desk during peak hours, leading to delayed responses and customer dissatisfaction",
+      solution: "Deployed a customer-service AI agent trained on Unimasters Logistics' historical tickets, internal knowledge base, and ERP product catalog with phased rollout and human fallback",
       results: {
         automation: "70% of inquiries automated within 8 weeks",
         responseTime: "85% reduction in average response time",
         satisfaction: "12 points increase in customer satisfaction (NPS)"
       },
       quote: "Keen Agents allowed us to reclaim our team's time and dramatically improve response quality.",
-      author: "Customer Service Director, Unimaster",
+      author: "Customer Service Director, Unimasters Logistics",
       color: "from-blue-500 to-cyan-500"
     },
     {
@@ -53,8 +53,8 @@ export default function TestimonialsSection() {
   const homepageQuotes = [
     {
       quote: "Keen Agents transformed how we operate — their agents are reliable and require minimal oversight.",
-      author: "Executive, Unimaster",
-      company: "Unimaster"
+      author: "Executive, Unimasters Logistics",
+      company: "Unimasters Logistics"
     },
     {
       quote: "Fast ROI, no IT drama, measurable impact.",

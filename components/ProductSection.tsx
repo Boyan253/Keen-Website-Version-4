@@ -81,7 +81,7 @@ export default function ProductSection() {
             What We Do
           </h2>
           <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-            Keen Agents doesn't sell software — we deliver business outcomes. We sell the service of designing, training, and operating custom AI agents that behave like high-performing employees.
+            We do not sell our software platform — we deliver business outcomes. Working with our proprietary software platform, we design, train and operate custom AI agents that behave like YOUR high-performing employees.
           </p>
         </motion.div>
 

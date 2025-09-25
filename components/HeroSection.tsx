@@ -161,6 +161,7 @@ export default function HeroSection() {
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(4, 165, 250, 0.3)" }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => window.location.href = '#questionnaire'}
                 className="btn-primary text-lg px-8 py-4 flex items-center justify-center space-x-2 group"
               >
                 <Calendar className="w-5 h-5" />
@@ -171,6 +172,7 @@ export default function HeroSection() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => window.location.href = '#questionnaire'}
                 className="btn-secondary text-lg px-8 py-4 flex items-center justify-center space-x-2"
               >
                 <Brain className="w-5 h-5" />

@@ -21,7 +21,7 @@ export default function Footer() {
       { name: 'About Us', href: '#about' },
       { name: 'Our Process', href: '#process' },
       { name: 'Success Stories', href: '#testimonials' },
-      { name: 'Careers', href: '#' }
+      { name: 'Careers', href: '/careers' }
     ],
     services: [
       { name: 'AI Agents', href: '#product' },
@@ -33,13 +33,13 @@ export default function Footer() {
       { name: 'FAQ', href: '#faq' },
       { name: 'AI Readiness Quiz', href: '#questionnaire' },
       { name: 'Case Studies', href: '#testimonials' },
-      { name: 'Documentation', href: '#' }
+      { name: 'Documentation', href: '/docs' }
     ],
     support: [
       { name: 'Contact Us', href: '#contact' },
-      { name: 'Support Center', href: '#' },
-      { name: 'Book Consultation', href: '#' },
-      { name: 'Status Page', href: '#' }
+      { name: 'Support Center', href: '/support' },
+      { name: 'Book Consultation', href: '#questionnaire' },
+      { name: 'Status Page', href: '/status' }
     ]
   }
 
@@ -76,21 +76,27 @@ export default function Footer() {
                 <div className="flex space-x-4">
                   <motion.a
                     whileHover={{ scale: 1.1 }}
-                    href="#"
+                    href="https://linkedin.com/company/keen-agents"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-10 h-10 bg-keen-blue/20 rounded-lg flex items-center justify-center hover:bg-keen-blue/30 transition-colors duration-300"
                   >
                     <Linkedin className="w-5 h-5" />
                   </motion.a>
                   <motion.a
                     whileHover={{ scale: 1.1 }}
-                    href="#"
+                    href="https://twitter.com/keenagents"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-10 h-10 bg-keen-blue/20 rounded-lg flex items-center justify-center hover:bg-keen-blue/30 transition-colors duration-300"
                   >
                     <Twitter className="w-5 h-5" />
                   </motion.a>
                   <motion.a
                     whileHover={{ scale: 1.1 }}
-                    href="#"
+                    href="https://github.com/keen-agents"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-10 h-10 bg-keen-blue/20 rounded-lg flex items-center justify-center hover:bg-keen-blue/30 transition-colors duration-300"
                   >
                     <Github className="w-5 h-5" />
@@ -196,13 +202,13 @@ export default function Footer() {
               © {currentYear} Keen Agents. All rights reserved.
             </div>
             <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-gray-400 hover:text-keen-blue transition-colors duration-300">
+              <a href="/privacy-policy" className="text-gray-400 hover:text-keen-blue transition-colors duration-300">
                 Privacy Policy
               </a>
-              <a href="#" className="text-gray-400 hover:text-keen-blue transition-colors duration-300">
+              <a href="/terms-of-service" className="text-gray-400 hover:text-keen-blue transition-colors duration-300">
                 Terms of Service
               </a>
-              <a href="#" className="text-gray-400 hover:text-keen-blue transition-colors duration-300">
+              <a href="/cookie-policy" className="text-gray-400 hover:text-keen-blue transition-colors duration-300">
                 Cookie Policy
               </a>
             </div>

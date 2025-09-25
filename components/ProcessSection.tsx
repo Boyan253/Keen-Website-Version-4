@@ -73,11 +73,6 @@ export default function ProcessSection() {
       title: "Keen Agents",
       responsibilities: ["Understand and analyze business processes", "Optimize processes together with client (when needed)", "Deploy and configure our AI platform", "Set up agents to execute tasks according to client's specific processes"],
       icon: CheckCircle
-    },
-    {
-      title: "Third-party Vendors",
-      responsibilities: ["ERP, CRM connector support", "System integration assistance"],
-      icon: Cog
     }
   ]
 
@@ -152,7 +147,7 @@ export default function ProcessSection() {
                           {phase.description}
                         </p>
                       </div>
-                      <div className="lg:text-right mt-4 lg:mt-0">
+                      <div className="lg:text-center mt-4 lg:mt-0">
                         <div className="inline-flex items-center px-4 py-2 bg-keen-blue/10 rounded-full">
                           <Clock className="w-4 h-4 mr-2 text-keen-blue" />
                           <span className="text-sm font-semibold text-keen-blue">
@@ -223,7 +218,7 @@ export default function ProcessSection() {
                         {continuousImprovement.description}
                       </p>
                     </div>
-                    <div className="lg:text-right mt-4 lg:mt-0">
+                    <div className="lg:text-center mt-4 lg:mt-0">
                       <div className="inline-flex items-center px-4 py-2 bg-keen-blue/10 rounded-full">
                         <Clock className="w-4 h-4 mr-2 text-keen-blue" />
                         <span className="text-sm font-semibold text-keen-blue">
@@ -265,7 +260,7 @@ export default function ProcessSection() {
           <h3 className="text-2xl font-bold text-keen-gray mb-8 text-center">
             Who Does What
           </h3>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {roles.map((role, index) => (
               <motion.div
                 key={role.title}
@@ -280,10 +275,11 @@ export default function ProcessSection() {
                 <h4 className="text-xl font-bold text-keen-gray mb-4">
                   {role.title}
                 </h4>
-                <ul className="space-y-2">
+                <ul className="space-y-2 text-left">
                   {role.responsibilities.map((responsibility, idx) => (
-                    <li key={idx} className="text-keen-gray/70 text-sm">
-                      • {responsibility}
+                    <li key={idx} className="text-keen-gray/70 text-sm flex items-start">
+                      <span className="mr-2">•</span>
+                      <span>{responsibility}</span>
                     </li>
                   ))}
                 </ul>

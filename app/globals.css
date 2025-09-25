@@ -73,3 +73,756 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Dark theme styles */
+[data-theme="dark"] {
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted: #6b7280;
+  --border-color: #404040;
+  --border-light: #2d2d2d;
+}
+
+[data-theme="dark"] body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Header dark theme */
+[data-theme="dark"] header {
+  background-color: rgba(15, 15, 15, 0.95) !important;
+  backdrop-filter: blur(12px);
+}
+
+[data-theme="dark"] header .text-keen-gray {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] header .hover\:bg-gray-100:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* Background colors */
+[data-theme="dark"] .gradient-bg {
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .bg-gradient-to-br {
+  background: linear-gradient(to bottom right, var(--bg-secondary), var(--bg-tertiary)) !important;
+}
+
+[data-theme="dark"] .from-gray-50 {
+  background: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .to-white {
+  background: var(--bg-tertiary) !important;
+}
+
+/* Text colors */
+[data-theme="dark"] .text-keen-gray {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .text-keen-gray\/80 {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .text-keen-gray\/70 {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .text-gray-300 {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .text-gray-400 {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .text-gray-600 {
+  color: var(--text-muted) !important;
+}
+
+/* Border colors */
+[data-theme="dark"] .border-gray-100 {
+  border-color: var(--border-light) !important;
+}
+
+[data-theme="dark"] .border-gray-200 {
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .border-gray-600 {
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .border-white\/20 {
+  border-color: var(--border-light) !important;
+}
+
+/* Card backgrounds */
+[data-theme="dark"] .bg-gradient-to-br.from-gray-50 {
+  background: linear-gradient(to bottom right, var(--bg-secondary), var(--bg-tertiary)) !important;
+}
+
+[data-theme="dark"] .bg-gradient-to-br.to-white {
+  background: linear-gradient(to bottom right, var(--bg-tertiary), var(--bg-secondary)) !important;
+}
+
+/* Button hover states */
+[data-theme="dark"] .hover\:bg-gray-100:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] .hover\:bg-gray-200:hover {
+  background-color: var(--border-color) !important;
+}
+
+/* Card hover effects for dark theme */
+[data-theme="dark"] .hover\:shadow-xl:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .hover\:-translate-y-2:hover {
+  transform: translateY(-0.5rem) !important;
+}
+
+/* Hero toggle buttons in dark theme */
+[data-theme="dark"] .hero-toggle-buttons {
+  margin-top: 2rem !important;
+}
+
+[data-theme="dark"] .hero-toggle-buttons button {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] .hero-toggle-buttons button:hover {
+  background-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .hero-toggle-buttons button.bg-keen-blue {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+  border-color: #0ea5e9 !important;
+}
+
+/* AI Agent card in Hero section - always dark in dark theme */
+[data-theme="dark"] #hero .bg-white,
+[data-theme="dark"] #hero .bg-white\/90,
+[data-theme="dark"] #hero .bg-gray-50,
+[data-theme="dark"] #hero .bg-gray-100 {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] #hero .bg-white:hover,
+[data-theme="dark"] #hero .bg-white\/90:hover,
+[data-theme="dark"] #hero .bg-gray-50:hover,
+[data-theme="dark"] #hero .bg-gray-100:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Specific targeting for the AI Agent card with backdrop-blur */
+[data-theme="dark"] .bg-white\/90.backdrop-blur-sm {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .bg-white\/90.backdrop-blur-sm:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Even more specific targeting for AI Agent card */
+[data-theme="dark"] .bg-white\/90.backdrop-blur-sm.rounded-2xl {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .bg-white\/90.backdrop-blur-sm.rounded-2xl:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Force override for any white background in hero */
+[data-theme="dark"] section .bg-white\/90 {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] section .bg-white\/90:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Maximum specificity override for AI Agent card */
+[data-theme="dark"] .gradient-bg .bg-white\/90.backdrop-blur-sm.rounded-2xl.p-8.shadow-2xl {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .gradient-bg .bg-white\/90.backdrop-blur-sm.rounded-2xl.p-8.shadow-2xl:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Nuclear option - override any bg-white/90 anywhere */
+[data-theme="dark"] *[class*="bg-white/90"] {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] *[class*="bg-white/90"]:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Hero section cards and elements - prevent white backgrounds */
+[data-theme="dark"] #hero .card-hover,
+[data-theme="dark"] #hero .rounded-2xl,
+[data-theme="dark"] #hero .rounded-3xl {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] #hero .card-hover:hover,
+[data-theme="dark"] #hero .rounded-2xl:hover,
+[data-theme="dark"] #hero .rounded-3xl:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Hero section specific styles */
+[data-theme="dark"] .hero-content {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .hero-content h1 {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .hero-content p {
+  color: var(--text-secondary) !important;
+}
+
+/* Hero toggle buttons visibility */
+[data-theme="dark"] .hero-toggle-buttons {
+  display: flex !important;
+  gap: 0.5rem !important;
+}
+
+[data-theme="dark"] .hero-toggle-buttons button {
+  padding: 0.5rem 1rem !important;
+  border-radius: 9999px !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  transition: all 0.3s !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Primary and secondary buttons in dark theme */
+[data-theme="dark"] .btn-primary {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+  border: 2px solid #0ea5e9 !important;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  background-color: #0284c7 !important;
+  border-color: #0284c7 !important;
+  color: white !important;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background-color: transparent !important;
+  color: #0ea5e9 !important;
+  border: 2px solid #0ea5e9 !important;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+  border-color: #0ea5e9 !important;
+}
+
+/* Section hover effects */
+[data-theme="dark"] .card-hover:hover {
+  background-color: var(--bg-tertiary) !important;
+  transform: translateY(-0.5rem) !important;
+}
+
+[data-theme="dark"] .card-hover:hover .text-keen-gray {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .card-hover:hover .text-keen-gray\/80 {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .card-hover:hover .text-keen-gray\/70 {
+  color: var(--text-muted) !important;
+}
+
+/* Specific hover effects for motion.div elements */
+[data-theme="dark"] .motion-div:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] .motion-div:hover .text-keen-gray {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .motion-div:hover .text-keen-gray\/80 {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .motion-div:hover .text-keen-gray\/70 {
+  color: var(--text-muted) !important;
+}
+
+/* Override any white backgrounds on hover */
+[data-theme="dark"] .bg-white:hover {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .bg-gradient-to-br:hover {
+  background: linear-gradient(to bottom right, var(--bg-secondary), var(--bg-tertiary)) !important;
+}
+
+/* Specific hover overrides for cards and sections */
+[data-theme="dark"] .rounded-2xl:hover,
+[data-theme="dark"] .rounded-3xl:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] .rounded-2xl:hover .text-keen-gray,
+[data-theme="dark"] .rounded-3xl:hover .text-keen-gray {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .rounded-2xl:hover .text-keen-gray\/80,
+[data-theme="dark"] .rounded-3xl:hover .text-keen-gray\/80 {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .rounded-2xl:hover .text-keen-gray\/70,
+[data-theme="dark"] .rounded-3xl:hover .text-keen-gray\/70 {
+  color: var(--text-muted) !important;
+}
+
+/* Motion div hover effects */
+[data-theme="dark"] [class*="motion"]:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] [class*="motion"]:hover .text-keen-gray {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] [class*="motion"]:hover .text-keen-gray\/80 {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] [class*="motion"]:hover .text-keen-gray\/70 {
+  color: var(--text-muted) !important;
+}
+
+/* Prevent white backgrounds on any hover */
+[data-theme="dark"] *:hover {
+  background-color: inherit !important;
+}
+
+[data-theme="dark"] *:hover.bg-white {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* FAQ Section buttons in dark theme */
+[data-theme="dark"] #faq button {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] #faq button:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] #faq .bg-gray-100 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] #faq .bg-gray-100:hover {
+  background-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] #faq .bg-keen-blue {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+}
+
+[data-theme="dark"] #faq .bg-keen-blue:hover {
+  background-color: #0284c7 !important;
+}
+
+/* Category filter buttons in FAQ */
+[data-theme="dark"] #faq .px-6 {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] #faq .px-6:hover {
+  background-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] #faq .px-6.bg-keen-blue {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+  border-color: #0ea5e9 !important;
+}
+
+/* FAQ accordion buttons */
+[data-theme="dark"] #faq .rounded-2xl {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-light) !important;
+}
+
+[data-theme="dark"] #faq .rounded-2xl:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] #faq .rounded-2xl .text-keen-gray {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] #faq .rounded-2xl .text-keen-blue {
+  color: #0ea5e9 !important;
+}
+
+/* FAQ CTA buttons */
+[data-theme="dark"] #faq .btn-primary {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+  border: 2px solid #0ea5e9 !important;
+}
+
+[data-theme="dark"] #faq .btn-primary:hover {
+  background-color: #0284c7 !important;
+  border-color: #0284c7 !important;
+  color: white !important;
+}
+
+[data-theme="dark"] #faq .btn-secondary {
+  background-color: transparent !important;
+  color: #0ea5e9 !important;
+  border: 2px solid #0ea5e9 !important;
+}
+
+[data-theme="dark"] #faq .btn-secondary:hover {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+  border-color: #0ea5e9 !important;
+}
+
+/* General button styles for all sections */
+[data-theme="dark"] button {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] button:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] button.bg-white {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] button.bg-white:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] button.bg-gray-100 {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] button.bg-gray-100:hover {
+  background-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Specific section button overrides */
+[data-theme="dark"] #product button,
+[data-theme="dark"] #process button,
+[data-theme="dark"] #testimonials button,
+[data-theme="dark"] #about button,
+[data-theme="dark"] #questionnaire button {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] #product button:hover,
+[data-theme="dark"] #process button:hover,
+[data-theme="dark"] #testimonials button:hover,
+[data-theme="dark"] #about button:hover,
+[data-theme="dark"] #questionnaire button:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Input fields */
+[data-theme="dark"] input {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] input::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Shadows */
+[data-theme="dark"] .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] .shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] .shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Settings menu */
+[data-theme="dark"] .settings-menu .bg-white {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .settings-menu .border-gray-200 {
+  border-color: var(--border-color) !important;
+}
+
+/* Footer */
+[data-theme="dark"] footer {
+  background-color: var(--bg-primary) !important;
+}
+
+[data-theme="dark"] footer .bg-gray-700 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* Footer hover effects in dark theme */
+[data-theme="dark"] footer *:hover {
+  background-color: inherit !important;
+}
+
+[data-theme="dark"] footer .hover\:bg-gray-50:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] footer .hover\:bg-white:hover {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] footer .hover\:bg-gray-100:hover {
+  background-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] footer .hover\:text-keen-blue:hover {
+  color: #0ea5e9 !important;
+}
+
+[data-theme="dark"] footer .hover\:text-keen-gray:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Footer links hover effects */
+[data-theme="dark"] footer a:hover {
+  color: #0ea5e9 !important;
+  background-color: transparent !important;
+}
+
+[data-theme="dark"] footer button:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Footer social media icons */
+[data-theme="dark"] footer .social-icon {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] footer .social-icon:hover {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+}
+
+/* Prevent white backgrounds on footer elements */
+[data-theme="dark"] footer .bg-white {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] footer .bg-white:hover {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] footer .bg-gray-50 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] footer .bg-gray-50:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* Specific footer element overrides */
+[data-theme="dark"] footer.bg-keen-gray {
+  background-color: var(--bg-primary) !important;
+}
+
+[data-theme="dark"] footer .bg-keen-blue\/20 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] footer .hover\:bg-keen-blue\/30:hover {
+  background-color: #0ea5e9 !important;
+  opacity: 0.3 !important;
+}
+
+[data-theme="dark"] footer .bg-gray-700 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] footer .bg-gray-700:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* Footer social media icons specific targeting */
+[data-theme="dark"] footer .w-10.h-10.bg-keen-blue\/20 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] footer .w-10.h-10.bg-keen-blue\/20:hover {
+  background-color: #0ea5e9 !important;
+  opacity: 0.3 !important;
+}
+
+/* Footer input field */
+[data-theme="dark"] footer input {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] footer input:focus {
+  background-color: var(--bg-tertiary) !important;
+  border-color: #0ea5e9 !important;
+}
+
+/* Footer button */
+[data-theme="dark"] footer .bg-keen-blue {
+  background-color: #0ea5e9 !important;
+}
+
+[data-theme="dark"] footer .bg-keen-blue:hover {
+  background-color: #0284c7 !important;
+}
+
+/* Footer text colors */
+[data-theme="dark"] footer .text-gray-300 {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] footer .text-gray-400 {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] footer .text-white {
+  color: var(--text-primary) !important;
+}
+
+/* Footer border colors */
+[data-theme="dark"] footer .border-gray-600 {
+  border-color: var(--border-color) !important;
+}
+
+/* Nuclear option for footer - prevent any white backgrounds */
+[data-theme="dark"] footer * {
+  background-color: inherit !important;
+}
+
+[data-theme="dark"] footer *:hover {
+  background-color: inherit !important;
+}
+
+/* Specific overrides for footer elements that need different backgrounds */
+[data-theme="dark"] footer .bg-keen-blue\/20,
+[data-theme="dark"] footer .w-10.h-10 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] footer .bg-keen-blue\/20:hover,
+[data-theme="dark"] footer .w-10.h-10:hover {
+  background-color: #0ea5e9 !important;
+  opacity: 0.3 !important;
+}
+
+[data-theme="dark"] footer .bg-gray-700 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] footer .bg-keen-blue {
+  background-color: #0ea5e9 !important;
+}
+
+[data-theme="dark"] footer .bg-keen-blue:hover {
+  background-color: #0284c7 !important;
+}
+
+/* Gradient backgrounds for sections */
+[data-theme="dark"] .bg-gradient-to-r.from-keen-blue {
+  background: linear-gradient(to right, #0ea5e9, #06b6d4) !important;
+}
+
+[data-theme="dark"] .bg-gradient-to-br.from-keen-blue {
+  background: linear-gradient(to bottom right, #0ea5e9, #06b6d4) !important;
+}
+
+/* Ensure keen-blue colors remain visible */
+[data-theme="dark"] .text-keen-blue {
+  color: #0ea5e9 !important;
+}
+
+[data-theme="dark"] .bg-keen-blue\/10 {
+  background-color: rgba(14, 165, 233, 0.1) !important;
+}
+
+[data-theme="dark"] .bg-keen-blue\/20 {
+  background-color: rgba(14, 165, 233, 0.2) !important;
+}
+
+[data-theme="dark"] .border-keen-blue {
+  border-color: #0ea5e9 !important;
+}

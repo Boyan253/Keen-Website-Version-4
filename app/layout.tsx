@@ -40,6 +40,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={montserrat.variable}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme') || 'light';
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="font-montserrat">
         {children}
       </body>
