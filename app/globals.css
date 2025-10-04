@@ -20,7 +20,7 @@
   }
   
   .gradient-bg {
-    @apply bg-gradient-to-br from-keen-gradient-start to-keen-gradient-end;
+    @apply bg-gradient-to-br from-keen-gradient-end to-keen-gradient-start;
   }
   
   .card-hover {
