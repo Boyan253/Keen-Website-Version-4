@@ -66,27 +66,38 @@ export default function Header() {
       }`}
     >
       <div className="container-custom">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-3">
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-3"
+            className="flex items-center space-x-4"
           >
-            <div className="relative w-10 h-10 bg-keen-blue/10 rounded-lg p-2">
+            <div className="relative w-10 h-10 p-2">
               <Image
                 src="/logo-no-text.webp"
                 alt="Keen Agents Logo"
                 fill
-                className="object-contain"
+                className={`object-contain transition-colors duration-300 ${
+                  isScrolled ? 'brightness-0' : ''
+                }`}
               />
             </div>
-            <span className="text-2xl font-bold text-keen-gray">
-              keen agents
-            </span>
+            <div className="flex items-center space-x-3">
+              <div className="w-px h-6 bg-keen-gray/30"></div>
+              <div className="text-keen-gray">
+                <div className="text-lg font-bold">keen</div>
+                <div className="text-xs font-medium">agents</div>
+              </div>
+              <div className="w-px h-6 bg-keen-gray/30"></div>
+              <div className="text-keen-gray/80">
+                <div className="text-xs font-semibold">Multi-Agent Orchestration</div>
+                <div className="text-xs font-medium">on a Whole New Level</div>
+              </div>
+            </div>
           </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-4">
+          <nav className="hidden lg:flex items-center space-x-6">
             {navItems.map((item, index) => (
               <motion.a
                 key={item.name}
@@ -95,7 +106,7 @@ export default function Header() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -2 }}
-                className="text-keen-gray hover:text-keen-blue transition-colors duration-300 font-medium"
+                className="text-keen-gray hover:text-keen-blue transition-colors duration-300 font-medium text-sm whitespace-nowrap"
               >
                 {item.name}
               </motion.a>
@@ -103,22 +114,22 @@ export default function Header() {
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-3">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.location.href = '#questionnaire'}
-              className="btn-secondary text-sm"
+              onClick={() => document.getElementById('questionnaire')?.scrollIntoView({ behavior: 'smooth' })}
+              className="btn-secondary text-xs px-3 py-2"
             >
               AI Readiness Quiz
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.location.href = '#questionnaire'}
-              className="btn-primary text-sm flex items-center space-x-2"
+              onClick={() => window.open('https://calendly.com/keenagents', '_blank')}
+              className="btn-primary text-xs px-3 py-2 flex items-center space-x-2"
             >
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-3 h-3" />
               <span>Book Consultation</span>
             </motion.button>
           </div>
@@ -240,7 +251,13 @@ export default function Header() {
               </a>
             ))}
             <div className="pt-4 space-y-3">
-              <button className="btn-secondary w-full text-sm">
+              <button 
+                onClick={() => {
+                  document.getElementById('questionnaire')?.scrollIntoView({ behavior: 'smooth' })
+                  setIsMobileMenuOpen(false)
+                }}
+                className="btn-secondary w-full text-sm"
+              >
                 AI Readiness Quiz
               </button>
               <button className="btn-primary w-full text-sm flex items-center justify-center space-x-2">

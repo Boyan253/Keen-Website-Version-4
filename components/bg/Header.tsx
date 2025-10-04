@@ -66,38 +66,44 @@ export default function BulgarianHeader() {
       }`}
     >
       <div className="container-custom">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-3">
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             className="flex items-center space-x-3"
           >
-            <div className="relative w-10 h-10 bg-keen-blue/10 rounded-lg p-2">
+            <div className="relative w-10 h-10 p-2">
               <Image
                 src="/logo-no-text.webp"
                 alt="Keen Agents Logo"
                 fill
-                className="object-contain"
+                className={`object-contain transition-colors duration-300 ${
+                  isScrolled ? 'brightness-0' : ''
+                }`}
               />
             </div>
-            <div>
-              <span className="text-xl font-bold text-keen-gray">
-                keen
-              </span>
-              <div className="text-sm font-medium text-keen-blue -mt-1">
-                agents
+            <div className="flex items-center space-x-3">
+              <div className="w-px h-6 bg-keen-gray/30"></div>
+              <div className="text-keen-gray">
+                <div className="text-lg font-bold">keen</div>
+                <div className="text-xs font-medium">agents</div>
+              </div>
+              <div className="w-px h-6 bg-keen-gray/30"></div>
+              <div className="text-keen-gray/80">
+                <div className="text-xs font-semibold">Multi-Agent Orchestration</div>
+                <div className="text-xs font-medium">on a Whole New Level</div>
               </div>
             </div>
           </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-4">
+          <nav className="hidden lg:flex items-center space-x-6">
             {navItems.map((item) => (
               <motion.a
                 key={item.name}
                 href={item.href}
                 whileHover={{ y: -2 }}
-                className="text-keen-gray font-medium hover:text-keen-blue transition-colors duration-300"
+                className="text-keen-gray font-medium hover:text-keen-blue transition-colors duration-300 text-sm whitespace-nowrap"
               >
                 {item.name}
               </motion.a>
@@ -105,22 +111,22 @@ export default function BulgarianHeader() {
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-3">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.location.href = '#questionnaire'}
-              className="btn-secondary text-sm"
+              onClick={() => document.getElementById('questionnaire')?.scrollIntoView({ behavior: 'smooth' })}
+              className="btn-secondary text-xs px-3 py-2"
             >
               AI готовност тест
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.location.href = '#questionnaire'}
-              className="btn-primary text-sm flex items-center space-x-2"
+              onClick={() => window.open('https://calendly.com/keenagents', '_blank')}
+              className="btn-primary text-xs px-3 py-2 flex items-center space-x-2"
             >
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-3 h-3" />
               <span>Резервирайте консултация</span>
             </motion.button>
           </div>
@@ -241,14 +247,20 @@ export default function BulgarianHeader() {
             <div className="pt-4 space-y-3">
               <button 
                 onClick={() => {
-                  window.location.href = '#questionnaire'
+                  document.getElementById('questionnaire')?.scrollIntoView({ behavior: 'smooth' })
                   setIsMobileMenuOpen(false)
                 }}
                 className="btn-secondary w-full text-sm"
               >
                 AI готовност тест
               </button>
-              <button className="btn-primary w-full text-sm flex items-center justify-center space-x-2">
+              <button 
+                onClick={() => {
+                  window.open('https://calendly.com/keenagents', '_blank')
+                  setIsMobileMenuOpen(false)
+                }}
+                className="btn-primary w-full text-sm flex items-center justify-center space-x-2"
+              >
                 <Calendar className="w-4 h-4" />
                 <span>Резервирайте консултация</span>
               </button>

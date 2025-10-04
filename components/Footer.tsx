@@ -38,7 +38,7 @@ export default function Footer() {
     support: [
       { name: 'Contact Us', href: '#contact' },
       { name: 'Support Center', href: '/support' },
-      { name: 'Book Consultation', href: '#questionnaire' },
+      { name: 'Book Consultation', href: 'https://calendly.com/keenagents' },
       { name: 'Status Page', href: '/status' }
     ]
   }
@@ -58,7 +58,7 @@ export default function Footer() {
                 className="mb-6"
               >
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="relative w-10 h-10 bg-keen-blue/20 rounded-lg p-2">
+                  <div className="relative w-10 h-10 p-2">
                     <Image
                       src="/logo-no-text.webp"
                       alt="Keen Agents Logo"

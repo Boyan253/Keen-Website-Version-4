@@ -3,20 +3,21 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, CheckCircle, Calendar, Brain } from 'lucide-react'
 import { useState } from 'react'
+import Image from 'next/image'
 
 export default function HeroSection() {
   const [heroVariant, setHeroVariant] = useState('primary')
 
   const stats = [
-    { metric: '30%', label: 'faster order processing' },
-    { metric: '70%', label: 'automated inquiries' },
-    { metric: '25%', label: 'back-office cost reduction' },
+    { metric: '10x', label: 'faster time to POC' },
+    { metric: 'Days', label: 'not months to deploy' },
+    { metric: 'Rapid', label: 'time-to-value' },
   ]
 
   const primaryHero = {
-    headline: "Meet Your New AI Employees — Always-on, Cost-effective, and Built for Your Business",
-    subheadline: "Keen Agents provides a powerful AI platform that builds bespoke AI agents — digital employees trained to run your repeatable processes, reduce operational costs, and free your team to focus on growth.",
-    supportLine: "Deployment without IT headaches. Results in weeks."
+    headline: "AI Implementation Made Simple — Deploy Production-Ready AI Agents in Days",
+    subheadline: "We do not sell our software platform — we deliver business outcomes. Working with our proprietary software platform, we design, train and operate custom AI agents that behave like YOUR high-performing employees.",
+    supportLine: "10x faster time to POC • Rapid Time-to-Value • Deploy production-ready AI agents in days, not months"
   }
 
   const riskAverseHero = {
@@ -161,7 +162,7 @@ export default function HeroSection() {
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(4, 165, 250, 0.3)" }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => window.location.href = '#questionnaire'}
+                onClick={() => window.open('https://calendly.com/keenagents', '_blank')}
                 className="btn-primary text-lg px-8 py-4 flex items-center justify-center space-x-2 group"
               >
                 <Calendar className="w-5 h-5" />
@@ -204,11 +205,24 @@ export default function HeroSection() {
                 className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20"
               >
                 <div className="flex items-center space-x-4 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-keen-blue to-keen-gradient-end rounded-xl flex items-center justify-center">
-                    <Brain className="w-6 h-6 text-white" />
+                  <div className="relative w-12 h-12 p-1">
+                    <div 
+                      className="w-full h-full"
+                      style={{ 
+                        backgroundColor: '#bad7f5',
+                        maskImage: 'url(/logo-no-text.webp)',
+                        maskSize: 'contain',
+                        maskRepeat: 'no-repeat',
+                        maskPosition: 'center',
+                        WebkitMaskImage: 'url(/logo-no-text.webp)',
+                        WebkitMaskSize: 'contain',
+                        WebkitMaskRepeat: 'no-repeat',
+                        WebkitMaskPosition: 'center'
+                      }}
+                    />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-keen-gray">AI Agent</h3>
+                    <h3 className="text-xl font-bold text-keen-gray">Keen Agent AI</h3>
                     <p className="text-keen-gray/70">Always Learning</p>
                   </div>
                 </div>

@@ -87,10 +87,10 @@ export default function ProcessSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
-            How We Do It
+            Rapid Implementation Process
           </h2>
           <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-            Our three-phase implementation framework is engineered for speed and safety. Each phase maps to clear deliverables and acceptance criteria.
+            Our streamlined three-phase framework delivers production-ready AI agents in days, not months. Each phase is optimized for speed while maintaining quality and safety.
           </p>
         </motion.div>
 
@@ -297,17 +297,17 @@ export default function ProcessSection() {
         >
           <div className="bg-gradient-to-r from-keen-blue to-keen-gradient-end rounded-3xl p-12 text-white">
             <h3 className="text-3xl font-bold mb-4">
-              Ready to Start Your AI Journey?
+              Ready for Rapid AI Deployment?
             </h3>
             <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-              Our proven process ensures successful AI agent deployment with minimal risk and maximum ROI.
+              Our streamlined process delivers production-ready AI agents in days, not months. Start your rapid implementation today.
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-white text-keen-blue px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors duration-300 flex items-center space-x-2 mx-auto"
             >
-              <span>Begin Discovery Phase</span>
+              <span>Start Rapid Implementation</span>
               <ArrowRight className="w-5 h-5" />
             </motion.button>
           </div>

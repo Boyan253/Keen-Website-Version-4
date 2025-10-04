@@ -38,7 +38,7 @@ export default function BulgarianFooter() {
     support: [
       { name: 'Свържете се с нас', href: '#contact' },
       { name: 'Център за поддръжка', href: '/support' },
-      { name: 'Резервирайте консултация', href: '#questionnaire' },
+      { name: 'Резервирайте консултация', href: 'https://calendly.com/keenagents' },
       { name: 'Страница за състояние', href: '/status' }
     ]
   }
@@ -58,7 +58,7 @@ export default function BulgarianFooter() {
                 className="mb-6"
               >
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="relative w-10 h-10 bg-keen-blue/20 rounded-lg p-2">
+                  <div className="relative w-10 h-10 p-2">
                     <Image
                       src="/logo-no-text.webp"
                       alt="Keen Agents Logo"

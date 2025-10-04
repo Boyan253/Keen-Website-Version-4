@@ -22,26 +22,26 @@ export default function ProductSection() {
   const valueProps = [
     {
       icon: Bot,
-      title: "AI Employees, Not Bots",
-      description: "Task-specific agents that perform roles (customer support, order processing, claims triage, data entry) with SLA-level reliability.",
+      title: "10x Faster POC",
+      description: "Get from concept to working prototype in days, not months. Rapid validation of AI use cases with immediate business impact.",
       color: "from-keen-blue to-keen-gradient-end"
     },
     {
       icon: TrendingUp,
-      title: "Measurable ROI",
-      description: "Typical outcomes include faster processing times, fewer errors, and lower operational spend.",
+      title: "Rapid Time-to-Value",
+      description: "Deploy production-ready AI agents quickly with measurable ROI from day one. No lengthy implementation cycles.",
       color: "from-green-500 to-emerald-600"
     },
     {
       icon: Shield,
-      title: "No IT Disruption",
-      description: "Integrates with existing systems via APIs, connectors, or secure middleware.",
+      title: "Days, Not Months",
+      description: "Simple deployment process that works with your existing systems. No complex integrations or IT overhauls required.",
       color: "from-purple-500 to-violet-600"
     },
     {
       icon: Users,
-      title: "Human-in-the-loop",
-      description: "Safe escalation paths and supervised decisioning for high-risk cases.",
+      title: "Production-Ready",
+      description: "Enterprise-grade AI agents that are immediately ready for production use with built-in monitoring and human oversight.",
       color: "from-orange-500 to-red-500"
     }
   ]
@@ -78,7 +78,7 @@ export default function ProductSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
-            What We Do
+            AI Implementation Made Simple
           </h2>
           <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
             We do not sell our software platform — we deliver business outcomes. Working with our proprietary software platform, we design, train and operate custom AI agents that behave like YOUR high-performing employees.
@@ -157,10 +157,10 @@ export default function ProductSection() {
         >
           <div className="bg-gradient-to-r from-keen-blue/5 to-keen-gradient-end/5 rounded-3xl p-12">
             <h3 className="text-3xl font-bold text-keen-gray mb-4">
-              Ready to Deploy Your AI Employees?
+              Ready for Rapid AI Implementation?
             </h3>
             <p className="text-xl text-keen-gray/80 mb-8 max-w-2xl mx-auto">
-              Join forward-thinking companies already using AI agents to transform their operations.
+              Deploy production-ready AI agents in days, not months. Join forward-thinking companies already using our rapid implementation approach.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button
@@ -168,14 +168,14 @@ export default function ProductSection() {
                 whileTap={{ scale: 0.95 }}
                 className="btn-primary text-lg px-8 py-4"
               >
-                Start Your AI Journey
+                Start Rapid Implementation
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-secondary text-lg px-8 py-4"
               >
-                View Case Studies
+                See 10x Faster POC
               </motion.button>
             </div>
           </div>

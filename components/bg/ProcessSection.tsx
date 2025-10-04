@@ -87,10 +87,10 @@ export default function BulgarianProcessSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
-            Как го правим
+            Бърз процес на внедряване
           </h2>
           <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-            Нашата рамка за внедряване в три фази е проектирана за скорост и безопасност. Всяка фаза се съответства на ясни доставки и критерии за приемане.
+            Нашата опростена рамка в три фази доставя готови за производство AI агенти за дни, не месеци. Всяка фаза е оптимизирана за скорост, като запазва качеството и безопасността.
           </p>
         </motion.div>
 
@@ -297,10 +297,10 @@ export default function BulgarianProcessSection() {
         >
           <div className="bg-gradient-to-r from-keen-blue to-keen-gradient-end rounded-3xl p-12 text-white">
             <h3 className="text-3xl font-bold mb-4">
-              Готови ли сте да започнете вашия AI път?
+              Готови ли сте за бързо AI внедряване?
             </h3>
             <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-              Нашият доказан процес осигурява успешно внедряване на AI агенти с минимален риск и максимален ROI.
+              Нашият опростен процес доставя готови за производство AI агенти за дни, не месеци. Започнете вашето бързо внедряване днес.
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -308,7 +308,7 @@ export default function BulgarianProcessSection() {
               onClick={() => window.location.href = '#questionnaire'}
               className="bg-white text-keen-blue px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors duration-300 flex items-center space-x-2 mx-auto"
             >
-              <span>Започнете фазата на откриване</span>
+              <span>Започнете бързо внедряване</span>
               <ArrowRight className="w-5 h-5" />
             </motion.button>
           </div>

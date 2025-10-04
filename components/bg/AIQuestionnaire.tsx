@@ -235,6 +235,7 @@ export default function BulgarianAIQuestionnaire() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => window.open('https://calendly.com/keenagents', '_blank')}
                   className="btn-primary text-lg px-8 py-4 flex items-center space-x-2"
                 >
                   <span>Резервирайте разговор за откриване</span>

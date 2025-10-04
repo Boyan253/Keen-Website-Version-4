@@ -22,26 +22,26 @@ export default function BulgarianProductSection() {
   const valueProps = [
     {
       icon: Bot,
-      title: "AI Служители, не ботове",
-      description: "Агенти, специфични за задачи, които изпълняват роли (клиентска поддръжка, обработка на поръчки, сортиране на искове, въвеждане на данни) с надеждност на ниво SLA.",
+      title: "10x По-бързо POC",
+      description: "Получете от концепция до работещ прототип за дни, не месеци. Бърза валидация на AI случаи на използване с незабавно бизнес въздействие.",
       color: "from-keen-blue to-keen-gradient-end"
     },
     {
       icon: TrendingUp,
-      title: "Измерим ROI",
-      description: "Типичните резултати включват по-бързо време за обработка, по-малко грешки и по-ниски оперативни разходи.",
+      title: "Бързо време до стойност",
+      description: "Внедрявайте готови за производство AI агенти бързо с измерим ROI от първия ден. Без дълги цикли на внедряване.",
       color: "from-green-500 to-emerald-600"
     },
     {
       icon: Shield,
-      title: "Без IT смущения",
-      description: "Интегрира се с съществуващите системи чрез API, конектори или сигурен междинен софтуер.",
+      title: "Дни, не месеци",
+      description: "Прост процес на внедряване, който работи с вашите съществуващи системи. Без сложни интеграции или IT преустройства.",
       color: "from-purple-500 to-violet-600"
     },
     {
       icon: Users,
-      title: "Човек в цикъла",
-      description: "Сигурни пътища за ескалация и контролирано вземане на решения за случаи с висок риск.",
+      title: "Готови за производство",
+      description: "AI агенти на корпоративно ниво, които са веднага готови за производствено използване с вградено наблюдение и човешки надзор.",
       color: "from-orange-500 to-red-500"
     }
   ]
@@ -78,10 +78,10 @@ export default function BulgarianProductSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
-            Какво правим
+            AI внедряване направено просто
           </h2>
           <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-            Ние не продаваме нашата софтуерна платформа — ние доставяме бизнес резултати. Работейки с нашата собствена софтуерна платформа, ние проектираме, обучаваме и управляваме индивидуални AI агенти, които се държат като ВАШИТЕ високопроизводителни служители.
+            Ние не продаваме нашата софтуерна платформа — ние доставяме бизнес резултати. Работейки с нашата собствена софтуерна платформа, ние проектираме, обучаваме и управляваме персонализирани AI агенти, които се държат като ВАШИТЕ високопроизводителни служители.
           </p>
         </motion.div>
 
@@ -145,10 +145,10 @@ export default function BulgarianProductSection() {
         >
           <div className="bg-gradient-to-r from-keen-blue to-keen-gradient-end rounded-3xl p-12 text-white">
             <h3 className="text-3xl font-bold mb-4">
-              Готови ли сте да започнете?
+              Готови ли сте за бързо AI внедряване?
             </h3>
             <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-              Открийте как AI агентите могат да трансформират вашите бизнес операции.
+              Внедрявайте готови за производство AI агенти за дни, не месеци. Присъединете се към прогресивните компании, които вече използват нашия бърз подход за внедряване.
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -156,7 +156,7 @@ export default function BulgarianProductSection() {
               onClick={() => window.location.href = '#questionnaire'}
               className="bg-white text-keen-blue px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors duration-300 flex items-center space-x-2 mx-auto"
             >
-              <span>Започнете безплатна консултация</span>
+              <span>Започнете бързо внедряване</span>
               <ArrowRight className="w-5 h-5" />
             </motion.button>
           </div>

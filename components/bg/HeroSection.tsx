@@ -3,20 +3,21 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, CheckCircle, Calendar, Brain } from 'lucide-react'
 import { useState } from 'react'
+import Image from 'next/image'
 
 export default function BulgarianHeroSection() {
   const [heroVariant, setHeroVariant] = useState('primary')
 
   const stats = [
-    { metric: '30%', label: 'по-бързо обработване на поръчки' },
-    { metric: '70%', label: 'автоматизирани запитвания' },
-    { metric: '25%', label: 'намаляване на разходите за администрация' },
+    { metric: '10x', label: 'по-бързо време до POC' },
+    { metric: 'Дни', label: 'не месеци за внедряване' },
+    { metric: 'Бързо', label: 'време до стойност' },
   ]
 
   const primaryHero = {
-    headline: "Запознайте се с новите си AI служители — винаги активни, рентабилни и създадени за вашия бизнес",
-    subheadline: "Keen Agents предоставя мощен AI платформа, който създава индивидуални AI агенти — цифрови служители, обучени да управляват вашите повтарящи се процеси, намаляват оперативните разходи и освобождават вашия екип да се фокусира върху растежа.",
-    supportLine: "Внедряване без IT главоболия. Резултати за седмици."
+    headline: "AI внедряване направено просто — внедрявайте готови за производство AI агенти за дни, не месеци",
+    subheadline: "Ние не продаваме нашата софтуерна платформа — ние доставяме бизнес резултати. Работейки с нашата собствена софтуерна платформа, ние проектираме, обучаваме и управляваме персонализирани AI агенти, които се държат като ВАШИТЕ високопроизводителни служители.",
+    supportLine: "10x по-бързо време до POC • Бързо време до стойност • Внедрявайте готови за производство AI агенти за дни, не месеци"
   }
 
   const riskAverseHero = {
@@ -161,7 +162,7 @@ export default function BulgarianHeroSection() {
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(4, 165, 250, 0.3)" }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => window.location.href = '#questionnaire'}
+                onClick={() => window.open('https://calendly.com/keenagents', '_blank')}
                 className="btn-primary text-lg px-8 py-4 flex items-center justify-center space-x-2 group"
               >
                 <Calendar className="w-7 h-7" />
@@ -204,11 +205,24 @@ export default function BulgarianHeroSection() {
                 className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20"
               >
                 <div className="flex items-center space-x-4 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-keen-blue to-keen-gradient-end rounded-xl flex items-center justify-center">
-                    <Brain className="w-6 h-6 text-white" />
+                  <div className="relative w-12 h-12 p-1">
+                    <div 
+                      className="w-full h-full"
+                      style={{ 
+                        backgroundColor: '#bad7f5',
+                        maskImage: 'url(/logo-no-text.webp)',
+                        maskSize: 'contain',
+                        maskRepeat: 'no-repeat',
+                        maskPosition: 'center',
+                        WebkitMaskImage: 'url(/logo-no-text.webp)',
+                        WebkitMaskSize: 'contain',
+                        WebkitMaskRepeat: 'no-repeat',
+                        WebkitMaskPosition: 'center'
+                      }}
+                    />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-keen-gray">AI Агент</h3>
+                    <h3 className="text-xl font-bold text-keen-gray">Keen Agent AI</h3>
                     <p className="text-keen-gray/70">Винаги учи</p>
                   </div>
                 </div>

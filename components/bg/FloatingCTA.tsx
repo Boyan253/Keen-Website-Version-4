@@ -35,7 +35,7 @@ export default function FloatingCTA() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setShowChat(true)}
+              onClick={() => window.open('https://calendly.com/keenagents', '_blank')}
               className="bg-keen-blue text-white px-6 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2 group"
             >
               <Calendar className="w-5 h-5" />
