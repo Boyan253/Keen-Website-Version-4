@@ -66,12 +66,21 @@ export default function BulgarianFooter() {
                       className="object-contain"
                     />
                   </div>
-                  <span className="text-2xl font-bold">
-                    keen agents
-                  </span>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-px h-6 bg-white/30"></div>
+                    <div className="text-white">
+                      <div className="text-lg font-bold">keen</div>
+                      <div className="text-xs font-medium">agents</div>
+                    </div>
+                    <div className="w-px h-6 bg-white/30"></div>
+                    <div className="text-white/80">
+                      <div className="text-xs font-semibold">Multi-Agent Orchestration</div>
+                      <div className="text-xs font-medium">on a Whole New Level</div>
+                    </div>
+                  </div>
                 </div>
                 <p className="text-gray-300 leading-relaxed mb-6">
-                  Изграждане на индивидуални AI агенти, които работят като цифрови служители за автоматизиране на вашите бизнес процеси и намаляване на разходите.
+                  Ние не продаваме нашата софтуерна платформа — ние доставяме бизнес резултати. Внедряваме production-ready AI агенти за дни, не месеци. 10x по-бързо време до POC с бързо време-до-стойност.
                 </p>
                 <div className="flex space-x-4">
                   <motion.a

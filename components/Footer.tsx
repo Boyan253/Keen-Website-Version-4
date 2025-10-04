@@ -66,12 +66,21 @@ export default function Footer() {
                       className="object-contain"
                     />
                   </div>
-                  <span className="text-2xl font-bold">
-                    keen agents
-                  </span>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-px h-6 bg-white/30"></div>
+                    <div className="text-white">
+                      <div className="text-lg font-bold">keen</div>
+                      <div className="text-xs font-medium">agents</div>
+                    </div>
+                    <div className="w-px h-6 bg-white/30"></div>
+                    <div className="text-white/80">
+                      <div className="text-xs font-semibold">Multi-Agent Orchestration</div>
+                      <div className="text-xs font-medium">on a Whole New Level</div>
+                    </div>
+                  </div>
                 </div>
                 <p className="text-gray-300 leading-relaxed mb-6">
-                  Building custom AI agents that work as digital employees to automate your business processes and reduce costs.
+                  We do not sell our software platform — we deliver business outcomes. Deploy production-ready AI agents in days, not months. 10x faster time to POC with rapid time-to-value.
                 </p>
                 <div className="flex space-x-4">
                   <motion.a

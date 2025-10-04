@@ -234,7 +234,7 @@ export default function AboutSection() {
             Our Mission
           </h3>
           <p className="text-xl mb-8 opacity-90 max-w-4xl mx-auto leading-relaxed">
-            To democratize AI automation by making it accessible, reliable, and profitable for businesses of all sizes. We believe every company should have access to AI employees that work tirelessly to improve their operations, reduce costs, and enhance customer experiences.
+            To democratize AI implementation by making it accessible, reliable, and profitable for businesses of all sizes. We believe every company should have access to production-ready AI agents that deliver measurable business outcomes, reduce costs, and enhance customer experiences.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.button
