@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, ArrowRight, Brain, Clock, Users, Shield, TrendingUp } from 'lucide-react'
+import CMSContent from './CMSContent'
 
 export default function AIQuestionnaire() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -188,14 +189,23 @@ export default function AIQuestionnaire() {
     return (
       <section id="questionnaire" className="section-padding bg-gradient-to-br from-gray-50 to-white">
         <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
-              Your AI Readiness Results
-            </h2>
-            <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-              Based on your answers, here's your personalized AI readiness assessment.
-            </p>
-          </div>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
+            <CMSContent 
+              contentKey="results_title" 
+              section="questionnaire" 
+              fallback="Your AI Readiness Results"
+            />
+          </h2>
+          <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
+            <CMSContent 
+              contentKey="results_description" 
+              section="questionnaire" 
+              fallback="Based on your answers, here's your personalized AI readiness assessment."
+              as="span"
+            />
+          </p>
+        </div>
           
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -238,7 +248,12 @@ export default function AIQuestionnaire() {
                   onClick={() => window.open('https://calendly.com/keenagents', '_blank')}
                   className="btn-primary text-lg px-8 py-4 flex items-center space-x-2"
                 >
-                  <span>Schedule Discovery Call</span>
+                  <CMSContent 
+                    contentKey="cta_primary" 
+                    section="questionnaire" 
+                    fallback="Schedule Discovery Call"
+                    as="span"
+                  />
                   <ArrowRight className="w-5 h-5" />
                 </motion.button>
                 <motion.button
@@ -247,7 +262,12 @@ export default function AIQuestionnaire() {
                   onClick={resetQuiz}
                   className="btn-secondary text-lg px-8 py-4"
                 >
-                  Retake Quiz
+                  <CMSContent 
+                    contentKey="cta_secondary" 
+                    section="questionnaire" 
+                    fallback="Retake Quiz"
+                    as="span"
+                  />
                 </motion.button>
               </div>
             </motion.div>
@@ -262,10 +282,19 @@ export default function AIQuestionnaire() {
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
-            AI Readiness Questionnaire
+            <CMSContent 
+              contentKey="title" 
+              section="questionnaire" 
+              fallback="AI Readiness Questionnaire"
+            />
           </h2>
           <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-            Take our quick assessment to discover your AI automation potential and get personalized recommendations.
+            <CMSContent 
+              contentKey="description" 
+              section="questionnaire" 
+              fallback="Take our quick assessment to discover your AI automation potential and get personalized recommendations."
+              as="span"
+            />
           </p>
         </div>
         

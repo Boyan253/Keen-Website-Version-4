@@ -1,4 +1,4 @@
-const { cmsDatabase } = require('../lib/cms/database')
+const { cmsDatabase } = require('../lib/cms/supabase-database')
 
 async function initializeCMS() {
   try {

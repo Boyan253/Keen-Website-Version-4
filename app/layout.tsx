@@ -11,9 +11,9 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('http://localhost:3001'),
-  title: 'Keen Agents - AI Employees for Your Business',
-  description: 'Keen Agents builds custom AI agents—digital employees that automate processes, reduce operational costs, and scale your business. Book a free consultation.',
+  metadataBase: new URL('http://localhost:3000'),
+  title: 'Keen Agents - AI Integration for Your Business',
+  description: 'Keen Agents builds custom AI agents—digital Integration that automate processes, reduce operational costs, and scale your business. Book a free consultation.',
   keywords: 'AI employees, AI agents for business, process automation, automate customer support, AI automation solutions',
   authors: [{ name: 'Keen Agents' }],
   openGraph: {
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: 'Custom AI agents that work as digital employees to automate your business processes and reduce costs.',
     type: 'website',
     locale: 'en_US',
-    url: 'http://localhost:3001',
+    url: 'http://localhost:3000',
     siteName: 'Keen Agents',
   },
   twitter: {

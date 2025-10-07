@@ -460,7 +460,7 @@ export default function AdminDashboard() {
 function ContentTab({ onUpdate }: { onUpdate: (key: string, section: string, value: string) => void }) {
   const { getContent } = useCMS()
   
-  const sections = ['hero', 'about', 'product', 'process', 'testimonials', 'faq', 'footer', 'global']
+  const sections = ['hero', 'about', 'product', 'process', 'testimonials', 'faq', 'questionnaire', 'footer', 'global']
   
   return (
     <div className="space-y-6">
