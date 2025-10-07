@@ -14,6 +14,52 @@ export default function AdminDashboard() {
   const [saving, setSaving] = useState(false)
   const [adminPanelWidth, setAdminPanelWidth] = useState(50) // Percentage
   const [isResizing, setIsResizing] = useState(false)
+  
+  // Scroll position preservation
+  const adminScrollRef = useRef<HTMLDivElement>(null)
+  const previewScrollRef = useRef<HTMLDivElement>(null)
+  const [savedScrollPositions, setSavedScrollPositions] = useState<{
+    admin: number
+    preview: number
+  } | null>(null)
+
+  // Save scroll positions to localStorage on scroll
+  useEffect(() => {
+    const adminElement = adminScrollRef.current
+    const previewElement = previewScrollRef.current
+
+    const saveScrollPositions = () => {
+      const adminScroll = adminElement?.scrollTop || 0
+      let previewScroll = 0
+      
+      if (previewElement) {
+        const iframe = previewElement.querySelector('iframe')
+        if (iframe && iframe.contentWindow) {
+          try {
+            previewScroll = iframe.contentWindow.pageYOffset || iframe.contentWindow.scrollY || 0
+          } catch (error) {
+            // Cross-origin restrictions - try to get from localStorage
+            previewScroll = parseInt(localStorage.getItem('admin-preview-scroll') || '0')
+          }
+        }
+      }
+      
+      localStorage.setItem('admin-scroll-positions', JSON.stringify({
+        admin: adminScroll,
+        preview: previewScroll
+      }))
+    }
+
+    if (adminElement) {
+      adminElement.addEventListener('scroll', saveScrollPositions, { passive: true })
+    }
+
+    return () => {
+      if (adminElement) {
+        adminElement.removeEventListener('scroll', saveScrollPositions)
+      }
+    }
+  }, [])
 
   const tabs = [
     { id: 'content', label: 'Content', icon: FileText },
@@ -51,6 +97,28 @@ export default function AdminDashboard() {
   }
 
   const handleSaveAll = async () => {
+    // Save current scroll positions before saving
+    const adminScroll = adminScrollRef.current?.scrollTop || 0
+    let previewScroll = 0
+    
+    // Get iframe scroll position
+    if (previewScrollRef.current) {
+      const iframe = previewScrollRef.current.querySelector('iframe')
+      if (iframe && iframe.contentWindow) {
+        try {
+          previewScroll = iframe.contentWindow.pageYOffset || iframe.contentWindow.scrollY || 0
+        } catch (error) {
+          // Cross-origin restrictions might prevent this
+          console.warn('Could not get iframe scroll position:', error)
+        }
+      }
+    }
+    
+    setSavedScrollPositions({
+      admin: adminScroll,
+      preview: previewScroll
+    })
+    
     setSaving(true)
     try {
       await saveAllChanges()
@@ -62,6 +130,31 @@ export default function AdminDashboard() {
       setSaving(false)
     }
   }
+
+  // Restore scroll positions after save completes
+  useEffect(() => {
+    if (!saving && savedScrollPositions) {
+      // Use setTimeout to ensure DOM has updated
+      setTimeout(() => {
+        if (adminScrollRef.current) {
+          adminScrollRef.current.scrollTop = savedScrollPositions.admin
+        }
+        if (previewScrollRef.current) {
+          // For iframe, we need to access the iframe's content window
+          const iframe = previewScrollRef.current.querySelector('iframe')
+          if (iframe && iframe.contentWindow) {
+            try {
+              iframe.contentWindow.scrollTo(0, savedScrollPositions.preview)
+            } catch (error) {
+              // Cross-origin restrictions might prevent this
+              console.warn('Could not restore iframe scroll position:', error)
+            }
+          }
+        }
+        setSavedScrollPositions(null)
+      }, 100)
+    }
+  }, [saving, savedScrollPositions])
 
   // Resize functionality
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -181,7 +274,7 @@ export default function AdminDashboard() {
             <span>Open in New Tab</span>
           </button>
         </div>
-        <div className="w-full h-screen">
+        <div ref={previewScrollRef} className="w-full h-screen">
           <iframe
             src="/"
             className="w-full h-full border-0"
@@ -389,7 +482,7 @@ export default function AdminDashboard() {
             className="border-r relative bg-white flex flex-col"
             style={{ width: `${adminPanelWidth}%` }}
           >
-            <div className="flex-1 overflow-y-auto p-6">
+            <div ref={adminScrollRef} className="flex-1 overflow-y-auto p-6">
               {activeTab === 'content' && <ContentTab onUpdate={handleContentUpdate} />}
               {activeTab === 'colors' && <ColorsTab onUpdate={handleColorUpdate} />}
               {activeTab === 'images' && <ImagesTab />}
@@ -441,7 +534,7 @@ export default function AdminDashboard() {
                 <span>Open New Tab</span>
               </button>
             </div>
-            <div className="flex-1 overflow-hidden">
+            <div ref={previewScrollRef} className="flex-1 overflow-hidden">
               <iframe
                 src="/"
                 className="w-full h-full border-0"
@@ -462,6 +555,38 @@ function ContentTab({ onUpdate }: { onUpdate: (key: string, section: string, val
   
   const sections = ['hero', 'about', 'product', 'process', 'testimonials', 'faq', 'questionnaire', 'footer', 'global']
   
+  // Custom sorting function for questionnaire content
+  const sortQuestionnaireContent = (content: any[]) => {
+    return content.sort((a, b) => {
+      // First, separate question items from other items
+      const isQuestionA = a.key.includes('question_')
+      const isQuestionB = b.key.includes('question_')
+      
+      if (isQuestionA && !isQuestionB) return -1
+      if (!isQuestionA && isQuestionB) return 1
+      
+      // If both are questions, sort by question number
+      if (isQuestionA && isQuestionB) {
+        const questionNumA = parseInt(a.key.match(/question_(\d+)/)?.[1] || '0')
+        const questionNumB = parseInt(b.key.match(/question_(\d+)/)?.[1] || '0')
+        
+        if (questionNumA !== questionNumB) {
+          return questionNumA - questionNumB
+        }
+        
+        // If same question number, sort text before options
+        const isTextA = a.key.includes('_text')
+        const isTextB = b.key.includes('_text')
+        
+        if (isTextA && !isTextB) return -1
+        if (!isTextA && isTextB) return 1
+      }
+      
+      // For non-question items, sort alphabetically by key
+      return a.key.localeCompare(b.key)
+    })
+  }
+  
   return (
     <div className="space-y-6">
       <div>
@@ -470,8 +595,13 @@ function ContentTab({ onUpdate }: { onUpdate: (key: string, section: string, val
       </div>
 
       {sections.map((section) => {
-        const content = getContent(section)
+        let content = getContent(section)
         if (content.length === 0) return null
+
+        // Apply custom sorting for questionnaire section
+        if (section === 'questionnaire') {
+          content = sortQuestionnaireContent(content)
+        }
 
         return (
           <div key={section} className="bg-white rounded-lg shadow-sm border p-6">
@@ -488,7 +618,7 @@ function ContentTab({ onUpdate }: { onUpdate: (key: string, section: string, val
           </div>
         )
       })}
-    </div>
+</div>
   )
 }
 

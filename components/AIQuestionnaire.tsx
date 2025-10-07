@@ -21,15 +21,18 @@ export default function AIQuestionnaire() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<{ [key: number]: string }>({})
   const [showResults, setShowResults] = useState(false)
-  const { getContentByKey } = useCMS()
+  const { getContentByKey, getContent } = useCMS()
 
   // Build questions from CMS content
   const questions = useMemo(() => {
     const questionsList: Question[] = []
     
+    // Get all questionnaire content
+    const allContent = getContent('questionnaire')
+    
     for (let i = 1; i <= 8; i++) {
-      const questionText = getContentByKey(`question_${i}_text`, 'questionnaire')
-      const questionOptions = getContentByKey(`question_${i}_options`, 'questionnaire')
+      const questionText = allContent.find(item => item.key === `question_${i}_text`)
+      const questionOptions = allContent.find(item => item.key === `question_${i}_options`)
       
       if (questionText && questionOptions) {
         try {
@@ -46,7 +49,7 @@ export default function AIQuestionnaire() {
     }
     
     return questionsList
-  }, [getContentByKey])
+  }, [getContent])
 
   // Fallback questions in case CMS data is not available
   const fallbackQuestions: Question[] = [
