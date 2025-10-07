@@ -12,6 +12,7 @@ import {
   Globe,
   ArrowRight
 } from 'lucide-react'
+import CMSContent from './CMSContent'
 
 export default function AboutSection() {
   const [ref, inView] = useInView({
@@ -92,12 +93,20 @@ export default function AboutSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
-            About Us
-          </h2>
-          <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-            Keen Agents was founded to bridge the gap between AI research and practical business impact. Our leadership combines decades of enterprise technology, process engineering, and applied AI.
-          </p>
+          <CMSContent
+            section="about"
+            contentKey="title"
+            fallback="About Us"
+            as="h2"
+            className="text-4xl md:text-5xl font-bold text-keen-gray mb-6"
+          />
+          <CMSContent
+            section="about"
+            contentKey="description"
+            fallback="Keen Agents was founded to bridge the gap between AI research and practical business impact. Our leadership combines decades of enterprise technology, process engineering, and applied AI."
+            as="p"
+            className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed"
+          />
         </motion.div>
 
         {/* Company Stats */}

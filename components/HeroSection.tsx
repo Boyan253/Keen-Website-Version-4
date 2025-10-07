@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, CheckCircle, Calendar, Brain } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
+import CMSContent from './CMSContent'
 
 export default function HeroSection() {
   const [heroVariant, setHeroVariant] = useState('primary')
@@ -92,26 +93,36 @@ export default function HeroSection() {
             </div>
 
             {/* Headline */}
-            <motion.h1
-              key={currentHero.headline}
+            <motion.div
+              key="hero-headline"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-keen-gray leading-tight"
             >
-              {currentHero.headline}
-            </motion.h1>
+              <CMSContent
+                section="hero"
+                contentKey="headline"
+                fallback={currentHero.headline}
+                as="h1"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold text-keen-gray leading-tight"
+              />
+            </motion.div>
 
             {/* Subheadline */}
-            <motion.p
-              key={currentHero.subheadline}
+            <motion.div
+              key="hero-subheadline"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-lg md:text-xl text-keen-gray/80 leading-relaxed"
             >
-              {currentHero.subheadline}
-            </motion.p>
+              <CMSContent
+                section="hero"
+                contentKey="subheadline"
+                fallback={currentHero.subheadline}
+                as="p"
+                className="text-lg md:text-xl text-keen-gray/80 leading-relaxed"
+              />
+            </motion.div>
 
             {/* Support Line */}
             {heroVariant === 'primary' && (
@@ -166,7 +177,12 @@ export default function HeroSection() {
                 className="btn-primary text-lg px-8 py-4 flex items-center justify-center space-x-2 group"
               >
                 <Calendar className="w-5 h-5" />
-                <span>Book a Free Consultation</span>
+                <CMSContent
+                  section="hero"
+                  contentKey="cta_primary"
+                  fallback="Book a Free Consultation"
+                  as="span"
+                />
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
               
@@ -177,7 +193,12 @@ export default function HeroSection() {
                 className="btn-secondary text-lg px-8 py-4 flex items-center justify-center space-x-2"
               >
                 <Brain className="w-5 h-5" />
-                <span>Take AI Readiness Quiz</span>
+                <CMSContent
+                  section="hero"
+                  contentKey="cta_secondary"
+                  fallback="Take AI Readiness Quiz"
+                  as="span"
+                />
               </motion.button>
             </motion.div>
           </motion.div>

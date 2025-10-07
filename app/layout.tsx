@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import './globals.css'
+import { CMSProvider } from '@/lib/cms/context'
+import DynamicStyles from '@/components/DynamicStyles'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -55,7 +57,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-montserrat">
-        {children}
+        <CMSProvider>
+          <DynamicStyles />
+          {children}
+        </CMSProvider>
       </body>
     </html>
   )
