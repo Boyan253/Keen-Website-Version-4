@@ -6,7 +6,7 @@ export interface CMSContent {
   value: string
   label: string
   description?: string
-  category: 'hero' | 'about' | 'product' | 'process' | 'testimonials' | 'faq' | 'footer' | 'header' | 'global'
+  category: 'hero' | 'about' | 'product' | 'process' | 'testimonials' | 'faq' | 'footer' | 'header' | 'global' | 'questionnaire'
   isPublished: boolean
   createdAt: string
   updatedAt: string

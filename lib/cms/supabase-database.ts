@@ -191,9 +191,14 @@ export class SupabaseCMSDatabase {
     
     return (data || []).map(item => ({
       id: item.id,
-      url: item.url,
-      alt: item.alt,
+      filename: item.original_name,
       originalName: item.original_name,
+      url: item.url,
+      alt: item.alt || '',
+      width: 0, // Default values since we don't store these in Supabase
+      height: 0,
+      size: 0,
+      mimeType: 'image/jpeg', // Default mime type
       section: item.section,
       createdAt: item.created_at,
       updatedAt: item.updated_at
@@ -223,9 +228,14 @@ export class SupabaseCMSDatabase {
     
     return {
       id: data.id,
-      url: data.url,
-      alt: data.alt,
+      filename: data.original_name,
       originalName: data.original_name,
+      url: data.url,
+      alt: data.alt || '',
+      width: image.width || 0,
+      height: image.height || 0,
+      size: image.size || 0,
+      mimeType: image.mimeType || 'image/jpeg',
       section: data.section,
       createdAt: data.created_at,
       updatedAt: data.updated_at
@@ -337,6 +347,10 @@ export class SupabaseCMSDatabase {
       createdAt: data.created_at,
       updatedAt: data.updated_at
     }
+  }
+
+  async updateSettings(settings: Partial<CMSSettings>): Promise<CMSSettings> {
+    return this.setSettings(settings)
   }
 
   // Initialize with default data
