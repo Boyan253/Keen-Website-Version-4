@@ -1,16 +1,55 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, ArrowRight, Brain, Clock, Users, Shield, TrendingUp } from 'lucide-react'
 import CMSContent from './CMSContent'
+import { useCMS } from '@/lib/cms/context'
+
+interface QuestionOption {
+  value: string
+  label: string
+}
+
+interface Question {
+  id: number
+  question: string
+  options: QuestionOption[]
+}
 
 export default function AIQuestionnaire() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<{ [key: number]: string }>({})
   const [showResults, setShowResults] = useState(false)
+  const { getContentByKey } = useCMS()
 
-  const questions = [
+  // Build questions from CMS content
+  const questions = useMemo(() => {
+    const questionsList: Question[] = []
+    
+    for (let i = 1; i <= 8; i++) {
+      const questionText = getContentByKey(`question_${i}_text`, 'questionnaire')
+      const questionOptions = getContentByKey(`question_${i}_options`, 'questionnaire')
+      
+      if (questionText && questionOptions) {
+        try {
+          const options = JSON.parse(questionOptions.value) as QuestionOption[]
+          questionsList.push({
+            id: i,
+            question: questionText.value,
+            options: options
+          })
+        } catch (error) {
+          console.warn(`Failed to parse options for question ${i}:`, error)
+        }
+      }
+    }
+    
+    return questionsList
+  }, [getContentByKey])
+
+  // Fallback questions in case CMS data is not available
+  const fallbackQuestions: Question[] = [
     {
       id: 1,
       question: "Do you have digital records of the process you want to automate?",
@@ -92,11 +131,14 @@ export default function AIQuestionnaire() {
     }
   ]
 
+  // Use CMS questions if available, otherwise fallback to hardcoded questions
+  const finalQuestions = questions.length > 0 ? questions : fallbackQuestions
+
   const handleAnswer = (answer: string) => {
     const newAnswers = { ...answers, [currentQuestion]: answer }
     setAnswers(newAnswers)
     
-    if (currentQuestion < questions.length - 1) {
+    if (currentQuestion < finalQuestions.length - 1) {
       setTimeout(() => setCurrentQuestion(currentQuestion + 1), 300)
     } else {
       setTimeout(() => setShowResults(true), 300)
@@ -105,7 +147,7 @@ export default function AIQuestionnaire() {
 
   const calculateScore = () => {
     let score = 0
-    const totalQuestions = questions.length
+    const totalQuestions = finalQuestions.length
     
     // Simple scoring logic based on readiness indicators
     Object.values(answers).forEach(answer => {
@@ -311,26 +353,26 @@ export default function AIQuestionnaire() {
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-bold text-keen-gray">
-                    Question {currentQuestion + 1} of {questions.length}
+                    Question {currentQuestion + 1} of {finalQuestions.length}
                   </h3>
                   <div className="text-sm text-keen-gray/70">
-                    {Math.round(((currentQuestion + 1) / questions.length) * 100)}% Complete
+                    {Math.round(((currentQuestion + 1) / finalQuestions.length) * 100)}% Complete
                   </div>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
                     className="bg-gradient-to-r from-keen-blue to-keen-gradient-end h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+                    style={{ width: `${((currentQuestion + 1) / finalQuestions.length) * 100}%` }}
                   />
                 </div>
               </div>
               
               <p className="text-lg text-keen-gray mb-8 leading-relaxed">
-                {questions[currentQuestion].question}
+                {finalQuestions[currentQuestion].question}
               </p>
               
               <div className="space-y-4">
-                {questions[currentQuestion].options.map((option, index) => (
+                {finalQuestions[currentQuestion].options.map((option, index) => (
                   <motion.button
                     key={option.value}
                     whileHover={{ scale: 1.02 }}

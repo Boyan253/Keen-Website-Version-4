@@ -1679,6 +1679,206 @@ export class SupabaseCMSDatabase {
         category: 'footer',
         isPublished: true
       },
+      // Questionnaire Questions
+      {
+        section: 'questionnaire',
+        type: 'text',
+        key: 'question_1_text',
+        value: 'Do you have digital records of the process you want to automate?',
+        label: 'Question 1 - Text',
+        description: 'First questionnaire question text',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'json',
+        key: 'question_1_options',
+        value: JSON.stringify([
+          { value: "yes", label: "Yes, we have comprehensive digital records" },
+          { value: "partial", label: "Partial, some processes are documented" },
+          { value: "no", label: "No, most processes are manual or undocumented" }
+        ]),
+        label: 'Question 1 - Options',
+        description: 'First questionnaire question options',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'text',
+        key: 'question_2_text',
+        value: 'How many employees currently handle the process you want to automate?',
+        label: 'Question 2 - Text',
+        description: 'Second questionnaire question text',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'json',
+        key: 'question_2_options',
+        value: JSON.stringify([
+          { value: "1-2", label: "1-2 employees" },
+          { value: "3-5", label: "3-5 employees" },
+          { value: "6-10", label: "6-10 employees" },
+          { value: "10+", label: "More than 10 employees" }
+        ]),
+        label: 'Question 2 - Options',
+        description: 'Second questionnaire question options',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'text',
+        key: 'question_3_text',
+        value: 'What is the average time spent on this process per day?',
+        label: 'Question 3 - Text',
+        description: 'Third questionnaire question text',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'json',
+        key: 'question_3_options',
+        value: JSON.stringify([
+          { value: "1-2", label: "1-2 hours per day" },
+          { value: "3-5", label: "3-5 hours per day" },
+          { value: "6-8", label: "6-8 hours per day" },
+          { value: "8+", label: "More than 8 hours per day" }
+        ]),
+        label: 'Question 3 - Options',
+        description: 'Third questionnaire question options',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'text',
+        key: 'question_4_text',
+        value: 'How often do errors occur in this process?',
+        label: 'Question 4 - Text',
+        description: 'Fourth questionnaire question text',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'json',
+        key: 'question_4_options',
+        value: JSON.stringify([
+          { value: "rarely", label: "Rarely (less than 5% error rate)" },
+          { value: "sometimes", label: "Sometimes (5-15% error rate)" },
+          { value: "often", label: "Often (15-30% error rate)" },
+          { value: "frequently", label: "Frequently (more than 30% error rate)" }
+        ]),
+        label: 'Question 4 - Options',
+        description: 'Fourth questionnaire question options',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'text',
+        key: 'question_5_text',
+        value: 'What is your current IT infrastructure like?',
+        label: 'Question 5 - Text',
+        description: 'Fifth questionnaire question text',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'json',
+        key: 'question_5_options',
+        value: JSON.stringify([
+          { value: "modern", label: "Modern, cloud-based systems with APIs" },
+          { value: "mixed", label: "Mixed, some modern and some legacy systems" },
+          { value: "legacy", label: "Mostly legacy systems with limited integration" },
+          { value: "minimal", label: "Minimal IT infrastructure" }
+        ]),
+        label: 'Question 5 - Options',
+        description: 'Fifth questionnaire question options',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'text',
+        key: 'question_6_text',
+        value: 'How important is data security for your organization?',
+        label: 'Question 6 - Text',
+        description: 'Sixth questionnaire question text',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'json',
+        key: 'question_6_options',
+        value: JSON.stringify([
+          { value: "critical", label: "Critical - we handle sensitive data" },
+          { value: "important", label: "Important - we have some sensitive data" },
+          { value: "moderate", label: "Moderate - standard business data" },
+          { value: "low", label: "Low - mostly public information" }
+        ]),
+        label: 'Question 6 - Options',
+        description: 'Sixth questionnaire question options',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'text',
+        key: 'question_7_text',
+        value: 'What is your budget range for AI automation?',
+        label: 'Question 7 - Text',
+        description: 'Seventh questionnaire question text',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'json',
+        key: 'question_7_options',
+        value: JSON.stringify([
+          { value: "10k-25k", label: "$10,000 - $25,000" },
+          { value: "25k-50k", label: "$25,000 - $50,000" },
+          { value: "50k-100k", label: "$50,000 - $100,000" },
+          { value: "100k+", label: "More than $100,000" }
+        ]),
+        label: 'Question 7 - Options',
+        description: 'Seventh questionnaire question options',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'text',
+        key: 'question_8_text',
+        value: 'How quickly do you need to see results from automation?',
+        label: 'Question 8 - Text',
+        description: 'Eighth questionnaire question text',
+        category: 'questionnaire',
+        isPublished: true
+      },
+      {
+        section: 'questionnaire',
+        type: 'json',
+        key: 'question_8_options',
+        value: JSON.stringify([
+          { value: "immediate", label: "Immediate (within 1 month)" },
+          { value: "quick", label: "Quick (1-3 months)" },
+          { value: "moderate", label: "Moderate (3-6 months)" },
+          { value: "flexible", label: "Flexible timeline" }
+        ]),
+        label: 'Question 8 - Options',
+        description: 'Eighth questionnaire question options',
+        category: 'questionnaire',
+        isPublished: true
+      },
       // Global Settings
       {
         section: 'global',

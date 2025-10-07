@@ -1,7 +1,7 @@
 export interface CMSContent {
   id: string
   section: string
-  type: 'text' | 'image' | 'color' | 'section'
+  type: 'text' | 'image' | 'color' | 'section' | 'json'
   key: string
   value: string
   label: string
