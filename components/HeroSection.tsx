@@ -10,9 +10,9 @@ export default function HeroSection() {
   const [heroVariant, setHeroVariant] = useState('primary')
 
   const stats = [
-    { metric: '10x', label: 'faster time to POC' },
-    { metric: 'Days', label: 'not months to deploy' },
-    { metric: 'Rapid', label: 'time-to-value' },
+    { metric: '10x', label: 'faster time to POC', metricKey: 'stats_1_metric', labelKey: 'stats_1_label' },
+    { metric: 'Days', label: 'not months to deploy', metricKey: 'stats_2_metric', labelKey: 'stats_2_label' },
+    { metric: 'Rapid', label: 'time-to-value', metricKey: 'stats_3_metric', labelKey: 'stats_3_label' },
   ]
 
   const primaryHero = {
@@ -126,14 +126,19 @@ export default function HeroSection() {
 
             {/* Support Line */}
             {heroVariant === 'primary' && (
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
-                className="text-base text-keen-blue font-semibold"
               >
-                {currentHero.supportLine}
-              </motion.p>
+                <CMSContent
+                  section="hero"
+                  contentKey="support_line"
+                  fallback={currentHero.supportLine}
+                  as="p"
+                  className="text-base text-keen-blue font-semibold"
+                />
+              </motion.div>
             )}
 
             {/* Stats */}
@@ -152,12 +157,20 @@ export default function HeroSection() {
                     transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
                     className="text-center"
                   >
-                    <div className="text-2xl md:text-3xl font-bold text-keen-blue">
-                      {stat.metric}
-                    </div>
-                    <div className="text-sm text-keen-gray/70 font-medium">
-                      {stat.label}
-                    </div>
+                    <CMSContent
+                      section="hero"
+                      contentKey={stat.metricKey}
+                      fallback={stat.metric}
+                      as="div"
+                      className="text-2xl md:text-3xl font-bold text-keen-blue"
+                    />
+                    <CMSContent
+                      section="hero"
+                      contentKey={stat.labelKey}
+                      fallback={stat.label}
+                      as="div"
+                      className="text-sm text-keen-gray/70 font-medium"
+                    />
                   </motion.div>
                 ))}
               </motion.div>

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useCMS } from '@/lib/cms/context'
-import { Settings, Palette, FileText, Image, Layout, Save, Eye, EyeOff } from 'lucide-react'
+import { Settings, Palette, FileText, Image, Layout, Save, Eye, EyeOff, Check } from 'lucide-react'
 import ColorPicker from '@/components/admin/ColorPicker'
 import ImageUpload from '@/components/admin/ImageUpload'
 
@@ -12,8 +12,12 @@ export default function AdminDashboard() {
   const [previewMode, setPreviewMode] = useState(false)
   const [splitView, setSplitView] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [saveSuccess, setSaveSuccess] = useState(false)
   const [adminPanelWidth, setAdminPanelWidth] = useState(50) // Percentage
   const [isResizing, setIsResizing] = useState(false)
+  
+  // Calculate number of unsaved changes
+  const unsavedChanges = (state.dirtyContentIds?.size || 0) + (state.dirtyColorSchemeIds?.size || 0)
   
   // Scroll position preservation
   const adminScrollRef = useRef<HTMLDivElement>(null)
@@ -120,9 +124,12 @@ export default function AdminDashboard() {
     })
     
     setSaving(true)
+    setSaveSuccess(false)
     try {
       await saveAllChanges()
-      // Show success message or notification here if needed
+      setSaveSuccess(true)
+      // Auto-hide success message after 3 seconds
+      setTimeout(() => setSaveSuccess(false), 3000)
     } catch (error) {
       console.error('Error saving changes:', error)
       // Show error message here if needed
@@ -320,7 +327,18 @@ export default function AdminDashboard() {
                 {saving && (
                   <div className="flex items-center space-x-2 text-sm text-gray-600">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-keen-blue"></div>
-                    <span>Saving...</span>
+                    <span>Saving {unsavedChanges} change{unsavedChanges !== 1 ? 's' : ''}...</span>
+                  </div>
+                )}
+                {saveSuccess && !saving && (
+                  <div className="flex items-center space-x-2 text-sm text-green-600">
+                    <Check className="w-4 h-4" />
+                    <span>Saved successfully!</span>
+                  </div>
+                )}
+                {!saving && !saveSuccess && unsavedChanges > 0 && (
+                  <div className="text-sm text-orange-600 font-medium">
+                    {unsavedChanges} unsaved change{unsavedChanges !== 1 ? 's' : ''}
                   </div>
                 )}
                 <button
@@ -332,15 +350,15 @@ export default function AdminDashboard() {
                 </button>
                 <button 
                   onClick={handleSaveAll}
-                  disabled={saving}
+                  disabled={saving || unsavedChanges === 0}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-                    saving 
+                    saving || unsavedChanges === 0
                       ? 'bg-gray-400 cursor-not-allowed' 
                       : 'bg-keen-blue text-white hover:bg-blue-600'
                   }`}
                 >
                   <Save className="w-4 h-4" />
-                  <span>{saving ? 'Saving...' : 'Save Changes'}</span>
+                  <span>{saving ? 'Saving...' : `Save ${unsavedChanges > 0 ? `${unsavedChanges} Change${unsavedChanges !== 1 ? 's' : ''}` : 'Changes'}`}</span>
                 </button>
               </div>
             </div>
@@ -683,31 +701,6 @@ function ContentItem({
 
 // Colors Tab Component
 function ColorsTab({ onUpdate }: { onUpdate: (colorKey: string, value: string) => void }) {
-  const { getActiveColors } = useCMS()
-  const activeColors = getActiveColors()
-
-  if (!activeColors) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-gray-500">No color scheme found. Please create one first.</p>
-      </div>
-    )
-  }
-
-  const colorFields = [
-    { key: 'primary', label: 'Primary Color', description: 'Main brand color' },
-    { key: 'secondary', label: 'Secondary Color', description: 'Secondary brand color' },
-    { key: 'accent', label: 'Accent Color', description: 'Accent color for highlights' },
-    { key: 'background', label: 'Background Color', description: 'Main background color' },
-    { key: 'text', label: 'Text Color', description: 'Primary text color' },
-    { key: 'textSecondary', label: 'Secondary Text', description: 'Secondary text color' },
-    { key: 'textMuted', label: 'Muted Text', description: 'Muted text color' },
-    { key: 'border', label: 'Border Color', description: 'Border color' },
-    { key: 'success', label: 'Success Color', description: 'Success state color' },
-    { key: 'warning', label: 'Warning Color', description: 'Warning state color' },
-    { key: 'error', label: 'Error Color', description: 'Error state color' }
-  ]
-
   return (
     <div className="space-y-6">
       <div>
@@ -715,18 +708,19 @@ function ColorsTab({ onUpdate }: { onUpdate: (colorKey: string, value: string) =
         <p className="text-gray-600">Customize the color scheme for your website.</p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Color Palette</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {colorFields.map((field) => (
-            <ColorPicker
-              key={field.key}
-              value={activeColors[field.key as keyof typeof activeColors]}
-              onChange={(value) => onUpdate(field.key, value)}
-              label={field.label}
-              description={field.description}
-            />
-          ))}
+      <div className="bg-white rounded-lg shadow-sm border p-12">
+        <div className="text-center py-20">
+          <div className="mb-6">
+            <Palette className="w-20 h-20 mx-auto text-gray-300" />
+          </div>
+          <h3 className="text-3xl font-bold text-gray-900 mb-4">Coming Soon</h3>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            Color customization features are currently in development. Soon you'll be able to customize your entire color scheme directly from this panel.
+          </p>
+          <div className="inline-flex items-center space-x-2 px-6 py-3 bg-gray-100 rounded-lg text-gray-700">
+            <Settings className="w-5 h-5" />
+            <span className="font-medium">Feature under construction</span>
+          </div>
         </div>
       </div>
     </div>

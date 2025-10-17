@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Calendar, Settings, Sun, Moon, Globe } from 'lucide-react'
 import Image from 'next/image'
+import CMSContent from './CMSContent'
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -47,11 +48,11 @@ export default function Header() {
   }
 
   const navItems = [
-    { name: 'What We Do', href: '#product' },
-    { name: 'How We Do It', href: '#process' },
-    { name: 'Success Stories', href: '#testimonials' },
-    { name: 'About Us', href: '#about' },
-    { name: 'FAQ', href: '#faq' },
+    { name: 'What We Do', href: '#product', key: 'nav_what_we_do' },
+    { name: 'How We Do It', href: '#process', key: 'nav_how_we_do_it' },
+    { name: 'Success Stories', href: '#testimonials', key: 'nav_success_stories' },
+    { name: 'About Us', href: '#about', key: 'nav_about_us' },
+    { name: 'FAQ', href: '#faq', key: 'nav_faq' },
   ]
 
   return (
@@ -85,13 +86,18 @@ export default function Header() {
             <div className="flex items-center space-x-3">
               <div className="w-px h-6 bg-keen-gray/30"></div>
               <div className="text-keen-gray">
-                <div className="text-lg font-bold">keen</div>
-                <div className="text-xs font-medium">agents</div>
+                <CMSContent section="header" contentKey="logo_text" fallback="keen" as="div" className="text-lg font-bold" />
+                <CMSContent section="header" contentKey="logo_subtext" fallback="agents" as="div" className="text-xs font-medium" />
               </div>
               <div className="w-px h-6 bg-keen-gray/30"></div>
               <div className="text-keen-gray/80">
-                <div className="text-xs font-semibold">Multi-Agent Orchestration</div>
-                <div className="text-xs font-medium">on a Whole New Level</div>
+                <CMSContent 
+                  section="header" 
+                  contentKey="tagline" 
+                  fallback={`Multi-Agent Orchestration\non a Whole New Level`}
+                  as="div" 
+                  className="text-xs font-semibold whitespace-pre-line leading-tight max-w-[180px]" 
+                />
               </div>
             </div>
           </motion.div>
@@ -108,7 +114,7 @@ export default function Header() {
                 whileHover={{ y: -2 }}
                 className="text-keen-gray hover:text-keen-blue transition-colors duration-300 font-medium text-sm whitespace-nowrap"
               >
-                {item.name}
+                <CMSContent section="header" contentKey={item.key} fallback={item.name} as="span" />
               </motion.a>
             ))}
           </nav>
@@ -121,7 +127,7 @@ export default function Header() {
               onClick={() => document.getElementById('questionnaire')?.scrollIntoView({ behavior: 'smooth' })}
               className="btn-secondary text-xs px-3 py-2"
             >
-              AI Readiness Quiz
+              <CMSContent section="header" contentKey="cta_quiz" fallback="AI Readiness Quiz" as="span" />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -130,7 +136,7 @@ export default function Header() {
               className="btn-primary text-xs px-3 py-2 flex items-center space-x-2"
             >
               <Calendar className="w-3 h-3" />
-              <span>Book Consultation</span>
+              <CMSContent section="header" contentKey="cta_consultation" fallback="Book Consultation" as="span" />
             </motion.button>
           </div>
 
@@ -247,7 +253,7 @@ export default function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block text-keen-gray hover:text-keen-blue transition-colors duration-300 font-medium"
               >
-                {item.name}
+                <CMSContent section="header" contentKey={item.key} fallback={item.name} as="span" />
               </a>
             ))}
             <div className="pt-4 space-y-3">
@@ -258,11 +264,11 @@ export default function Header() {
                 }}
                 className="btn-secondary w-full text-sm"
               >
-                AI Readiness Quiz
+                <CMSContent section="header" contentKey="cta_quiz" fallback="AI Readiness Quiz" as="span" />
               </button>
               <button className="btn-primary w-full text-sm flex items-center justify-center space-x-2">
                 <Calendar className="w-4 h-4" />
-                <span>Book Consultation</span>
+                <CMSContent section="header" contentKey="cta_consultation" fallback="Book Consultation" as="span" />
               </button>
             </div>
           </div>

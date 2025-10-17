@@ -13,6 +13,7 @@ import {
   Headphones,
   HelpCircle
 } from 'lucide-react'
+import CMSContent from './CMSContent'
 
 export default function FAQSection() {
   const [ref, inView] = useInView({
@@ -82,12 +83,20 @@ export default function FAQSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-            Get answers to common questions about AI agent implementation, security, and support.
-          </p>
+          <CMSContent
+            section="faq"
+            contentKey="title"
+            fallback="Frequently Asked Questions"
+            as="h2"
+            className="text-4xl md:text-5xl font-bold text-keen-gray mb-6"
+          />
+          <CMSContent
+            section="faq"
+            contentKey="description"
+            fallback="Get answers to common questions about AI agent implementation, security, and support."
+            as="p"
+            className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed"
+          />
         </motion.div>
 
         {/* Category Filter */}

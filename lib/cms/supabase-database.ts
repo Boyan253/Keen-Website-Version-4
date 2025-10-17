@@ -385,9 +385,9 @@ export class SupabaseCMSDatabase {
         section: 'header',
         type: 'text',
         key: 'tagline',
-        value: 'Multi-Agent Orchestration on a Whole New Level',
+        value: 'Multi-Agent Orchestration\non a Whole New Level',
         label: 'Header Tagline',
-        description: 'Tagline displayed next to logo',
+        description: 'Tagline displayed next to logo (use \\n for line breaks)',
         category: 'header',
         isPublished: true
       },

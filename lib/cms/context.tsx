@@ -13,6 +13,10 @@ interface CMSState {
   settings: CMSSettings | null
   loading: boolean
   error: string | null
+  dirtyContentIds: Set<string>
+  dirtyColorSchemeIds: Set<string>
+  originalContent: Map<string, CMSContent>
+  originalColorSchemes: Map<string, ColorScheme>
 }
 
 type CMSAction =
@@ -29,6 +33,7 @@ type CMSAction =
   | { type: 'SET_SECTIONS'; payload: SectionConfig[] }
   | { type: 'UPDATE_SECTION'; payload: SectionConfig }
   | { type: 'SET_SETTINGS'; payload: CMSSettings }
+  | { type: 'CLEAR_DIRTY_TRACKING' }
 
 const initialState: CMSState = {
   content: [],
@@ -38,7 +43,11 @@ const initialState: CMSState = {
   sections: [],
   settings: null,
   loading: false,
-  error: null
+  error: null,
+  dirtyContentIds: new Set(),
+  dirtyColorSchemeIds: new Set(),
+  originalContent: new Map(),
+  originalColorSchemes: new Map()
 }
 
 function cmsReducer(state: CMSState, action: CMSAction): CMSState {
@@ -48,22 +57,71 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
     case 'SET_ERROR':
       return { ...state, error: action.payload }
     case 'SET_CONTENT':
-      return { ...state, content: action.payload }
+      // Store original values when content is first loaded
+      const originalContentMap = new Map<string, CMSContent>()
+      action.payload.forEach(item => {
+        originalContentMap.set(item.id, { ...item })
+      })
+      return { 
+        ...state, 
+        content: action.payload,
+        originalContent: originalContentMap
+      }
     case 'UPDATE_CONTENT':
+      const newDirtyContentIds = new Set(state.dirtyContentIds)
+      const originalItem = state.originalContent.get(action.payload.id)
+      
+      // Check if the value has changed from the original
+      if (originalItem && originalItem.value === action.payload.value) {
+        // Value matches original, remove from dirty tracking
+        newDirtyContentIds.delete(action.payload.id)
+      } else {
+        // Value is different, add to dirty tracking
+        newDirtyContentIds.add(action.payload.id)
+      }
+      
       return {
         ...state,
         content: state.content.map(item =>
           item.id === action.payload.id ? action.payload : item
-        )
+        ),
+        dirtyContentIds: newDirtyContentIds
       }
     case 'SET_COLOR_SCHEMES':
-      return { ...state, colorSchemes: action.payload }
+      // Store original values when color schemes are first loaded
+      const originalColorSchemesMap = new Map<string, ColorScheme>()
+      action.payload.forEach(scheme => {
+        originalColorSchemesMap.set(scheme.id, { ...scheme, colors: { ...scheme.colors } })
+      })
+      return { 
+        ...state, 
+        colorSchemes: action.payload,
+        originalColorSchemes: originalColorSchemesMap
+      }
     case 'UPDATE_COLOR_SCHEME':
+      const newDirtyColorSchemeIds = new Set(state.dirtyColorSchemeIds)
+      const originalScheme = state.originalColorSchemes.get(action.payload.id)
+      
+      // Check if colors have changed from the original
+      let colorsChanged = false
+      if (originalScheme) {
+        colorsChanged = JSON.stringify(originalScheme.colors) !== JSON.stringify(action.payload.colors)
+      }
+      
+      if (originalScheme && !colorsChanged) {
+        // Colors match original, remove from dirty tracking
+        newDirtyColorSchemeIds.delete(action.payload.id)
+      } else {
+        // Colors are different, add to dirty tracking
+        newDirtyColorSchemeIds.add(action.payload.id)
+      }
+      
       return {
         ...state,
         colorSchemes: state.colorSchemes.map(scheme =>
           scheme.id === action.payload.id ? action.payload : scheme
-        )
+        ),
+        dirtyColorSchemeIds: newDirtyColorSchemeIds
       }
     case 'SET_ACTIVE_COLOR_SCHEME':
       return { ...state, activeColorScheme: action.payload }
@@ -84,6 +142,23 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
       }
     case 'SET_SETTINGS':
       return { ...state, settings: action.payload }
+    case 'CLEAR_DIRTY_TRACKING':
+      // Update original values to current values after successful save
+      const newOriginalContent = new Map<string, CMSContent>()
+      state.content.forEach(item => {
+        newOriginalContent.set(item.id, { ...item })
+      })
+      const newOriginalColorSchemes = new Map<string, ColorScheme>()
+      state.colorSchemes.forEach(scheme => {
+        newOriginalColorSchemes.set(scheme.id, { ...scheme, colors: { ...scheme.colors } })
+      })
+      return {
+        ...state,
+        dirtyContentIds: new Set(),
+        dirtyColorSchemeIds: new Set(),
+        originalContent: newOriginalContent,
+        originalColorSchemes: newOriginalColorSchemes
+      }
     default:
       return state
   }
@@ -156,8 +231,18 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
       
-      // Save all content changes
-      const contentPromises = state.content.map(content => 
+      // Only save modified content
+      const dirtyContent = state.content.filter(content => 
+        state.dirtyContentIds.has(content.id)
+      )
+      
+      // Only save modified color schemes
+      const dirtyColorSchemes = state.colorSchemes.filter(scheme => 
+        state.dirtyColorSchemeIds.has(scheme.id)
+      )
+      
+      // Create promises only for dirty items
+      const contentPromises = dirtyContent.map(content => 
         fetch('/api/cms/content', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -165,8 +250,7 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
         })
       )
       
-      // Save color scheme changes
-      const colorPromises = state.colorSchemes.map(scheme => 
+      const colorPromises = dirtyColorSchemes.map(scheme => 
         fetch('/api/cms/colors', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -174,7 +258,13 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
         })
       )
       
-      await Promise.all([...contentPromises, ...colorPromises])
+      // Only make API calls if there are changes
+      if (contentPromises.length > 0 || colorPromises.length > 0) {
+        await Promise.all([...contentPromises, ...colorPromises])
+      }
+      
+      // Clear dirty tracking after successful save
+      dispatch({ type: 'CLEAR_DIRTY_TRACKING' })
       
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: error instanceof Error ? error.message : 'Unknown error' })

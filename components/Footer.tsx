@@ -12,6 +12,7 @@ import {
   Github
 } from 'lucide-react'
 import Image from 'next/image'
+import CMSContent from './CMSContent'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -69,19 +70,22 @@ export default function Footer() {
                   <div className="flex items-center space-x-3">
                     <div className="w-px h-6 bg-white/30"></div>
                     <div className="text-white">
-                      <div className="text-lg font-bold">keen</div>
-                      <div className="text-xs font-medium">agents</div>
+                      <CMSContent section="footer" contentKey="logo_text" fallback="keen" as="div" className="text-lg font-bold" />
+                      <CMSContent section="footer" contentKey="logo_subtext" fallback="agents" as="div" className="text-xs font-medium" />
                     </div>
                     <div className="w-px h-6 bg-white/30"></div>
                     <div className="text-white/80">
-                      <div className="text-xs font-semibold">Multi-Agent Orchestration</div>
-                      <div className="text-xs font-medium">on a Whole New Level</div>
+                      <CMSContent section="footer" contentKey="tagline" fallback="Multi-Agent Orchestration on a Whole New Level" as="div" className="text-xs font-semibold" />
                     </div>
                   </div>
                 </div>
-                <p className="text-gray-300 leading-relaxed mb-6">
-                  We do not sell our software platform — we deliver business outcomes. Deploy production-ready AI agents in days, not months. 10x faster time to POC with rapid time-to-value.
-                </p>
+                <CMSContent 
+                  section="footer" 
+                  contentKey="description" 
+                  fallback="We do not sell our software platform — we deliver business outcomes. Deploy production-ready AI agents in days, not months. 10x faster time to POC with rapid time-to-value."
+                  as="p"
+                  className="text-gray-300 leading-relaxed mb-6"
+                />
                 <div className="flex space-x-4">
                   <motion.a
                     whileHover={{ scale: 1.1 }}
@@ -151,15 +155,15 @@ export default function Footer() {
             <div className="grid md:grid-cols-3 gap-6">
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-keen-blue" />
-                <span className="text-gray-300">hello@keenagents.com</span>
+                <CMSContent section="footer" contentKey="contact_email" fallback="hello@keenagents.com" as="span" className="text-gray-300" />
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-keen-blue" />
-                <span className="text-gray-300">+1 (555) 123-4567</span>
+                <CMSContent section="footer" contentKey="contact_phone" fallback="+1 (555) 123-4567" as="span" className="text-gray-300" />
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-keen-blue" />
-                <span className="text-gray-300">San Francisco, CA</span>
+                <CMSContent section="footer" contentKey="contact_address" fallback="San Francisco, CA" as="span" className="text-gray-300" />
               </div>
             </div>
           </motion.div>
@@ -174,12 +178,20 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <h3 className="text-xl font-semibold mb-2">
-                Stay Updated
-              </h3>
-              <p className="text-gray-300">
-                Get the latest insights on AI automation and business transformation.
-              </p>
+              <CMSContent 
+                section="footer" 
+                contentKey="newsletter_title" 
+                fallback="Stay Updated"
+                as="h3"
+                className="text-xl font-semibold mb-2"
+              />
+              <CMSContent 
+                section="footer" 
+                contentKey="newsletter_description" 
+                fallback="Get the latest insights on AI automation and business transformation."
+                as="p"
+                className="text-gray-300"
+              />
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <input
@@ -192,7 +204,7 @@ export default function Footer() {
                 whileTap={{ scale: 0.95 }}
                 className="bg-keen-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors duration-300 flex items-center space-x-2"
               >
-                <span>Subscribe</span>
+                <CMSContent section="footer" contentKey="newsletter_button" fallback="Subscribe" as="span" />
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -208,7 +220,7 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="text-gray-400 text-sm">
-              © {currentYear} Keen Agents. All rights reserved.
+              © {currentYear} <CMSContent section="footer" contentKey="copyright" fallback="Keen Agents. All rights reserved." as="span" />
             </div>
             <div className="flex space-x-6 text-sm">
               <a href="/privacy-policy" className="text-gray-400 hover:text-keen-blue transition-colors duration-300">

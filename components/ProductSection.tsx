@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Zap
 } from 'lucide-react'
+import CMSContent from './CMSContent'
 
 export default function ProductSection() {
   const [ref, inView] = useInView({
@@ -24,25 +25,33 @@ export default function ProductSection() {
       icon: Bot,
       title: "10x Faster POC",
       description: "Get from concept to working prototype in days, not months. Rapid validation of AI use cases with immediate business impact.",
-      color: "from-keen-blue to-keen-gradient-end"
+      color: "from-keen-blue to-keen-gradient-end",
+      titleKey: "value_prop_1_title",
+      descKey: "value_prop_1_description"
     },
     {
       icon: TrendingUp,
       title: "Rapid Time-to-Value",
       description: "Deploy production-ready AI agents quickly with measurable ROI from day one. No lengthy implementation cycles.",
-      color: "from-green-500 to-emerald-600"
+      color: "from-green-500 to-emerald-600",
+      titleKey: "value_prop_2_title",
+      descKey: "value_prop_2_description"
     },
     {
       icon: Shield,
       title: "Days, Not Months",
       description: "Simple deployment process that works with your existing systems. No complex integrations or IT overhauls required.",
-      color: "from-purple-500 to-violet-600"
+      color: "from-purple-500 to-violet-600",
+      titleKey: "value_prop_3_title",
+      descKey: "value_prop_3_description"
     },
     {
       icon: Users,
       title: "Production-Ready",
       description: "Enterprise-grade AI agents that are immediately ready for production use with built-in monitoring and human oversight.",
-      color: "from-orange-500 to-red-500"
+      color: "from-orange-500 to-red-500",
+      titleKey: "value_prop_4_title",
+      descKey: "value_prop_4_description"
     }
   ]
 
@@ -51,19 +60,28 @@ export default function ProductSection() {
       icon: Zap,
       title: "Process Automation",
       description: "Reduce manual processing, enforce business rules, and eliminate repetitive errors.",
-      stats: "85% reduction in manual tasks"
+      stats: "85% reduction in manual tasks",
+      titleKey: "feature_1_title",
+      descKey: "feature_1_description",
+      statsKey: "feature_1_stats"
     },
     {
       icon: Clock,
       title: "Customer Experience",
       description: "Faster responses, contextual answers, and consistent service 24/7.",
-      stats: "24/7 availability"
+      stats: "24/7 availability",
+      titleKey: "feature_2_title",
+      descKey: "feature_2_description",
+      statsKey: "feature_2_stats"
     },
     {
       icon: CheckCircle,
       title: "Operational Resilience",
       description: "Scale instantly without hiring; maintain performance during peak demand.",
-      stats: "99.9% uptime SLA"
+      stats: "99.9% uptime SLA",
+      titleKey: "feature_3_title",
+      descKey: "feature_3_description",
+      statsKey: "feature_3_stats"
     }
   ]
 
@@ -77,12 +95,20 @@ export default function ProductSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
-            AI Implementation Made Simple
-          </h2>
-          <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-            We do not sell our software platform — we deliver business outcomes. Working with our proprietary software platform, we design, train and operate custom AI agents that behave like YOUR high-performing employees.
-          </p>
+          <CMSContent
+            section="product"
+            contentKey="title"
+            fallback="AI Implementation Made Simple"
+            as="h2"
+            className="text-4xl md:text-5xl font-bold text-keen-gray mb-6"
+          />
+          <CMSContent
+            section="product"
+            contentKey="description"
+            fallback="We do not sell our software platform — we deliver business outcomes. Working with our proprietary software platform, we design, train and operate custom AI agents that behave like YOUR high-performing employees."
+            as="p"
+            className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed"
+          />
         </motion.div>
 
         {/* Value Propositions */}
@@ -100,12 +126,20 @@ export default function ProductSection() {
                 <div className={`w-16 h-16 bg-gradient-to-br ${prop.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   <prop.icon className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-keen-gray mb-4">
-                  {prop.title}
-                </h3>
-                <p className="text-keen-gray/70 leading-relaxed">
-                  {prop.description}
-                </p>
+                <CMSContent
+                  section="product"
+                  contentKey={prop.titleKey}
+                  fallback={prop.title}
+                  as="h3"
+                  className="text-xl font-bold text-keen-gray mb-4"
+                />
+                <CMSContent
+                  section="product"
+                  contentKey={prop.descKey}
+                  fallback={prop.description}
+                  as="p"
+                  className="text-keen-gray/70 leading-relaxed"
+                />
               </div>
             </motion.div>
           ))}
@@ -128,17 +162,29 @@ export default function ProductSection() {
                     <feature.icon className="w-6 h-6 text-keen-blue" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-keen-gray">
-                      {feature.title}
-                    </h3>
-                    <div className="text-sm font-semibold text-keen-blue">
-                      {feature.stats}
-                    </div>
+                    <CMSContent
+                      section="product"
+                      contentKey={feature.titleKey}
+                      fallback={feature.title}
+                      as="h3"
+                      className="text-xl font-bold text-keen-gray"
+                    />
+                    <CMSContent
+                      section="product"
+                      contentKey={feature.statsKey}
+                      fallback={feature.stats}
+                      as="div"
+                      className="text-sm font-semibold text-keen-blue"
+                    />
                   </div>
                 </div>
-                <p className="text-keen-gray/70 leading-relaxed mb-6">
-                  {feature.description}
-                </p>
+                <CMSContent
+                  section="product"
+                  contentKey={feature.descKey}
+                  fallback={feature.description}
+                  as="p"
+                  className="text-keen-gray/70 leading-relaxed mb-6"
+                />
                 <div className="flex items-center text-keen-blue font-semibold group-hover:translate-x-2 transition-transform duration-300">
                   <span>Learn more</span>
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -156,26 +202,44 @@ export default function ProductSection() {
           className="text-center mt-20"
         >
           <div className="bg-gradient-to-r from-keen-blue/5 to-keen-gradient-end/5 rounded-3xl p-12">
-            <h3 className="text-3xl font-bold text-keen-gray mb-4">
-              Ready for Rapid AI Implementation?
-            </h3>
-            <p className="text-xl text-keen-gray/80 mb-8 max-w-2xl mx-auto">
-              Deploy production-ready AI agents in days, not months. Join forward-thinking companies already using our rapid implementation approach.
-            </p>
+            <CMSContent
+              section="product"
+              contentKey="cta_title"
+              fallback="Ready for Rapid AI Implementation?"
+              as="h3"
+              className="text-3xl font-bold text-keen-gray mb-4"
+            />
+            <CMSContent
+              section="product"
+              contentKey="cta_description"
+              fallback="Deploy production-ready AI agents in days, not months. Join forward-thinking companies already using our rapid implementation approach."
+              as="p"
+              className="text-xl text-keen-gray/80 mb-8 max-w-2xl mx-auto"
+            />
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-primary text-lg px-8 py-4"
               >
-                Start Rapid Implementation
+                <CMSContent
+                  section="product"
+                  contentKey="cta_primary"
+                  fallback="Start Rapid Implementation"
+                  as="span"
+                />
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-secondary text-lg px-8 py-4"
               >
-                See 10x Faster POC
+                <CMSContent
+                  section="product"
+                  contentKey="cta_secondary"
+                  fallback="See 10x Faster POC"
+                  as="span"
+                />
               </motion.button>
             </div>
           </div>

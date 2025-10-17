@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Play
 } from 'lucide-react'
+import CMSContent from './CMSContent'
 
 export default function TestimonialsSection() {
   const [ref, inView] = useInView({
@@ -32,7 +33,13 @@ export default function TestimonialsSection() {
       },
       quote: "Keen Agents allowed us to reclaim our team's time and dramatically improve response quality.",
       author: "Customer Service Director, Unimasters Logistics",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-blue-500 to-cyan-500",
+      companyKey: "case_study_1_company",
+      industryKey: "case_study_1_industry",
+      challengeKey: "case_study_1_challenge",
+      solutionKey: "case_study_1_solution",
+      quoteKey: "case_study_1_quote",
+      authorKey: "case_study_1_author"
     },
     {
       company: "Renault",
@@ -46,7 +53,13 @@ export default function TestimonialsSection() {
       },
       quote: "ROI was visible within weeks — the integration was seamless and low-risk.",
       author: "Operations Director, Renault",
-      color: "from-green-500 to-emerald-500"
+      color: "from-green-500 to-emerald-500",
+      companyKey: "case_study_2_company",
+      industryKey: "case_study_2_industry",
+      challengeKey: "case_study_2_challenge",
+      solutionKey: "case_study_2_solution",
+      quoteKey: "case_study_2_quote",
+      authorKey: "case_study_2_author"
     }
   ]
 
@@ -64,10 +77,10 @@ export default function TestimonialsSection() {
   ]
 
   const metrics = [
-    { value: "70%", label: "Average automation rate", icon: TrendingUp },
-    { value: "85%", label: "Faster response times", icon: Clock },
-    { value: "25%", label: "Cost reduction", icon: CheckCircle },
-    { value: "99.9%", label: "Uptime SLA", icon: Users }
+    { value: "70%", label: "Average automation rate", icon: TrendingUp, valueKey: "metric_1_value", labelKey: "metric_1_label" },
+    { value: "85%", label: "Faster response times", icon: Clock, valueKey: "metric_2_value", labelKey: "metric_2_label" },
+    { value: "25%", label: "Cost reduction", icon: CheckCircle, valueKey: "metric_3_value", labelKey: "metric_3_label" },
+    { value: "99.9%", label: "Uptime SLA", icon: Users, valueKey: "metric_4_value", labelKey: "metric_4_label" }
   ]
 
   return (
@@ -80,12 +93,20 @@ export default function TestimonialsSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-keen-gray mb-6">
-            Success Stories
-          </h2>
-          <p className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed">
-            Real companies, real results. See how forward-thinking organizations are using AI agents to transform their operations.
-          </p>
+          <CMSContent
+            section="testimonials"
+            contentKey="title"
+            fallback="Success Stories"
+            as="h2"
+            className="text-4xl md:text-5xl font-bold text-keen-gray mb-6"
+          />
+          <CMSContent
+            section="testimonials"
+            contentKey="description"
+            fallback="Real companies, real results. See how forward-thinking organizations are using AI agents to transform their operations."
+            as="p"
+            className="text-xl text-keen-gray/80 max-w-3xl mx-auto leading-relaxed"
+          />
         </motion.div>
 
         {/* Metrics Overview */}
@@ -107,12 +128,20 @@ export default function TestimonialsSection() {
               <div className="w-16 h-16 bg-keen-blue/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <metric.icon className="w-8 h-8 text-keen-blue" />
               </div>
-              <div className="text-3xl font-bold text-keen-blue mb-2">
-                {metric.value}
-              </div>
-              <div className="text-keen-gray/70 font-medium">
-                {metric.label}
-              </div>
+              <CMSContent
+                section="testimonials"
+                contentKey={metric.valueKey}
+                fallback={metric.value}
+                as="div"
+                className="text-3xl font-bold text-keen-blue mb-2"
+              />
+              <CMSContent
+                section="testimonials"
+                contentKey={metric.labelKey}
+                fallback={metric.label}
+                as="div"
+                className="text-keen-gray/70 font-medium"
+              />
             </motion.div>
           ))}
         </motion.div>
@@ -137,12 +166,20 @@ export default function TestimonialsSection() {
                       </span>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-keen-gray">
-                        {study.company}
-                      </h3>
-                      <p className="text-keen-blue font-semibold">
-                        {study.industry}
-                      </p>
+                      <CMSContent
+                        section="testimonials"
+                        contentKey={study.companyKey}
+                        fallback={study.company}
+                        as="h3"
+                        className="text-2xl font-bold text-keen-gray"
+                      />
+                      <CMSContent
+                        section="testimonials"
+                        contentKey={study.industryKey}
+                        fallback={study.industry}
+                        as="p"
+                        className="text-keen-blue font-semibold"
+                      />
                     </div>
                   </div>
 
@@ -151,18 +188,26 @@ export default function TestimonialsSection() {
                       <h4 className="text-lg font-semibold text-keen-gray mb-3">
                         Challenge
                       </h4>
-                      <p className="text-keen-gray/70 leading-relaxed">
-                        {study.challenge}
-                      </p>
+                      <CMSContent
+                        section="testimonials"
+                        contentKey={study.challengeKey}
+                        fallback={study.challenge}
+                        as="p"
+                        className="text-keen-gray/70 leading-relaxed"
+                      />
                     </div>
 
                     <div>
                       <h4 className="text-lg font-semibold text-keen-gray mb-3">
                         Solution
                       </h4>
-                      <p className="text-keen-gray/70 leading-relaxed">
-                        {study.solution}
-                      </p>
+                      <CMSContent
+                        section="testimonials"
+                        contentKey={study.solutionKey}
+                        fallback={study.solution}
+                        as="p"
+                        className="text-keen-gray/70 leading-relaxed"
+                      />
                     </div>
                   </div>
                 </div>
@@ -187,12 +232,20 @@ export default function TestimonialsSection() {
 
                   <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
                     <Quote className="w-8 h-8 text-keen-blue mb-4" />
-                    <blockquote className="text-lg text-keen-gray italic mb-4 leading-relaxed">
-                      "{study.quote}"
-                    </blockquote>
-                    <div className="text-keen-blue font-semibold">
-                      — {study.author}
-                    </div>
+                    <CMSContent
+                      section="testimonials"
+                      contentKey={study.quoteKey}
+                      fallback={`"${study.quote}"`}
+                      as="p"
+                      className="text-lg text-keen-gray italic mb-4 leading-relaxed"
+                    />
+                    <CMSContent
+                      section="testimonials"
+                      contentKey={study.authorKey}
+                      fallback={`— ${study.author}`}
+                      as="div"
+                      className="text-keen-blue font-semibold"
+                    />
                   </div>
                 </div>
               </div>
