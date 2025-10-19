@@ -14,8 +14,10 @@ import {
   HelpCircle
 } from 'lucide-react'
 import CMSContent from './CMSContent'
+import { useCMS } from '@/lib/cms/context'
 
 export default function FAQSection() {
+  const { getContentByKey } = useCMS()
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -25,40 +27,40 @@ export default function FAQSection() {
 
   const faqs = [
     {
-      question: "How do you secure our data?",
-      answer: "Security is non-negotiable. We employ industry-standard encryption (TLS in transit, AES-256 at rest), role-based access control, audit logs, and tenant isolation for multi-client environments. We can operate within private VPCs, support on-prem deployments, or use cloud-hosted models under strict data governance rules. We provide SOC2 / ISO controls upon request and support data residency requirements.",
+      question: getContentByKey('faq_1_question', 'faq')?.value || "How do you secure our data?",
+      answer: getContentByKey('faq_1_answer', 'faq')?.value || "Security is non-negotiable. We employ industry-standard encryption (TLS in transit, AES-256 at rest), role-based access control, audit logs, and tenant isolation for multi-client environments. We can operate within private VPCs, support on-prem deployments, or use cloud-hosted models under strict data governance rules. We provide SOC2 / ISO controls upon request and support data residency requirements.",
       icon: Shield,
-      category: "Security"
+      category: getContentByKey('faq_1_category', 'faq')?.value || "Security"
     },
     {
-      question: "Will this change our processes or require retraining staff?",
-      answer: "Our approach prioritises minimal disruption. We map current processes and design agents to slot into existing workflows. Where change is required, we provide clear change-management plans, role-based training sessions, and operator runbooks. We recommend a 'train the trainer' model to accelerate adoption.",
+      question: getContentByKey('faq_2_question', 'faq')?.value || "Will this change our processes or require retraining staff?",
+      answer: getContentByKey('faq_2_answer', 'faq')?.value || "Our approach prioritises minimal disruption. We map current processes and design agents to slot into existing workflows. Where change is required, we provide clear change-management plans, role-based training sessions, and operator runbooks. We recommend a 'train the trainer' model to accelerate adoption.",
       icon: Settings,
-      category: "Implementation"
+      category: getContentByKey('faq_2_category', 'faq')?.value || "Implementation"
     },
     {
-      question: "Do we need to upgrade our IT infrastructure?",
-      answer: "In most cases — no. Our agents integrate via APIs, webhooks, or lightweight connectors. When complex legacy systems require adapters, we build secure middleware. We produce an integration matrix during discovery to estimate effort and provide options for SaaS, hybrid, or on-prem architectures.",
+      question: getContentByKey('faq_3_question', 'faq')?.value || "Do we need to upgrade our IT infrastructure?",
+      answer: getContentByKey('faq_3_answer', 'faq')?.value || "In most cases — no. Our agents integrate via APIs, webhooks, or lightweight connectors. When complex legacy systems require adapters, we build secure middleware. We produce an integration matrix during discovery to estimate effort and provide options for SaaS, hybrid, or on-prem architectures.",
       icon: Server,
-      category: "Technical"
+      category: getContentByKey('faq_3_category', 'faq')?.value || "Technical"
     },
     {
-      question: "How do you manage errors and edge cases?",
-      answer: "We implement human-in-the-loop workflows, clear escalation rules, and confidence thresholds to prevent incorrect automation. Every agent has audit trails and can be placed into monitoring mode where low-confidence decisions are routed to a human reviewer until sufficient confidence is reached.",
+      question: getContentByKey('faq_4_question', 'faq')?.value || "How do you manage errors and edge cases?",
+      answer: getContentByKey('faq_4_answer', 'faq')?.value || "We implement human-in-the-loop workflows, clear escalation rules, and confidence thresholds to prevent incorrect automation. Every agent has audit trails and can be placed into monitoring mode where low-confidence decisions are routed to a human reviewer until sufficient confidence is reached.",
       icon: AlertTriangle,
-      category: "Operations"
+      category: getContentByKey('faq_4_category', 'faq')?.value || "Operations"
     },
     {
-      question: "What SLAs & support do you offer?",
-      answer: "We offer SLAs for uptime, response times for incidents, and scheduled optimization windows. Support tiers are flexible — from knowledge transfer to fully managed operations where Keen Agents runs and optimizes the agent on your behalf.",
+      question: getContentByKey('faq_5_question', 'faq')?.value || "What SLAs & support do you offer?",
+      answer: getContentByKey('faq_5_answer', 'faq')?.value || "We offer SLAs for uptime, response times for incidents, and scheduled optimization windows. Support tiers are flexible — from knowledge transfer to fully managed operations where Keen Agents runs and optimizes the agent on your behalf.",
       icon: Headphones,
-      category: "Support"
+      category: getContentByKey('faq_5_category', 'faq')?.value || "Support"
     },
     {
-      question: "How long does implementation typically take?",
-      answer: "Implementation timelines vary based on complexity, but our typical process takes 8-16 weeks from discovery to production. Simple use cases can be deployed in 4-6 weeks, while complex enterprise integrations may take 12-20 weeks. We provide detailed timelines during the discovery phase.",
+      question: getContentByKey('faq_6_question', 'faq')?.value || "How long does implementation typically take?",
+      answer: getContentByKey('faq_6_answer', 'faq')?.value || "Implementation timelines vary based on complexity, but our typical process takes 8-16 weeks from discovery to production. Simple use cases can be deployed in 4-6 weeks, while complex enterprise integrations may take 12-20 weeks. We provide detailed timelines during the discovery phase.",
       icon: HelpCircle,
-      category: "Timeline"
+      category: getContentByKey('faq_6_category', 'faq')?.value || "Timeline"
     }
   ]
 

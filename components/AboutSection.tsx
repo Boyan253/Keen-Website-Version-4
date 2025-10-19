@@ -13,37 +13,34 @@ import {
   ArrowRight
 } from 'lucide-react'
 import CMSContent from './CMSContent'
+import { useCMS } from '@/lib/cms/context'
 
 export default function AboutSection() {
+  const { getContentByKey } = useCMS()
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
   })
 
+  // Get leadership highlights from CMS
+  const leaderHighlightsTitle = getContentByKey('leader_highlights_title', 'about')?.value || "Key Expertise:"
+  const leader1Highlights = getContentByKey('leader_1_highlights', 'about')?.value || "We do not sell our software platform — we deliver business outcomes. Working with our proprietary software platform, we design, train and operate custom AI agents that behave like YOUR high-performing employees."
+  const leader2Highlights = getContentByKey('leader_2_highlights', 'about')?.value || "We do not sell our software platform — we deliver business outcomes. Working with our proprietary software platform, we design, train and operate custom AI agents that behave like YOUR high-performing employees."
+
   const leadership = [
     {
-      name: "Petar Denev",
-      role: "Co-founder & CEO",
-      bio: "30+ years leading technology and digital transformation programs across enterprise and mid-market organisations. Petar was inspired to co-found Keen Agents after witnessing countless businesses struggle with manual, repetitive processes that could be automated. His vision is to democratize AI automation, making it accessible to businesses of all sizes without the complexity and cost barriers that have traditionally existed.",
-      highlights: [
-        "Multi-country operations transformations",
-        "Large-scale integrations",
-        "Data governance expertise",
-        "Change management leadership"
-      ],
+      name: getContentByKey('leader_1_name', 'about')?.value || "Petar Denev",
+      role: getContentByKey('leader_1_role', 'about')?.value || "Co-founder & CEO",
+      bio: getContentByKey('leader_1_bio', 'about')?.value || "30+ years leading technology and digital transformation programs across enterprise and mid-market organisations. Petar was inspired to co-found Keen Agents after witnessing countless businesses struggle with manual, repetitive processes that could be automated. His vision is to democratize AI automation, making it accessible to businesses of all sizes without the complexity and cost barriers that have traditionally existed.",
+      highlights: leader1Highlights,
       icon: Target,
       color: "from-keen-blue to-keen-gradient-end"
     },
     {
-      name: "Viktor Vatchev",
-      role: "Co-founder & CTO",
-      bio: "AI systems architect and product leader with experience deploying automation at scale. Viktor was driven to co-found Keen Agents by the gap between AI research and practical business implementation. Having seen the potential of AI agents in production environments, he was inspired to create a platform that makes AI automation accessible, reliable, and profitable for businesses without requiring deep technical expertise.",
-      highlights: [
-        "ML engineering team leadership",
-        "NLP and RPA solutions",
-        "Resilient integration architecture",
-        "Production-scale automation"
-      ],
+      name: getContentByKey('leader_2_name', 'about')?.value || "Viktor Vatchev",
+      role: getContentByKey('leader_2_role', 'about')?.value || "Co-founder & CTO",
+      bio: getContentByKey('leader_2_bio', 'about')?.value || "AI systems architect and product leader with experience deploying automation at scale. Viktor was driven to co-found Keen Agents by the gap between AI research and practical business implementation. Having seen the potential of AI agents in production environments, he was inspired to create a platform that makes AI automation accessible, reliable, and profitable for businesses without requiring deep technical expertise.",
+      highlights: leader2Highlights,
       icon: Lightbulb,
       color: "from-green-500 to-emerald-500"
     }
@@ -52,35 +49,51 @@ export default function AboutSection() {
   const companyValues = [
     {
       icon: Target,
-      title: "Outcome-Focused",
-      description: "We deliver measurable business results, not just technology experiments.",
+      title: getContentByKey('value_1_title', 'about')?.value || "Outcome-Focused",
+      description: getContentByKey('value_1_description', 'about')?.value || "We deliver measurable business results, not just technology experiments.",
       color: "from-keen-blue to-keen-gradient-end"
     },
     {
       icon: Users,
-      title: "Client-Centric",
-      description: "Every solution is tailored to your specific business needs and constraints.",
+      title: getContentByKey('value_2_title', 'about')?.value || "Client-Centric",
+      description: getContentByKey('value_2_description', 'about')?.value || "Every solution is tailored to your specific business needs and constraints.",
       color: "from-green-500 to-emerald-500"
     },
     {
       icon: Award,
-      title: "Proven Expertise",
-      description: "Decades of combined experience in enterprise technology and AI deployment.",
+      title: getContentByKey('value_3_title', 'about')?.value || "Proven Expertise",
+      description: getContentByKey('value_3_description', 'about')?.value || "Decades of combined experience in enterprise technology and AI deployment.",
       color: "from-purple-500 to-violet-500"
     },
     {
       icon: Globe,
-      title: "Scalable Solutions",
-      description: "Built to grow with your business and adapt to changing requirements.",
+      title: getContentByKey('value_4_title', 'about')?.value || "Scalable Solutions",
+      description: getContentByKey('value_4_description', 'about')?.value || "Built to grow with your business and adapt to changing requirements.",
       color: "from-orange-500 to-red-500"
     }
   ]
 
   const stats = [
-    { number: "30+", label: "Years Combined Experience", icon: Briefcase },
-    { number: "100%", label: "Client Success Rate", icon: Award },
-    { number: "24/7", label: "Support Available", icon: Globe },
-    { number: "99.9%", label: "Uptime SLA", icon: Target }
+    { 
+      number: getContentByKey('stat_1_number', 'about')?.value || "30+", 
+      label: getContentByKey('stat_1_label', 'about')?.value || "Years Combined Experience", 
+      icon: Briefcase 
+    },
+    { 
+      number: getContentByKey('stat_2_number', 'about')?.value || "100%", 
+      label: getContentByKey('stat_2_label', 'about')?.value || "Client Success Rate", 
+      icon: Award 
+    },
+    { 
+      number: getContentByKey('stat_3_number', 'about')?.value || "24/7", 
+      label: getContentByKey('stat_3_label', 'about')?.value || "Support Available", 
+      icon: Globe 
+    },
+    { 
+      number: getContentByKey('stat_4_number', 'about')?.value || "99.9%", 
+      label: getContentByKey('stat_4_label', 'about')?.value || "Uptime SLA", 
+      icon: Target 
+    }
   ]
 
   return (
@@ -179,18 +192,11 @@ export default function AboutSection() {
                 
                 <div>
                   <h5 className="text-lg font-semibold text-keen-gray mb-4">
-                    Key Expertise:
+                    {leaderHighlightsTitle}
                   </h5>
-                  <div className="grid grid-cols-1 gap-2">
-                    {leader.highlights.map((highlight, idx) => (
-                      <div key={idx} className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-keen-blue rounded-full flex-shrink-0" />
-                        <span className="text-keen-gray/80 text-sm">
-                          {highlight}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="text-keen-gray/80 text-sm leading-relaxed">
+                    {leader.highlights}
+                  </p>
                 </div>
               </motion.div>
             ))}
@@ -239,12 +245,20 @@ export default function AboutSection() {
           transition={{ duration: 0.8, delay: 1.6 }}
           className="bg-gradient-to-r from-keen-blue to-keen-gradient-end rounded-3xl p-12 text-white text-center"
         >
-          <h3 className="text-3xl font-bold mb-6">
-            Our Mission
-          </h3>
-          <p className="text-xl mb-8 opacity-90 max-w-4xl mx-auto leading-relaxed">
-            To democratize AI implementation by making it accessible, reliable, and profitable for businesses of all sizes. We believe every company should have access to production-ready AI agents that deliver measurable business outcomes, reduce costs, and enhance customer experiences.
-          </p>
+          <CMSContent
+            section="about"
+            contentKey="mission_title"
+            fallback="Our Mission"
+            as="h3"
+            className="text-3xl font-bold mb-6"
+          />
+          <CMSContent
+            section="about"
+            contentKey="mission_description"
+            fallback="To democratize AI implementation by making it accessible, reliable, and profitable for businesses of all sizes. We believe every company should have access to production-ready AI agents that deliver measurable business outcomes, reduce costs, and enhance customer experiences."
+            as="p"
+            className="text-xl mb-8 opacity-90 max-w-4xl mx-auto leading-relaxed"
+          />
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.button
               whileHover={{ scale: 1.05 }}

@@ -866,6 +866,21 @@ export class SupabaseCMSDatabase {
       },
       {
         section: 'process',
+        type: 'json',
+        key: 'phase_1_deliverables',
+        value: JSON.stringify([
+          "Process maps",
+          "Success metrics", 
+          "Data inventory",
+          "Integration matrix"
+        ]),
+        label: 'Phase 1 - Deliverables',
+        description: 'First phase deliverables list',
+        category: 'process',
+        isPublished: true
+      },
+      {
+        section: 'process',
         type: 'text',
         key: 'phase_2_title',
         value: 'Agent Design & Prototype',
@@ -901,6 +916,20 @@ export class SupabaseCMSDatabase {
         value: 'We build an MVP agent that automates a clearly scoped task, defining intents, conversation flows, and validation rules.',
         label: 'Phase 2 - Description',
         description: 'Second phase description',
+        category: 'process',
+        isPublished: true
+      },
+      {
+        section: 'process',
+        type: 'json',
+        key: 'phase_2_deliverables',
+        value: JSON.stringify([
+          "Prototype agent",
+          "Test cases",
+          "Sandbox connector(s)"
+        ]),
+        label: 'Phase 2 - Deliverables',
+        description: 'Second phase deliverables list',
         category: 'process',
         isPublished: true
       },
@@ -946,6 +975,20 @@ export class SupabaseCMSDatabase {
       },
       {
         section: 'process',
+        type: 'json',
+        key: 'phase_3_deliverables',
+        value: JSON.stringify([
+          "Pilot deployment",
+          "Monitoring dashboard",
+          "Pilot report with ROI analysis"
+        ]),
+        label: 'Phase 3 - Deliverables',
+        description: 'Third phase deliverables list',
+        category: 'process',
+        isPublished: true
+      },
+      {
+        section: 'process',
         type: 'text',
         key: 'continuous_title',
         value: 'Continuous Improvement & Operations',
@@ -986,11 +1029,77 @@ export class SupabaseCMSDatabase {
       },
       {
         section: 'process',
+        type: 'json',
+        key: 'continuous_deliverables',
+        value: JSON.stringify([
+          "Production rollout",
+          "Training materials",
+          "Performance SLA",
+          "Continuous optimization plan"
+        ]),
+        label: 'Continuous - Deliverables',
+        description: 'Continuous improvement deliverables list',
+        category: 'process',
+        isPublished: true
+      },
+      {
+        section: 'process',
         type: 'text',
         key: 'roles_title',
         value: 'Who Does What',
         label: 'Roles Title',
         description: 'Roles section title',
+        category: 'process',
+        isPublished: true
+      },
+      {
+        section: 'process',
+        type: 'text',
+        key: 'role_client_title',
+        value: 'Client',
+        label: 'Client Role Title',
+        description: 'Title for client role',
+        category: 'process',
+        isPublished: true
+      },
+      {
+        section: 'process',
+        type: 'json',
+        key: 'role_client_responsibilities',
+        value: JSON.stringify([
+          "Describe current business processes",
+          "Define business needs and requirements",
+          "Provide access to subject-matter experts",
+          "Approve process maps",
+          "Participate in pilot acceptance"
+        ]),
+        label: 'Client Role Responsibilities',
+        description: 'List of client responsibilities',
+        category: 'process',
+        isPublished: true
+      },
+      {
+        section: 'process',
+        type: 'text',
+        key: 'role_keen_title',
+        value: 'Keen Agents',
+        label: 'Keen Agents Role Title',
+        description: 'Title for Keen Agents role',
+        category: 'process',
+        isPublished: true
+      },
+      {
+        section: 'process',
+        type: 'json',
+        key: 'role_keen_responsibilities',
+        value: JSON.stringify([
+          "Understand and analyze business processes",
+          "Optimize processes together with client (when needed)",
+          "Deploy and configure our AI platform",
+          "Set up agents to execute tasks according to client's specific processes"
+        ]),
+        label: 'Keen Agents Role Responsibilities',
+        description: 'List of Keen Agents responsibilities',
         category: 'process',
         isPublished: true
       },
@@ -1877,6 +1986,380 @@ export class SupabaseCMSDatabase {
         label: 'Question 8 - Options',
         description: 'Eighth questionnaire question options',
         category: 'questionnaire',
+        isPublished: true
+      },
+      // FAQ Questions
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_1_question',
+        value: 'How do you secure our data?',
+        label: 'FAQ 1 - Question',
+        description: 'First FAQ question',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_1_answer',
+        value: 'Security is non-negotiable. We employ industry-standard encryption (TLS in transit, AES-256 at rest), role-based access control, audit logs, and tenant isolation for multi-client environments. We can operate within private VPCs, support on-prem deployments, or use cloud-hosted models under strict data governance rules. We provide SOC2 / ISO controls upon request and support data residency requirements.',
+        label: 'FAQ 1 - Answer',
+        description: 'First FAQ answer',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_1_category',
+        value: 'Security',
+        label: 'FAQ 1 - Category',
+        description: 'First FAQ category',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_2_question',
+        value: 'Will this change our processes or require retraining staff?',
+        label: 'FAQ 2 - Question',
+        description: 'Second FAQ question',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_2_answer',
+        value: 'Our approach prioritises minimal disruption. We map current processes and design agents to slot into existing workflows. Where change is required, we provide clear change-management plans, role-based training sessions, and operator runbooks. We recommend a \'train the trainer\' model to accelerate adoption.',
+        label: 'FAQ 2 - Answer',
+        description: 'Second FAQ answer',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_2_category',
+        value: 'Implementation',
+        label: 'FAQ 2 - Category',
+        description: 'Second FAQ category',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_3_question',
+        value: 'Do we need to upgrade our IT infrastructure?',
+        label: 'FAQ 3 - Question',
+        description: 'Third FAQ question',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_3_answer',
+        value: 'In most cases — no. Our agents integrate via APIs, webhooks, or lightweight connectors. When complex legacy systems require adapters, we build secure middleware. We produce an integration matrix during discovery to estimate effort and provide options for SaaS, hybrid, or on-prem architectures.',
+        label: 'FAQ 3 - Answer',
+        description: 'Third FAQ answer',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_3_category',
+        value: 'Technical',
+        label: 'FAQ 3 - Category',
+        description: 'Third FAQ category',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_4_question',
+        value: 'How do you manage errors and edge cases?',
+        label: 'FAQ 4 - Question',
+        description: 'Fourth FAQ question',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_4_answer',
+        value: 'We implement human-in-the-loop workflows, clear escalation rules, and confidence thresholds to prevent incorrect automation. Every agent has audit trails and can be placed into monitoring mode where low-confidence decisions are routed to a human reviewer until sufficient confidence is reached.',
+        label: 'FAQ 4 - Answer',
+        description: 'Fourth FAQ answer',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_4_category',
+        value: 'Operations',
+        label: 'FAQ 4 - Category',
+        description: 'Fourth FAQ category',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_5_question',
+        value: 'What SLAs & support do you offer?',
+        label: 'FAQ 5 - Question',
+        description: 'Fifth FAQ question',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_5_answer',
+        value: 'We offer SLAs for uptime, response times for incidents, and scheduled optimization windows. Support tiers are flexible — from knowledge transfer to fully managed operations where Keen Agents runs and optimizes the agent on your behalf.',
+        label: 'FAQ 5 - Answer',
+        description: 'Fifth FAQ answer',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_5_category',
+        value: 'Support',
+        label: 'FAQ 5 - Category',
+        description: 'Fifth FAQ category',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_6_question',
+        value: 'How long does implementation typically take?',
+        label: 'FAQ 6 - Question',
+        description: 'Sixth FAQ question',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_6_answer',
+        value: 'Implementation timelines vary based on complexity, but our typical process takes 8-16 weeks from discovery to production. Simple use cases can be deployed in 4-6 weeks, while complex enterprise integrations may take 12-20 weeks. We provide detailed timelines during the discovery phase.',
+        label: 'FAQ 6 - Answer',
+        description: 'Sixth FAQ answer',
+        category: 'faq',
+        isPublished: true
+      },
+      {
+        section: 'faq',
+        type: 'text',
+        key: 'faq_6_category',
+        value: 'Timeline',
+        label: 'FAQ 6 - Category',
+        description: 'Sixth FAQ category',
+        category: 'faq',
+        isPublished: true
+      },
+      // Company Values
+      {
+        section: 'about',
+        type: 'text',
+        key: 'value_1_title',
+        value: 'Outcome-Focused',
+        label: 'Value 1 - Title',
+        description: 'First company value title',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'value_1_description',
+        value: 'We deliver measurable business results, not just technology experiments.',
+        label: 'Value 1 - Description',
+        description: 'First company value description',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'value_2_title',
+        value: 'Client-Centric',
+        label: 'Value 2 - Title',
+        description: 'Second company value title',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'value_2_description',
+        value: 'Every solution is tailored to your specific business needs and constraints.',
+        label: 'Value 2 - Description',
+        description: 'Second company value description',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'value_3_title',
+        value: 'Proven Expertise',
+        label: 'Value 3 - Title',
+        description: 'Third company value title',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'value_3_description',
+        value: 'Decades of combined experience in enterprise technology and AI deployment.',
+        label: 'Value 3 - Description',
+        description: 'Third company value description',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'value_4_title',
+        value: 'Scalable Solutions',
+        label: 'Value 4 - Title',
+        description: 'Fourth company value title',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'value_4_description',
+        value: 'Built to grow with your business and adapt to changing requirements.',
+        label: 'Value 4 - Description',
+        description: 'Fourth company value description',
+        category: 'about',
+        isPublished: true
+      },
+      // Stats
+      {
+        section: 'about',
+        type: 'text',
+        key: 'stat_1_number',
+        value: '30+',
+        label: 'Stat 1 - Number',
+        description: 'First statistic number',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'stat_1_label',
+        value: 'Years Combined Experience',
+        label: 'Stat 1 - Label',
+        description: 'First statistic label',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'stat_2_number',
+        value: '100%',
+        label: 'Stat 2 - Number',
+        description: 'Second statistic number',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'stat_2_label',
+        value: 'Client Success Rate',
+        label: 'Stat 2 - Label',
+        description: 'Second statistic label',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'stat_3_number',
+        value: '24/7',
+        label: 'Stat 3 - Number',
+        description: 'Third statistic number',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'stat_3_label',
+        value: 'Support Available',
+        label: 'Stat 3 - Label',
+        description: 'Third statistic label',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'stat_4_number',
+        value: '99.9%',
+        label: 'Stat 4 - Number',
+        description: 'Fourth statistic number',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'stat_4_label',
+        value: 'Uptime SLA',
+        label: 'Stat 4 - Label',
+        description: 'Fourth statistic label',
+        category: 'about',
+        isPublished: true
+      },
+      // Leadership Highlights
+      {
+        section: 'about',
+        type: 'text',
+        key: 'leader_highlights_title',
+        value: 'Key Expertise:',
+        label: 'Leadership Highlights - Title',
+        description: 'Title for leadership highlights section',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'leader_1_highlights',
+        value: 'We do not sell our software platform — we deliver business outcomes. Working with our proprietary software platform, we design, train and operate custom AI agents that behave like YOUR high-performing employees.',
+        label: 'Leader 1 - Highlights',
+        description: 'First leader highlights text',
+        category: 'about',
+        isPublished: true
+      },
+      {
+        section: 'about',
+        type: 'text',
+        key: 'leader_2_highlights',
+        value: 'We do not sell our software platform — we deliver business outcomes. Working with our proprietary software platform, we design, train and operate custom AI agents that behave like YOUR high-performing employees.',
+        label: 'Leader 2 - Highlights',
+        description: 'Second leader highlights text',
+        category: 'about',
         isPublished: true
       },
       // Global Settings

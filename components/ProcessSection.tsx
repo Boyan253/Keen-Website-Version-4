@@ -13,65 +13,102 @@ import {
   Users,
   ArrowRight
 } from 'lucide-react'
+import CMSContent from './CMSContent'
+import { useCMS } from '@/lib/cms/context'
 
 export default function ProcessSection() {
+  const { getContentByKey } = useCMS()
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
   })
 
+  // Get deliverables from CMS
+  const phase1DeliverablesRaw = getContentByKey('phase_1_deliverables', 'process')?.value
+  const phase1Deliverables = phase1DeliverablesRaw 
+    ? JSON.parse(phase1DeliverablesRaw)
+    : ["Process maps", "Success metrics", "Data inventory", "Integration matrix"]
+
+  const phase2DeliverablesRaw = getContentByKey('phase_2_deliverables', 'process')?.value
+  const phase2Deliverables = phase2DeliverablesRaw 
+    ? JSON.parse(phase2DeliverablesRaw)
+    : ["Prototype agent", "Test cases", "Sandbox connector(s)"]
+
+  const phase3DeliverablesRaw = getContentByKey('phase_3_deliverables', 'process')?.value
+  const phase3Deliverables = phase3DeliverablesRaw 
+    ? JSON.parse(phase3DeliverablesRaw)
+    : ["Pilot deployment", "Monitoring dashboard", "Pilot report with ROI analysis"]
+
+  const continuousDeliverablesRaw = getContentByKey('continuous_deliverables', 'process')?.value
+  const continuousDeliverables = continuousDeliverablesRaw 
+    ? JSON.parse(continuousDeliverablesRaw)
+    : ["Production rollout", "Training materials", "Performance SLA", "Continuous optimization plan"]
+
   const phases = [
     {
       phase: 1,
-      title: "Discovery & Process Mapping",
-      subtitle: "Deeply understand workflows and data sources",
+      title: getContentByKey('phase_1_title', 'process')?.value || "Discovery & Process Mapping",
+      subtitle: getContentByKey('phase_1_subtitle', 'process')?.value || "Deeply understand workflows and data sources",
       icon: Map,
-      duration: "1-2 weeks",
-      deliverables: ["Process maps", "Success metrics", "Data inventory", "Integration matrix"],
+      duration: getContentByKey('phase_1_duration', 'process')?.value || "1-2 weeks",
+      deliverables: phase1Deliverables,
       color: "from-green-500 to-emerald-500",
-      description: "We interview stakeholders, run shadowing sessions, and map your end-to-end processes to understand every decision point and KPI."
+      description: getContentByKey('phase_1_description', 'process')?.value || "We interview stakeholders, run shadowing sessions, and map your end-to-end processes to understand every decision point and KPI."
     },
     {
       phase: 2,
-      title: "Agent Design & Prototype",
-      subtitle: "Build a narrow-scope prototype agent",
+      title: getContentByKey('phase_2_title', 'process')?.value || "Agent Design & Prototype",
+      subtitle: getContentByKey('phase_2_subtitle', 'process')?.value || "Build a narrow-scope prototype agent",
       icon: Cog,
-      duration: "2-4 weeks",
-      deliverables: ["Prototype agent", "Test cases", "Sandbox connector(s)"],
+      duration: getContentByKey('phase_2_duration', 'process')?.value || "2-4 weeks",
+      deliverables: phase2Deliverables,
       color: "from-purple-500 to-violet-500",
-      description: "We build an MVP agent that automates a clearly scoped task, defining intents, conversation flows, and validation rules."
+      description: getContentByKey('phase_2_description', 'process')?.value || "We build an MVP agent that automates a clearly scoped task, defining intents, conversation flows, and validation rules."
     },
     {
       phase: 3,
-      title: "Integration & Pilot",
-      subtitle: "Deploy into controlled pilot with live data",
+      title: getContentByKey('phase_3_title', 'process')?.value || "Integration & Pilot",
+      subtitle: getContentByKey('phase_3_subtitle', 'process')?.value || "Deploy into controlled pilot with live data",
       icon: Rocket,
-      duration: "2-6 weeks",
-      deliverables: ["Pilot deployment", "Monitoring dashboard", "Pilot report with ROI analysis"],
+      duration: getContentByKey('phase_3_duration', 'process')?.value || "2-6 weeks",
+      deliverables: phase3Deliverables,
       color: "from-orange-500 to-red-500",
-      description: "We deploy the agent into a controlled pilot with live data, setting up telemetry, logging, and human escalation paths."
+      description: getContentByKey('phase_3_description', 'process')?.value || "We deploy the agent into a controlled pilot with live data, setting up telemetry, logging, and human escalation paths."
     }
   ]
 
   const continuousImprovement = {
-    title: "Continuous Improvement & Operations",
-    subtitle: "Roll into production with ongoing optimization",
+    title: getContentByKey('continuous_title', 'process')?.value || "Continuous Improvement & Operations",
+    subtitle: getContentByKey('continuous_subtitle', 'process')?.value || "Roll into production with ongoing optimization",
     icon: Scale,
-    duration: "Ongoing",
-    deliverables: ["Production rollout", "Training materials", "Performance SLA", "Continuous optimization plan"],
+    duration: getContentByKey('continuous_duration', 'process')?.value || "Ongoing",
+    deliverables: continuousDeliverables,
     color: "from-keen-blue to-keen-gradient-end",
-    description: "We roll the agent into production, document runbooks, and hand over an operations model or continue operating on your behalf."
+    description: getContentByKey('continuous_description', 'process')?.value || "We roll the agent into production, document runbooks, and hand over an operations model or continue operating on your behalf."
   }
+
+  // Get role data from CMS
+  const clientTitle = getContentByKey('role_client_title', 'process')?.value || 'Client'
+  const clientResponsibilitiesRaw = getContentByKey('role_client_responsibilities', 'process')?.value
+  const clientResponsibilities = clientResponsibilitiesRaw 
+    ? JSON.parse(clientResponsibilitiesRaw)
+    : ["Describe current business processes", "Define business needs and requirements", "Provide access to subject-matter experts", "Approve process maps", "Participate in pilot acceptance"]
+
+  const keenTitle = getContentByKey('role_keen_title', 'process')?.value || 'Keen Agents'
+  const keenResponsibilitiesRaw = getContentByKey('role_keen_responsibilities', 'process')?.value
+  const keenResponsibilities = keenResponsibilitiesRaw 
+    ? JSON.parse(keenResponsibilitiesRaw)
+    : ["Understand and analyze business processes", "Optimize processes together with client (when needed)", "Deploy and configure our AI platform", "Set up agents to execute tasks according to client's specific processes"]
 
   const roles = [
     {
-      title: "Client",
-      responsibilities: ["Describe current business processes", "Define business needs and requirements", "Provide access to subject-matter experts", "Approve process maps", "Participate in pilot acceptance"],
+      title: clientTitle,
+      responsibilities: clientResponsibilities,
       icon: Users
     },
     {
-      title: "Keen Agents",
-      responsibilities: ["Understand and analyze business processes", "Optimize processes together with client (when needed)", "Deploy and configure our AI platform", "Set up agents to execute tasks according to client's specific processes"],
+      title: keenTitle,
+      responsibilities: keenResponsibilities,
       icon: CheckCircle
     }
   ]
@@ -163,7 +200,7 @@ export default function ProcessSection() {
                         Deliverables:
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        {phase.deliverables.map((deliverable, idx) => (
+                        {phase.deliverables.map((deliverable: string, idx: number) => (
                           <div key={idx} className="flex items-center space-x-2">
                             <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                             <span className="text-keen-gray/80 text-sm">
@@ -234,7 +271,7 @@ export default function ProcessSection() {
                       Deliverables:
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {continuousImprovement.deliverables.map((deliverable, idx) => (
+                      {continuousImprovement.deliverables.map((deliverable: string, idx: number) => (
                         <div key={idx} className="flex items-center space-x-2">
                           <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                           <span className="text-keen-gray/80 text-sm">
@@ -257,9 +294,13 @@ export default function ProcessSection() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100"
         >
-          <h3 className="text-2xl font-bold text-keen-gray mb-8 text-center">
-            Who Does What
-          </h3>
+          <CMSContent
+            section="process"
+            contentKey="roles_title"
+            fallback="Who Does What"
+            as="h3"
+            className="text-2xl font-bold text-keen-gray mb-8 text-center"
+          />
           <div className="grid md:grid-cols-2 gap-8">
             {roles.map((role, index) => (
               <motion.div
@@ -276,7 +317,7 @@ export default function ProcessSection() {
                   {role.title}
                 </h4>
                 <ul className="space-y-2 text-left">
-                  {role.responsibilities.map((responsibility, idx) => (
+                  {role.responsibilities.map((responsibility: string, idx: number) => (
                     <li key={idx} className="text-keen-gray/70 text-sm flex items-start">
                       <span className="mr-2">•</span>
                       <span>{responsibility}</span>

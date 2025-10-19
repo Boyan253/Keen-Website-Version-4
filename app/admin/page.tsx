@@ -26,44 +26,28 @@ export default function AdminDashboard() {
     admin: number
     preview: number
   } | null>(null)
+  const [isRestoringScroll, setIsRestoringScroll] = useState(false)
+  const [shouldRestoreScroll, setShouldRestoreScroll] = useState(false)
 
-  // Save scroll positions to localStorage on scroll
+  // Load saved positions on mount (but don't auto-restore)
   useEffect(() => {
-    const adminElement = adminScrollRef.current
-    const previewElement = previewScrollRef.current
-
-    const saveScrollPositions = () => {
-      const adminScroll = adminElement?.scrollTop || 0
-      let previewScroll = 0
-      
-      if (previewElement) {
-        const iframe = previewElement.querySelector('iframe')
-        if (iframe && iframe.contentWindow) {
-          try {
-            previewScroll = iframe.contentWindow.pageYOffset || iframe.contentWindow.scrollY || 0
-          } catch (error) {
-            // Cross-origin restrictions - try to get from localStorage
-            previewScroll = parseInt(localStorage.getItem('admin-preview-scroll') || '0')
-          }
+    // Load saved positions on mount but don't automatically restore them
+    const savedPositions = localStorage.getItem('admin-scroll-positions')
+    if (savedPositions) {
+      try {
+        const parsed = JSON.parse(savedPositions)
+        // Only load if saved within last 5 minutes, but don't restore automatically
+        if (Date.now() - parsed.timestamp < 300000) {
+          setSavedScrollPositions({
+            admin: parsed.admin || 0,
+            preview: parsed.preview || 0
+          })
         }
-      }
-      
-      localStorage.setItem('admin-scroll-positions', JSON.stringify({
-        admin: adminScroll,
-        preview: previewScroll
-      }))
-    }
-
-    if (adminElement) {
-      adminElement.addEventListener('scroll', saveScrollPositions, { passive: true })
-    }
-
-    return () => {
-      if (adminElement) {
-        adminElement.removeEventListener('scroll', saveScrollPositions)
+      } catch (error) {
+        console.warn('Could not parse saved scroll positions:', error)
       }
     }
-  }, [])
+  }, [splitView])
 
   const tabs = [
     { id: 'content', label: 'Content', icon: FileText },
@@ -128,6 +112,8 @@ export default function AdminDashboard() {
     try {
       await saveAllChanges()
       setSaveSuccess(true)
+      // Set flag to restore scroll positions after save completes
+      setShouldRestoreScroll(true)
       // Auto-hide success message after 3 seconds
       setTimeout(() => setSaveSuccess(false), 3000)
     } catch (error) {
@@ -140,28 +126,51 @@ export default function AdminDashboard() {
 
   // Restore scroll positions after save completes
   useEffect(() => {
-    if (!saving && savedScrollPositions) {
+    if (!saving && shouldRestoreScroll && savedScrollPositions) {
+      setIsRestoringScroll(true)
+      
       // Use setTimeout to ensure DOM has updated
       setTimeout(() => {
+        // Restore admin panel scroll
         if (adminScrollRef.current) {
           adminScrollRef.current.scrollTop = savedScrollPositions.admin
         }
-        if (previewScrollRef.current) {
-          // For iframe, we need to access the iframe's content window
+        
+        // Restore preview scroll - try multiple methods without forcing reload
+        if (previewScrollRef.current && savedScrollPositions.preview > 0) {
           const iframe = previewScrollRef.current.querySelector('iframe')
-          if (iframe && iframe.contentWindow) {
+          if (iframe) {
+            // Method 1: Direct iframe access
             try {
-              iframe.contentWindow.scrollTo(0, savedScrollPositions.preview)
+              if (iframe.contentWindow) {
+                iframe.contentWindow.scrollTo(0, savedScrollPositions.preview)
+              }
             } catch (error) {
-              // Cross-origin restrictions might prevent this
-              console.warn('Could not restore iframe scroll position:', error)
+              // Method 2: PostMessage to iframe
+              try {
+                iframe.contentWindow?.postMessage({
+                  type: 'RESTORE_SCROLL',
+                  scrollY: savedScrollPositions.preview
+                }, '*')
+              } catch (postError) {
+                // Method 3: Store in localStorage for iframe to read (without reload)
+                localStorage.setItem('admin-preview-scroll', savedScrollPositions.preview.toString())
+                // Don't force iframe reload - let the iframe handle it naturally
+              }
             }
           }
         }
+        
         setSavedScrollPositions(null)
-      }, 100)
+        setShouldRestoreScroll(false)
+        
+        // Reset the restoration flag after a delay to allow scroll events to settle
+        setTimeout(() => {
+          setIsRestoringScroll(false)
+        }, 500)
+      }, 200) // Increased timeout for better reliability
     }
-  }, [saving, savedScrollPositions])
+  }, [saving, shouldRestoreScroll, savedScrollPositions])
 
   // Resize functionality
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -571,7 +580,19 @@ export default function AdminDashboard() {
 function ContentTab({ onUpdate }: { onUpdate: (key: string, section: string, value: string) => void }) {
   const { getContent } = useCMS()
   
-  const sections = ['hero', 'about', 'product', 'process', 'testimonials', 'faq', 'questionnaire', 'footer', 'global']
+  // Order sections to match the website flow
+  const sections = [
+    'header',      // Header navigation
+    'hero',        // Hero section
+    'product',     // Product section  
+    'process',     // Process section
+    'testimonials', // Testimonials section
+    'about',       // About section
+    'faq',         // FAQ section
+    'questionnaire', // Questionnaire section
+    'footer',      // Footer
+    'global'       // Global settings
+  ]
   
   // Custom sorting function for questionnaire content
   const sortQuestionnaireContent = (content: any[]) => {
@@ -621,9 +642,29 @@ function ContentTab({ onUpdate }: { onUpdate: (key: string, section: string, val
           content = sortQuestionnaireContent(content)
         }
 
+        // Get section display name
+        const getSectionDisplayName = (section: string) => {
+          const sectionNames: { [key: string]: string } = {
+            'header': 'Header & Navigation',
+            'hero': 'Hero Section',
+            'product': 'Product Section',
+            'process': 'Process Section',
+            'testimonials': 'Testimonials Section',
+            'about': 'About Section',
+            'faq': 'FAQ Section',
+            'questionnaire': 'Questionnaire Section',
+            'footer': 'Footer',
+            'global': 'Global Settings'
+          }
+          return sectionNames[section] || `${section} Section`
+        }
+
         return (
           <div key={section} className="bg-white rounded-lg shadow-sm border p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 capitalize">{section} Section</h3>
+            <div className="flex items-center mb-4">
+              <div className="w-2 h-8 bg-keen-blue rounded-full mr-3"></div>
+              <h3 className="text-lg font-semibold text-gray-900">{getSectionDisplayName(section)}</h3>
+            </div>
             <div className="space-y-4">
               {content.map((item) => (
                 <ContentItem

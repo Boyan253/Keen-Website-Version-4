@@ -17,6 +17,45 @@ export default function Home() {
 
   useEffect(() => {
     setIsLoaded(true)
+    
+    let scrollRestorationTimeout: NodeJS.Timeout
+    
+    // Listen for scroll restoration messages from admin panel
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'RESTORE_SCROLL') {
+        // Clear any pending scroll restoration
+        if (scrollRestorationTimeout) {
+          clearTimeout(scrollRestorationTimeout)
+        }
+        
+        // Debounce scroll restoration to prevent loops
+        scrollRestorationTimeout = setTimeout(() => {
+          window.scrollTo(0, event.data.scrollY)
+        }, 50)
+      }
+    }
+    
+    // Also check localStorage for scroll position on load
+    const savedScroll = localStorage.getItem('admin-preview-scroll')
+    if (savedScroll) {
+      const scrollY = parseInt(savedScroll)
+      if (scrollY > 0) {
+        // Use a longer timeout for initial load to ensure page is ready
+        setTimeout(() => {
+          window.scrollTo(0, scrollY)
+          localStorage.removeItem('admin-preview-scroll')
+        }, 300)
+      }
+    }
+    
+    window.addEventListener('message', handleMessage)
+    
+    return () => {
+      window.removeEventListener('message', handleMessage)
+      if (scrollRestorationTimeout) {
+        clearTimeout(scrollRestorationTimeout)
+      }
+    }
   }, [])
 
   return (

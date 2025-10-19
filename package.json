@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "init-cms": "curl -X POST http://localhost:3000/api/init-cms"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.74.0",
