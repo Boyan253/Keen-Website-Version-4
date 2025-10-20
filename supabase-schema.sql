@@ -60,7 +60,7 @@ ALTER TABLE cms_color_schemes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE cms_images ENABLE ROW LEVEL SECURITY;
 ALTER TABLE cms_settings ENABLE ROW LEVEL SECURITY;
 
--- Create policies for public access (for now - in production you'd want proper auth)
+-- Create policies for public access (for now - in production we will do a proper auth)
 CREATE POLICY "Allow all operations on cms_content" ON cms_content FOR ALL USING (true);
 CREATE POLICY "Allow all operations on cms_color_schemes" ON cms_color_schemes FOR ALL USING (true);
 CREATE POLICY "Allow all operations on cms_images" ON cms_images FOR ALL USING (true);

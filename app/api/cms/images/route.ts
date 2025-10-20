@@ -31,8 +31,6 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // In a real application, you would upload the file to a cloud storage service
-    // For now, we'll create a mock image asset
     const imageAsset = await cmsDatabase.addImage({
       filename: `uploaded-${Date.now()}-${file.name}`,
       originalName: file.name,
