@@ -5,6 +5,7 @@ import HeroSection from '@/components/bg/HeroSection'
 import ProductSection from '@/components/bg/ProductSection'
 import ProcessSection from '@/components/bg/ProcessSection'
 import TestimonialsSection from '@/components/bg/TestimonialsSection'
+import InvestorsSection from '@/components/bg/InvestorsSection'
 import AboutSection from '@/components/bg/AboutSection'
 import FAQSection from '@/components/bg/FAQSection'
 import AIQuestionnaire from '@/components/bg/AIQuestionnaire'
@@ -26,6 +27,7 @@ export default function BulgarianHome() {
       <ProductSection />
       <ProcessSection />
       <TestimonialsSection />
+      <InvestorsSection />
       <AboutSection />
       <FAQSection />
       <AIQuestionnaire />

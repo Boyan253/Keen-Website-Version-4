@@ -80,3 +80,31 @@ export interface CMSSettings {
   createdAt: string
   updatedAt: string
 }
+
+export interface ContentStyleOverride {
+  id: string
+  contentId: string
+  section: string
+  key: string
+  // Style properties
+  backgroundColor?: string
+  textColor?: string
+  fontSize?: string
+  fontWeight?: string
+  fontFamily?: string
+  lineHeight?: string
+  letterSpacing?: string
+  textAlign?: string
+  padding?: string
+  margin?: string
+  borderColor?: string
+  borderWidth?: string
+  borderRadius?: string
+  boxShadow?: string
+  opacity?: string
+  customCss?: string
+  // Meta
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}

@@ -5,6 +5,7 @@ import HeroSection from '@/components/HeroSection'
 import ProductSection from '@/components/ProductSection'
 import ProcessSection from '@/components/ProcessSection'
 import TestimonialsSection from '@/components/TestimonialsSection'
+import InvestorsSection from '@/components/InvestorsSection'
 import AboutSection from '@/components/AboutSection'
 import FAQSection from '@/components/FAQSection'
 import AIQuestionnaire from '@/components/AIQuestionnaire'
@@ -65,6 +66,7 @@ export default function Home() {
       <ProductSection />
       <ProcessSection />
       <TestimonialsSection />
+      <InvestorsSection />
       <AboutSection />
       <FAQSection />
       <AIQuestionnaire />

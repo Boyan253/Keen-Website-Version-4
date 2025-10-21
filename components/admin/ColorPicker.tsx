@@ -33,18 +33,18 @@ export default function ColorPicker({ value, onChange, label, description }: Col
   ]
 
   return (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
+    <div className="space-y-1">
+      <label className="block text-xs sm:text-sm font-medium text-gray-700">
         {label}
       </label>
       
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center gap-2">
         {/* Color Input */}
         <input
           type="color"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-12 h-10 border border-gray-300 rounded cursor-pointer"
+          className="w-10 h-8 sm:w-12 sm:h-10 border border-gray-300 rounded cursor-pointer flex-shrink-0"
         />
         
         {/* Text Input */}
@@ -52,18 +52,18 @@ export default function ColorPicker({ value, onChange, label, description }: Col
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+          className="flex-1 min-w-0 px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
           placeholder="#000000"
         />
         
         {/* Preset Colors Dropdown */}
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="p-1.5 sm:p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             title="Preset Colors"
           >
-            <Palette className="w-4 h-4" />
+            <Palette className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
           
           {isOpen && (

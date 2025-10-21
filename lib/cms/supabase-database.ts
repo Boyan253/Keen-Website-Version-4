@@ -2409,6 +2409,111 @@ export class SupabaseCMSDatabase {
       isActive: true
     })
   }
+
+  // Style Overrides management
+  async getStyleOverrides(): Promise<any[]> {
+    const { data, error } = await supabase
+      .from('cms_content_styles')
+      .select('*')
+      .order('updated_at', { ascending: false })
+    
+    if (error) {
+      console.error('Error fetching style overrides:', error)
+      return []
+    }
+    
+    return data || []
+  }
+
+  async createStyleOverride(override: any): Promise<any> {
+    const now = new Date().toISOString()
+    
+    // Use upsert to handle both create and update cases
+    const { data, error } = await supabase
+      .from('cms_content_styles')
+      .upsert({
+        content_id: override.contentId,
+        section: override.section,
+        key: override.key,
+        background_color: override.backgroundColor || null,
+        text_color: override.textColor || null,
+        font_size: override.fontSize || null,
+        font_weight: override.fontWeight || null,
+        font_family: override.fontFamily || null,
+        line_height: override.lineHeight || null,
+        letter_spacing: override.letterSpacing || null,
+        text_align: override.textAlign || null,
+        padding: override.padding || null,
+        margin: override.margin || null,
+        border_color: override.borderColor || null,
+        border_width: override.borderWidth || null,
+        border_radius: override.borderRadius || null,
+        box_shadow: override.boxShadow || null,
+        opacity: override.opacity || null,
+        custom_css: override.customCss || null,
+        is_active: override.isActive ?? true,
+        updated_at: now
+      }, {
+        onConflict: 'content_id',
+        ignoreDuplicates: false
+      })
+      .select()
+      .single()
+    
+    if (error) {
+      console.error('Error creating style override:', error)
+      throw new Error('Failed to create style override')
+    }
+    
+    return data
+  }
+
+  async updateStyleOverride(id: string, override: any): Promise<any> {
+    const { data, error } = await supabase
+      .from('cms_content_styles')
+      .update({
+        background_color: override.backgroundColor || null,
+        text_color: override.textColor || null,
+        font_size: override.fontSize || null,
+        font_weight: override.fontWeight || null,
+        font_family: override.fontFamily || null,
+        line_height: override.lineHeight || null,
+        letter_spacing: override.letterSpacing || null,
+        text_align: override.textAlign || null,
+        padding: override.padding || null,
+        margin: override.margin || null,
+        border_color: override.borderColor || null,
+        border_width: override.borderWidth || null,
+        border_radius: override.borderRadius || null,
+        box_shadow: override.boxShadow || null,
+        opacity: override.opacity || null,
+        custom_css: override.customCss || null,
+        is_active: override.isActive ?? true,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', id)
+      .select()
+      .single()
+    
+    if (error) {
+      console.error('Error updating style override:', error)
+      throw new Error('Failed to update style override')
+    }
+    
+    return data
+  }
+
+  async deleteStyleOverride(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('cms_content_styles')
+      .delete()
+      .eq('id', id)
+    
+    if (error) {
+      console.error('Error deleting style override:', error)
+      throw new Error('Failed to delete style override')
+    }
+  }
 }
 
 export const cmsDatabase = new SupabaseCMSDatabase()

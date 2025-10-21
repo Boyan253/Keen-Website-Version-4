@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useReducer, useEffect, useCallback, useMemo } from 'react'
-import { CMSContent, ColorScheme, ImageAsset, SectionConfig, CMSSettings } from '@/lib/types/cms'
+import { CMSContent, ColorScheme, ImageAsset, SectionConfig, CMSSettings, ContentStyleOverride } from '@/lib/types/cms'
 import { cmsDatabase } from '@/lib/cms/supabase-database'
 
 interface CMSState {
@@ -11,12 +11,16 @@ interface CMSState {
   images: ImageAsset[]
   sections: SectionConfig[]
   settings: CMSSettings | null
+  styleOverrides: ContentStyleOverride[]
   loading: boolean
   error: string | null
   dirtyContentIds: Set<string>
   dirtyColorSchemeIds: Set<string>
+  dirtyStyleOverrideIds: Set<string>
+  deletedStyleOverrideIds: Set<string>
   originalContent: Map<string, CMSContent>
   originalColorSchemes: Map<string, ColorScheme>
+  originalStyleOverrides: Map<string, ContentStyleOverride>
 }
 
 type CMSAction =
@@ -33,6 +37,9 @@ type CMSAction =
   | { type: 'SET_SECTIONS'; payload: SectionConfig[] }
   | { type: 'UPDATE_SECTION'; payload: SectionConfig }
   | { type: 'SET_SETTINGS'; payload: CMSSettings }
+  | { type: 'SET_STYLE_OVERRIDES'; payload: ContentStyleOverride[] }
+  | { type: 'UPDATE_STYLE_OVERRIDE'; payload: ContentStyleOverride }
+  | { type: 'REMOVE_STYLE_OVERRIDE'; payload: string }
   | { type: 'CLEAR_DIRTY_TRACKING' }
 
 const initialState: CMSState = {
@@ -42,12 +49,16 @@ const initialState: CMSState = {
   images: [],
   sections: [],
   settings: null,
+  styleOverrides: [],
   loading: false,
   error: null,
   dirtyContentIds: new Set(),
   dirtyColorSchemeIds: new Set(),
+  dirtyStyleOverrideIds: new Set(),
+  deletedStyleOverrideIds: new Set(),
   originalContent: new Map(),
-  originalColorSchemes: new Map()
+  originalColorSchemes: new Map(),
+  originalStyleOverrides: new Map()
 }
 
 function cmsReducer(state: CMSState, action: CMSAction): CMSState {
@@ -142,6 +153,125 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
       }
     case 'SET_SETTINGS':
       return { ...state, settings: action.payload }
+    case 'SET_STYLE_OVERRIDES':
+      // Store original values when style overrides are first loaded
+      const originalStyleOverridesMap = new Map<string, ContentStyleOverride>()
+      action.payload.forEach(override => {
+        originalStyleOverridesMap.set(override.id, { ...override })
+      })
+      return {
+        ...state,
+        styleOverrides: action.payload,
+        originalStyleOverrides: originalStyleOverridesMap
+      }
+    case 'UPDATE_STYLE_OVERRIDE':
+      const newDirtyStyleOverrideIds = new Set(state.dirtyStyleOverrideIds)
+      const originalOverride = state.originalStyleOverrides.get(action.payload.id)
+      
+      console.log('UPDATE_STYLE_OVERRIDE action:', {
+        payloadId: action.payload.id,
+        hasOriginal: !!originalOverride,
+        currentDirty: newDirtyStyleOverrideIds.size
+      })
+      
+      // Helper to normalize values (treat null and empty string as equal)
+      const normalizeValue = (val: any) => (val === null || val === undefined || val === '') ? null : val
+      
+      // Helper to sort object keys for consistent comparison
+      const sortObject = (obj: any) => {
+        return Object.keys(obj).sort().reduce((result: any, key) => {
+          result[key] = obj[key]
+          return result
+        }, {})
+      }
+      
+      // Check if style override has changed from the original
+      let overrideChanged = false
+      if (originalOverride) {
+        // For existing overrides, check if changed (ignore timestamp fields and normalize values)
+        const { createdAt: origCreated, updatedAt: origUpdated, ...origData } = originalOverride
+        const { createdAt: payloadCreated, updatedAt: payloadUpdated, ...payloadData } = action.payload
+        
+        // Normalize both objects
+        const normalizedOrig = Object.fromEntries(
+          Object.entries(origData).map(([k, v]) => [k, normalizeValue(v)])
+        )
+        const normalizedPayload = Object.fromEntries(
+          Object.entries(payloadData).map(([k, v]) => [k, normalizeValue(v)])
+        )
+        
+        // Sort keys for consistent string comparison
+        const originalStr = JSON.stringify(sortObject(normalizedOrig))
+        const payloadStr = JSON.stringify(sortObject(normalizedPayload))
+        overrideChanged = originalStr !== payloadStr
+        console.log('Comparing existing override:', { 
+          overrideChanged, 
+          originalStr: originalStr.substring(0, 150), 
+          payloadStr: payloadStr.substring(0, 150),
+          fullOriginal: originalStr,
+          fullPayload: payloadStr
+        })
+      } else {
+        // New override (not in original map) - always mark as changed
+        overrideChanged = true
+        console.log('New override detected - marking as dirty')
+      }
+      
+      if (originalOverride && !overrideChanged) {
+        // Override matches original, remove from dirty tracking
+        console.log('Override matches original - removing from dirty')
+        newDirtyStyleOverrideIds.delete(action.payload.id)
+      } else {
+        // Override is different or new, add to dirty tracking
+        console.log('Adding to dirty tracking:', action.payload.id)
+        newDirtyStyleOverrideIds.add(action.payload.id)
+      }
+      
+      console.log('After update - dirty count:', newDirtyStyleOverrideIds.size)
+      
+      // Check if this override already exists in the state
+      const existingIndex = state.styleOverrides.findIndex(o => o.id === action.payload.id)
+      let newStyleOverrides
+      if (existingIndex >= 0) {
+        // Update existing
+        console.log('Updating existing override at index:', existingIndex)
+        newStyleOverrides = state.styleOverrides.map(override =>
+          override.id === action.payload.id ? action.payload : override
+        )
+      } else {
+        // Add new
+        console.log('Adding new override')
+        newStyleOverrides = [...state.styleOverrides, action.payload]
+      }
+      
+      return {
+        ...state,
+        styleOverrides: newStyleOverrides,
+        dirtyStyleOverrideIds: newDirtyStyleOverrideIds
+      }
+    case 'REMOVE_STYLE_OVERRIDE':
+      const updatedDirtyStyleOverrideIds = new Set(state.dirtyStyleOverrideIds)
+      const updatedDeletedStyleOverrideIds = new Set(state.deletedStyleOverrideIds)
+      
+      // If this override exists in the original state, track it for deletion from DB
+      if (state.originalStyleOverrides.has(action.payload)) {
+        updatedDeletedStyleOverrideIds.add(action.payload)
+        console.log('Tracking override for deletion:', action.payload)
+      } else {
+        // If it was a new/unsaved override, just remove it from dirty tracking
+        updatedDirtyStyleOverrideIds.delete(action.payload)
+        console.log('Removing unsaved override from dirty tracking:', action.payload)
+      }
+      
+      // Remove from dirty tracking since it's now deleted
+      updatedDirtyStyleOverrideIds.delete(action.payload)
+      
+      return {
+        ...state,
+        styleOverrides: state.styleOverrides.filter(override => override.id !== action.payload),
+        dirtyStyleOverrideIds: updatedDirtyStyleOverrideIds,
+        deletedStyleOverrideIds: updatedDeletedStyleOverrideIds
+      }
     case 'CLEAR_DIRTY_TRACKING':
       // Update original values to current values after successful save
       const newOriginalContent = new Map<string, CMSContent>()
@@ -152,12 +282,19 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
       state.colorSchemes.forEach(scheme => {
         newOriginalColorSchemes.set(scheme.id, { ...scheme, colors: { ...scheme.colors } })
       })
+      const newOriginalStyleOverrides = new Map<string, ContentStyleOverride>()
+      state.styleOverrides.forEach(override => {
+        newOriginalStyleOverrides.set(override.id, { ...override })
+      })
       return {
         ...state,
         dirtyContentIds: new Set(),
         dirtyColorSchemeIds: new Set(),
+        dirtyStyleOverrideIds: new Set(),
+        deletedStyleOverrideIds: new Set(),
         originalContent: newOriginalContent,
-        originalColorSchemes: newOriginalColorSchemes
+        originalColorSchemes: newOriginalColorSchemes,
+        originalStyleOverrides: newOriginalStyleOverrides
       }
     default:
       return state
@@ -186,6 +323,11 @@ interface CMSContextType {
   updateSection: (section: SectionConfig) => Promise<void>
   // Settings management
   updateSettings: (settings: Partial<CMSSettings>) => Promise<void>
+  // Style overrides management
+  getStyleOverrides: () => ContentStyleOverride[]
+  getStyleOverrideForContent: (contentId: string) => ContentStyleOverride | null
+  updateStyleOverrideLocally: (override: ContentStyleOverride) => void
+  removeStyleOverrideLocally: (id: string) => void
 }
 
 const CMSContext = createContext<CMSContextType | null>(null)
@@ -241,6 +383,14 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
         state.dirtyColorSchemeIds.has(scheme.id)
       )
       
+      // Only save modified style overrides
+      const dirtyStyleOverrides = state.styleOverrides.filter(override => 
+        state.dirtyStyleOverrideIds.has(override.id)
+      )
+      
+      // Get deleted style override IDs
+      const deletedStyleOverrideIds = Array.from(state.deletedStyleOverrideIds)
+      
       // Create promises only for dirty items
       const contentPromises = dirtyContent.map(content => 
         fetch('/api/cms/content', {
@@ -258,9 +408,63 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
         })
       )
       
+      const styleOverridePromises = dirtyStyleOverrides.map(override => {
+        // Check if this is a new override (temp ID or not in originalStyleOverrides)
+        const isTempId = override.id.startsWith('temp-')
+        const isNew = isTempId || !state.originalStyleOverrides.has(override.id)
+        const method = isNew ? 'POST' : 'PUT'
+        
+        console.log('Saving style override:', {
+          id: override.id,
+          isTempId,
+          isNew,
+          method
+        })
+        
+        return fetch('/api/cms/style-adjustments', {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(override)
+        })
+      })
+      
+      // Create delete promises for removed style overrides
+      const styleOverrideDeletePromises = deletedStyleOverrideIds.map(id => {
+        console.log('Deleting style override:', id)
+        return fetch(`/api/cms/style-adjustments?id=${id}`, {
+          method: 'DELETE'
+        })
+      })
+      
       // Only make API calls if there are changes
-      if (contentPromises.length > 0 || colorPromises.length > 0) {
-        await Promise.all([...contentPromises, ...colorPromises])
+      if (contentPromises.length > 0 || colorPromises.length > 0 || styleOverridePromises.length > 0 || styleOverrideDeletePromises.length > 0) {
+        const results = await Promise.all([...contentPromises, ...colorPromises, ...styleOverridePromises, ...styleOverrideDeletePromises])
+        
+        // Update style overrides with real IDs from database responses
+        const styleStartIndex = contentPromises.length + colorPromises.length
+        for (let i = 0; i < styleOverridePromises.length; i++) {
+          const response = results[styleStartIndex + i]
+          if (response.ok) {
+            const result = await response.json()
+            if (result.success && result.data) {
+              // The response will have the real UUID, update our local state
+              console.log('Style override saved with real ID:', result.data)
+            }
+          }
+        }
+      }
+      
+      // Reload style overrides to get the real IDs from database
+      try {
+        const styleOverridesResponse = await fetch('/api/cms/style-adjustments')
+        if (styleOverridesResponse.ok) {
+          const styleOverridesData = await styleOverridesResponse.json()
+          if (styleOverridesData.success) {
+            dispatch({ type: 'SET_STYLE_OVERRIDES', payload: styleOverridesData.data || [] })
+          }
+        }
+      } catch (error) {
+        console.error('Error reloading style overrides:', error)
       }
       
       // Clear dirty tracking after successful save
@@ -402,6 +606,23 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  // Style overrides management functions
+  const getStyleOverrides = (): ContentStyleOverride[] => {
+    return state.styleOverrides
+  }
+
+  const getStyleOverrideForContent = (contentId: string): ContentStyleOverride | null => {
+    return state.styleOverrides.find(override => override.contentId === contentId) || null
+  }
+
+  const updateStyleOverrideLocally = (override: ContentStyleOverride): void => {
+    dispatch({ type: 'UPDATE_STYLE_OVERRIDE', payload: override })
+  }
+
+  const removeStyleOverrideLocally = (id: string): void => {
+    dispatch({ type: 'REMOVE_STYLE_OVERRIDE', payload: id })
+  }
+
   // Load initial data
   useEffect(() => {
     const loadData = async () => {
@@ -443,6 +664,15 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
           dispatch({ type: 'SET_SETTINGS', payload: settingsData.data })
         }
         
+        // Load style overrides
+        const styleOverridesResponse = await fetch('/api/cms/style-adjustments')
+        if (styleOverridesResponse.ok) {
+          const styleOverridesData = await styleOverridesResponse.json()
+          if (styleOverridesData.success) {
+            dispatch({ type: 'SET_STYLE_OVERRIDES', payload: styleOverridesData.data || [] })
+          }
+        }
+        
       } catch (error) {
         dispatch({ type: 'SET_ERROR', payload: error instanceof Error ? error.message : 'Unknown error' })
       } finally {
@@ -469,7 +699,11 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
     removeImage,
     getSection,
     updateSection,
-    updateSettings
+    updateSettings,
+    getStyleOverrides,
+    getStyleOverrideForContent,
+    updateStyleOverrideLocally,
+    removeStyleOverrideLocally
   }
 
   return (

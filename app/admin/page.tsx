@@ -2,22 +2,34 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useCMS } from '@/lib/cms/context'
-import { Settings, Palette, FileText, Image, Layout, Save, Eye, EyeOff, Check } from 'lucide-react'
+import { Settings, Wand2, FileText, Image, Layout, Save, Eye, EyeOff, Check } from 'lucide-react'
 import ColorPicker from '@/components/admin/ColorPicker'
 import ImageUpload from '@/components/admin/ImageUpload'
 
 export default function AdminDashboard() {
-  const { state, getContent, getActiveColors, updateContentLocally, updateColorSchemeLocally, updateSettings, saveAllChanges } = useCMS()
-  const [activeTab, setActiveTab] = useState<'content' | 'colors' | 'images' | 'sections' | 'settings'>('content')
+  const { state, getContent, getActiveColors, updateContentLocally, updateColorSchemeLocally, updateSettings, saveAllChanges, getStyleOverrides, updateStyleOverrideLocally, removeStyleOverrideLocally } = useCMS()
+  const [activeTab, setActiveTab] = useState<'content' | 'style-adjustments' | 'images' | 'sections' | 'settings'>('content')
   const [previewMode, setPreviewMode] = useState(false)
   const [splitView, setSplitView] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
   const [adminPanelWidth, setAdminPanelWidth] = useState(50) // Percentage
   const [isResizing, setIsResizing] = useState(false)
+  const [selectedStyleContent, setSelectedStyleContent] = useState<any>(null) // Persist across saves
   
   // Calculate number of unsaved changes
-  const unsavedChanges = (state.dirtyContentIds?.size || 0) + (state.dirtyColorSchemeIds?.size || 0)
+  const unsavedChanges = (state.dirtyContentIds?.size || 0) + (state.dirtyColorSchemeIds?.size || 0) + (state.dirtyStyleOverrideIds?.size || 0) + (state.deletedStyleOverrideIds?.size || 0)
+  
+  // Debug logging
+  useEffect(() => {
+    console.log('Unsaved changes updated:', {
+      content: state.dirtyContentIds?.size || 0,
+      colors: state.dirtyColorSchemeIds?.size || 0,
+      styles: state.dirtyStyleOverrideIds?.size || 0,
+      deletedStyles: state.deletedStyleOverrideIds?.size || 0,
+      total: unsavedChanges
+    })
+  }, [unsavedChanges, state.dirtyContentIds, state.dirtyColorSchemeIds, state.dirtyStyleOverrideIds, state.deletedStyleOverrideIds])
   
   // Scroll position preservation
   const adminScrollRef = useRef<HTMLDivElement>(null)
@@ -51,7 +63,7 @@ export default function AdminDashboard() {
 
   const tabs = [
     { id: 'content', label: 'Content', icon: FileText },
-    { id: 'colors', label: 'Colors', icon: Palette },
+    { id: 'style-adjustments', label: 'Style Adjustments', icon: Wand2 },
     { id: 'images', label: 'Images', icon: Image },
     { id: 'sections', label: 'Sections', icon: Layout },
     { id: 'settings', label: 'Settings', icon: Settings }
@@ -492,7 +504,7 @@ export default function AdminDashboard() {
             {/* Main Content */}
             <div className="flex-1">
               {activeTab === 'content' && <ContentTab onUpdate={handleContentUpdate} />}
-              {activeTab === 'colors' && <ColorsTab onUpdate={handleColorUpdate} />}
+              {activeTab === 'style-adjustments' && <StyleAdjustmentsTab selectedContent={selectedStyleContent} setSelectedContent={setSelectedStyleContent} />}
               {activeTab === 'images' && <ImagesTab />}
               {activeTab === 'sections' && <SectionsTab />}
               {activeTab === 'settings' && <SettingsTab />}
@@ -511,7 +523,7 @@ export default function AdminDashboard() {
           >
             <div ref={adminScrollRef} className="flex-1 overflow-y-auto p-6">
               {activeTab === 'content' && <ContentTab onUpdate={handleContentUpdate} />}
-              {activeTab === 'colors' && <ColorsTab onUpdate={handleColorUpdate} />}
+              {activeTab === 'style-adjustments' && <StyleAdjustmentsTab selectedContent={selectedStyleContent} setSelectedContent={setSelectedStyleContent} />}
               {activeTab === 'images' && <ImagesTab />}
               {activeTab === 'sections' && <SectionsTab />}
               {activeTab === 'settings' && <SettingsTab />}
@@ -587,6 +599,7 @@ function ContentTab({ onUpdate }: { onUpdate: (key: string, section: string, val
     'product',     // Product section  
     'process',     // Process section
     'testimonials', // Testimonials section
+    'investors',   // Investors section
     'about',       // About section
     'faq',         // FAQ section
     'questionnaire', // Questionnaire section
@@ -740,30 +753,560 @@ function ContentItem({
   )
 }
 
-// Colors Tab Component
-function ColorsTab({ onUpdate }: { onUpdate: (colorKey: string, value: string) => void }) {
+// Style Adjustments Tab Component
+function StyleAdjustmentsTab({ selectedContent, setSelectedContent }: { selectedContent: any, setSelectedContent: (content: any) => void }) {
+  const { getContent, getStyleOverrides, getStyleOverrideForContent, updateStyleOverrideLocally, removeStyleOverrideLocally } = useCMS()
+  const [searchTerm, setSearchTerm] = useState('')
+  const isLoadingStyles = useRef(false)
+  const loadCounter = useRef(0)
+
+  // Current style values for the selected content
+  const [styles, setStyles] = useState({
+    backgroundColor: '',
+    textColor: '',
+    fontSize: '',
+    fontWeight: '',
+    fontFamily: '',
+    lineHeight: '',
+    letterSpacing: '',
+    textAlign: '',
+    padding: '',
+    margin: '',
+    borderColor: '',
+    borderWidth: '',
+    borderRadius: '',
+    boxShadow: '',
+    opacity: '',
+    customCss: ''
+  })
+
+  // Get style overrides from context
+  const styleOverrides = getStyleOverrides()
+
+  // Get all content for searching
+  const allContent = [
+    'header', 'hero', 'product', 'process', 'testimonials', 
+    'investors', 'about', 'faq', 'questionnaire', 'footer', 'global'
+  ].flatMap(section => getContent(section))
+
+  // Filter content based on search term
+  const filteredContent = searchTerm
+    ? allContent.filter(item => 
+        item.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.section.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.value.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : []
+
+  // Load existing styles when content is selected or when style overrides change
+  useEffect(() => {
+    if (selectedContent) {
+      const currentLoad = ++loadCounter.current
+      isLoadingStyles.current = true
+      const existingStyle = getStyleOverrideForContent(selectedContent.id)
+      
+      console.log('Loading styles for selected content:', {
+        contentId: selectedContent.id,
+        hasExistingStyle: !!existingStyle,
+        existingStyle,
+        loadCount: currentLoad
+      })
+      
+      if (existingStyle) {
+        const newStyles = {
+          backgroundColor: existingStyle.backgroundColor || '',
+          textColor: existingStyle.textColor || '',
+          fontSize: existingStyle.fontSize || '',
+          fontWeight: existingStyle.fontWeight || '',
+          fontFamily: existingStyle.fontFamily || '',
+          lineHeight: existingStyle.lineHeight || '',
+          letterSpacing: existingStyle.letterSpacing || '',
+          textAlign: existingStyle.textAlign || '',
+          padding: existingStyle.padding || '',
+          margin: existingStyle.margin || '',
+          borderColor: existingStyle.borderColor || '',
+          borderWidth: existingStyle.borderWidth || '',
+          borderRadius: existingStyle.borderRadius || '',
+          boxShadow: existingStyle.boxShadow || '',
+          opacity: existingStyle.opacity || '',
+          customCss: existingStyle.customCss || ''
+        }
+        console.log('Setting styles to:', newStyles)
+        setStyles(newStyles)
+      } else {
+        // Reset to empty if no existing styles
+        setStyles({
+          backgroundColor: '',
+          textColor: '',
+          fontSize: '',
+          fontWeight: '',
+          fontFamily: '',
+          lineHeight: '',
+          letterSpacing: '',
+          textAlign: '',
+          padding: '',
+          margin: '',
+          borderColor: '',
+          borderWidth: '',
+          borderRadius: '',
+          boxShadow: '',
+          opacity: '',
+          customCss: ''
+        })
+      }
+      
+      // Reset the flag after a delay, ensuring auto-save doesn't trigger during reload
+      const timer = setTimeout(() => {
+        // Only reset if this is still the current load (not superseded by another)
+        if (loadCounter.current === currentLoad) {
+          isLoadingStyles.current = false
+          console.log('isLoadingStyles set to false for load:', currentLoad)
+        }
+      }, 300)
+      
+      return () => clearTimeout(timer)
+    }
+  }, [selectedContent, styleOverrides])
+
+  // Auto-save styles when they change
+  useEffect(() => {
+    if (!selectedContent || isLoadingStyles.current) {
+      console.log('Auto-save skipped:', { hasSelected: !!selectedContent, isLoading: isLoadingStyles.current })
+      return
+    }
+
+    const existingStyle = getStyleOverrideForContent(selectedContent.id)
+    
+    console.log('Auto-save triggered for:', selectedContent.id, 'Current styles:', styles)
+    
+    // Check if all style values are empty
+    const hasAnyStyle = !!(
+      styles.backgroundColor ||
+      styles.textColor ||
+      styles.fontSize ||
+      styles.fontWeight ||
+      styles.fontFamily ||
+      styles.lineHeight ||
+      styles.letterSpacing ||
+      styles.textAlign ||
+      styles.padding ||
+      styles.margin ||
+      styles.borderColor ||
+      styles.borderWidth ||
+      styles.borderRadius ||
+      styles.boxShadow ||
+      styles.opacity ||
+      styles.customCss
+    )
+    
+    // If all styles are empty and an override exists, remove it
+    if (!hasAnyStyle && existingStyle) {
+      console.log('All styles empty - removing override')
+      removeStyleOverrideLocally(existingStyle.id)
+      return
+    }
+    
+    // If all styles are empty and no override exists, do nothing
+    if (!hasAnyStyle) {
+      console.log('All styles empty - nothing to save')
+      return
+    }
+    
+    // Create a clean style override object
+    // Note: Don't include updatedAt/createdAt in local updates to avoid false dirty detection
+    const styleOverride: any = {
+      id: existingStyle?.id || `temp-${Date.now()}-${selectedContent.id}`,
+      contentId: selectedContent.id,
+      section: selectedContent.section,
+      key: selectedContent.key,
+      isActive: true
+    }
+    
+    // Preserve timestamps if they exist (for comparison with originals)
+    if (existingStyle?.createdAt) {
+      styleOverride.createdAt = existingStyle.createdAt
+    }
+    if (existingStyle?.updatedAt) {
+      styleOverride.updatedAt = existingStyle.updatedAt
+    }
+
+    // Add style properties (including empty strings to allow clearing)
+    styleOverride.backgroundColor = styles.backgroundColor
+    styleOverride.textColor = styles.textColor
+    styleOverride.fontSize = styles.fontSize
+    styleOverride.fontWeight = styles.fontWeight
+    styleOverride.fontFamily = styles.fontFamily
+    styleOverride.lineHeight = styles.lineHeight
+    styleOverride.letterSpacing = styles.letterSpacing
+    styleOverride.textAlign = styles.textAlign
+    styleOverride.padding = styles.padding
+    styleOverride.margin = styles.margin
+    styleOverride.borderColor = styles.borderColor
+    styleOverride.borderWidth = styles.borderWidth
+    styleOverride.borderRadius = styles.borderRadius
+    styleOverride.boxShadow = styles.boxShadow
+    styleOverride.opacity = styles.opacity
+    styleOverride.customCss = styles.customCss
+
+    console.log('Calling updateStyleOverrideLocally with:', styleOverride)
+    // Update locally - this will mark it as dirty
+    updateStyleOverrideLocally(styleOverride)
+  }, [styles, selectedContent])
+
+  const handleRemoveStyles = () => {
+    if (!selectedContent) return
+
+    const existingStyle = getStyleOverrideForContent(selectedContent.id)
+    if (!existingStyle) return
+
+    if (!confirm('Are you sure you want to remove all style adjustments for this content?')) {
+      return
+    }
+
+    // Remove locally - this will update the dirty tracking
+    removeStyleOverrideLocally(existingStyle.id)
+    setStyles({
+      backgroundColor: '',
+      textColor: '',
+      fontSize: '',
+      fontWeight: '',
+      fontFamily: '',
+      lineHeight: '',
+      letterSpacing: '',
+      textAlign: '',
+      padding: '',
+      margin: '',
+      borderColor: '',
+      borderWidth: '',
+      borderRadius: '',
+      boxShadow: '',
+      opacity: '',
+      customCss: ''
+    })
+  }
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Color Management</h2>
-        <p className="text-gray-600">Customize the color scheme for your website.</p>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">Style Adjustments</h2>
+        <p className="text-sm sm:text-base text-gray-600">Search for content and apply custom styling</p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border p-12">
-        <div className="text-center py-20">
-          <div className="mb-6">
-            <Palette className="w-20 h-20 mx-auto text-gray-300" />
+      {/* Search Bar */}
+      <div className="bg-white rounded-lg shadow-sm border p-3 sm:p-4 lg:p-6">
+        <div className="space-y-3 sm:space-y-4">
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+              Search Content
+            </label>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by label, key, section..."
+              className="w-full px-3 py-2 sm:px-4 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+            />
           </div>
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">Coming Soon</h3>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Color customization features are currently in development. Soon you'll be able to customize your entire color scheme directly from this panel.
-          </p>
-          <div className="inline-flex items-center space-x-2 px-6 py-3 bg-gray-100 rounded-lg text-gray-700">
-            <Settings className="w-5 h-5" />
-            <span className="font-medium">Feature under construction</span>
-          </div>
+
+          {/* Search Results */}
+          {searchTerm && (
+            <div className="max-h-64 overflow-y-auto border border-gray-200 rounded-lg">
+              {filteredContent.length === 0 ? (
+                <div className="p-3 sm:p-4 text-center text-gray-500 text-sm">
+                  No content found matching "{searchTerm}"
+                </div>
+              ) : (
+                <div className="divide-y divide-gray-200">
+                  {filteredContent.map((item) => {
+                    const hasStyles = getStyleOverrideForContent(item.id) !== null
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => {
+                          setSelectedContent(item)
+                          setSearchTerm('')
+                        }}
+                        className="w-full text-left p-3 sm:p-4 hover:bg-gray-50 transition-colors"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-medium text-gray-900 text-sm sm:text-base truncate">{item.label}</span>
+                              {hasStyles && (
+                                <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-xs font-medium bg-keen-blue text-white flex-shrink-0">
+                                  Styled
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-xs sm:text-sm text-gray-500 mt-1">
+                              {item.section} • {item.key}
+                            </div>
+                            <div className="text-xs sm:text-sm text-gray-400 mt-1 truncate">
+                              {item.value.substring(0, 100)}...
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Selected Content Styling Panel */}
+      {selectedContent && (
+        <div className="bg-white rounded-lg shadow-sm border p-3 sm:p-4 lg:p-6">
+          <div className="mb-4 lg:mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">{selectedContent.label}</h3>
+                <p className="text-xs sm:text-sm text-gray-500">{selectedContent.section} • {selectedContent.key}</p>
+              </div>
+              <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                {getStyleOverrideForContent(selectedContent.id) && (
+                  <button
+                    onClick={handleRemoveStyles}
+                    className="text-xs sm:text-sm text-red-600 hover:text-red-700 whitespace-nowrap"
+                  >
+                    Remove All
+                  </button>
+                )}
+                <button
+                  onClick={() => setSelectedContent(null)}
+                  className="text-xs sm:text-sm text-gray-500 hover:text-gray-700 whitespace-nowrap"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+            <div className="p-2 sm:p-3 bg-gray-50 rounded-lg text-xs sm:text-sm text-gray-700 max-h-20 overflow-y-auto">
+              {selectedContent.value}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {/* Color Settings */}
+            <div className="space-y-2">
+              <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2">Colors</h4>
+              
+              <ColorPicker
+                label="Background Color"
+                value={styles.backgroundColor}
+                onChange={(value) => setStyles({ ...styles, backgroundColor: value })}
+              />
+              
+              <ColorPicker
+                label="Text Color"
+                value={styles.textColor}
+                onChange={(value) => setStyles({ ...styles, textColor: value })}
+              />
+              
+              <ColorPicker
+                label="Border Color"
+                value={styles.borderColor}
+                onChange={(value) => setStyles({ ...styles, borderColor: value })}
+              />
+            </div>
+
+            {/* Typography Settings */}
+            <div className="space-y-2">
+              <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2">Typography</h4>
+              
+              <div className="space-y-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">Font Size</label>
+                <input
+                  type="text"
+                  value={styles.fontSize}
+                  onChange={(e) => setStyles({ ...styles, fontSize: e.target.value })}
+                  placeholder="e.g., 16px, 1rem"
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+                />
+              </div>
+              
+              <div className="space-y-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">Font Weight</label>
+                <select
+                  value={styles.fontWeight}
+                  onChange={(e) => setStyles({ ...styles, fontWeight: e.target.value })}
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+                >
+                  <option value="">Default</option>
+                  <option value="300">Light</option>
+                  <option value="400">Normal</option>
+                  <option value="500">Medium</option>
+                  <option value="600">Semi-Bold</option>
+                  <option value="700">Bold</option>
+                  <option value="800">Extra Bold</option>
+                </select>
+              </div>
+              
+              <div className="space-y-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">Line Height</label>
+                <input
+                  type="text"
+                  value={styles.lineHeight}
+                  onChange={(e) => setStyles({ ...styles, lineHeight: e.target.value })}
+                  placeholder="e.g., 1.5, 24px"
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+                />
+              </div>
+              
+              <div className="space-y-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">Text Align</label>
+                <select
+                  value={styles.textAlign}
+                  onChange={(e) => setStyles({ ...styles, textAlign: e.target.value })}
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+                >
+                  <option value="">Default</option>
+                  <option value="left">Left</option>
+                  <option value="center">Center</option>
+                  <option value="right">Right</option>
+                  <option value="justify">Justify</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Spacing Settings */}
+            <div className="space-y-2">
+              <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2">Spacing</h4>
+              
+              <div className="space-y-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">Padding</label>
+                <input
+                  type="text"
+                  value={styles.padding}
+                  onChange={(e) => setStyles({ ...styles, padding: e.target.value })}
+                  placeholder="e.g., 16px"
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+                />
+              </div>
+              
+              <div className="space-y-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">Margin</label>
+                <input
+                  type="text"
+                  value={styles.margin}
+                  onChange={(e) => setStyles({ ...styles, margin: e.target.value })}
+                  placeholder="e.g., 16px"
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            {/* Border & Effects Settings */}
+            <div className="space-y-2">
+              <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2">Border & Effects</h4>
+              
+              <div className="space-y-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">Border Width</label>
+                <input
+                  type="text"
+                  value={styles.borderWidth}
+                  onChange={(e) => setStyles({ ...styles, borderWidth: e.target.value })}
+                  placeholder="e.g., 1px"
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+                />
+              </div>
+              
+              <div className="space-y-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">Border Radius</label>
+                <input
+                  type="text"
+                  value={styles.borderRadius}
+                  onChange={(e) => setStyles({ ...styles, borderRadius: e.target.value })}
+                  placeholder="e.g., 4px"
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+                />
+              </div>
+              
+              <div className="space-y-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">Box Shadow</label>
+                <input
+                  type="text"
+                  value={styles.boxShadow}
+                  onChange={(e) => setStyles({ ...styles, boxShadow: e.target.value })}
+                  placeholder="0 2px 4px rgba(0,0,0,0.1)"
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+                />
+              </div>
+              
+              <div className="space-y-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">Opacity</label>
+                <input
+                  type="text"
+                  value={styles.opacity}
+                  onChange={(e) => setStyles({ ...styles, opacity: e.target.value })}
+                  placeholder="e.g., 0.8, 1"
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Custom CSS */}
+          <div className="mt-4 lg:mt-6 space-y-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">
+              Custom CSS (Advanced)
+            </label>
+            <textarea
+              value={styles.customCss}
+              onChange={(e) => setStyles({ ...styles, customCss: e.target.value })}
+              placeholder="e.g., transform: scale(1.1);"
+              className="w-full px-2 py-1.5 sm:px-3 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-keen-blue focus:border-transparent font-mono text-xs sm:text-sm"
+              rows={3}
+            />
+            <p className="text-xs text-gray-500">
+              Add any valid CSS property
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* No Content Selected State */}
+      {!selectedContent && (
+        <div className="bg-white rounded-lg shadow-sm border p-6 sm:p-8 lg:p-12">
+          <div className="text-center py-6 sm:py-8 lg:py-12">
+            <div className="mb-4 sm:mb-6">
+              <Wand2 className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-gray-300" />
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">No Content Selected</h3>
+            <p className="text-sm sm:text-base text-gray-600 max-w-md mx-auto px-4">
+              Use the search bar above to find content you want to style. You can adjust colors, fonts, spacing, borders, and more.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Styled Content List */}
+      {styleOverrides.length > 0 && (
+        <div className="bg-white rounded-lg shadow-sm border p-3 sm:p-4 lg:p-6">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
+            Content with Styles ({styleOverrides.length})
+          </h3>
+          <div className="space-y-2">
+            {styleOverrides.map((override) => {
+              const content = allContent.find(c => c.id === override.contentId)
+              if (!content) return null
+              
+              return (
+                <button
+                  key={override.id}
+                  onClick={() => setSelectedContent(content)}
+                  className="w-full text-left p-2 sm:p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <div className="font-medium text-gray-900 text-sm sm:text-base truncate">{content.label}</div>
+                  <div className="text-xs sm:text-sm text-gray-500">{content.section} • {content.key}</div>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
