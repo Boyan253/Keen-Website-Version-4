@@ -572,6 +572,97 @@ export class SupabaseCMSDatabase {
         category: 'hero',
         isPublished: true
       },
+      // Hero AI Agent Visualization
+      {
+        section: 'hero',
+        type: 'text',
+        key: 'agent_card_title',
+        value: 'Keen Agent AI',
+        label: 'Hero Agent Card - Title',
+        description: 'Title for the AI agent card visualization',
+        category: 'hero',
+        isPublished: true
+      },
+      {
+        section: 'hero',
+        type: 'text',
+        key: 'agent_card_subtitle',
+        value: 'Always Learning',
+        label: 'Hero Agent Card - Subtitle',
+        description: 'Subtitle for the AI agent card',
+        category: 'hero',
+        isPublished: true
+      },
+      {
+        section: 'hero',
+        type: 'text',
+        key: 'agent_feature_1',
+        value: 'Processing orders 24/7',
+        label: 'Hero Agent Feature 1',
+        description: 'First agent feature/capability',
+        category: 'hero',
+        isPublished: true
+      },
+      {
+        section: 'hero',
+        type: 'text',
+        key: 'agent_feature_2',
+        value: 'Customer support automated',
+        label: 'Hero Agent Feature 2',
+        description: 'Second agent feature/capability',
+        category: 'hero',
+        isPublished: true
+      },
+      {
+        section: 'hero',
+        type: 'text',
+        key: 'agent_feature_3',
+        value: 'Data analysis complete',
+        label: 'Hero Agent Feature 3',
+        description: 'Third agent feature/capability',
+        category: 'hero',
+        isPublished: true
+      },
+      {
+        section: 'hero',
+        type: 'text',
+        key: 'agent_metric_1_value',
+        value: '99.9%',
+        label: 'Hero Agent Metric 1 - Value',
+        description: 'First agent metric value (e.g., uptime)',
+        category: 'hero',
+        isPublished: true
+      },
+      {
+        section: 'hero',
+        type: 'text',
+        key: 'agent_metric_1_label',
+        value: 'Uptime',
+        label: 'Hero Agent Metric 1 - Label',
+        description: 'First agent metric label',
+        category: 'hero',
+        isPublished: true
+      },
+      {
+        section: 'hero',
+        type: 'text',
+        key: 'agent_metric_2_value',
+        value: '30%',
+        label: 'Hero Agent Metric 2 - Value',
+        description: 'Second agent metric value (e.g., efficiency gain)',
+        category: 'hero',
+        isPublished: true
+      },
+      {
+        section: 'hero',
+        type: 'text',
+        key: 'agent_metric_2_label',
+        value: 'Faster',
+        label: 'Hero Agent Metric 2 - Label',
+        description: 'Second agent metric label',
+        category: 'hero',
+        isPublished: true
+      },
       // Product Section
       {
         section: 'product',

@@ -256,35 +256,89 @@ export default function HeroSection() {
                     />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-keen-gray">Keen Agent AI</h3>
-                    <p className="text-keen-gray/70">Always Learning</p>
+                    <CMSContent
+                      section="hero"
+                      contentKey="agent_card_title"
+                      fallback="Keen Agent AI"
+                      as="h3"
+                      className="text-xl font-bold text-keen-gray"
+                    />
+                    <CMSContent
+                      section="hero"
+                      contentKey="agent_card_subtitle"
+                      fallback="Always Learning"
+                      as="p"
+                      className="text-keen-gray/70"
+                    />
                   </div>
                 </div>
                 
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-keen-gray">Processing orders 24/7</span>
+                    <CMSContent
+                      section="hero"
+                      contentKey="agent_feature_1"
+                      fallback="Processing orders 24/7"
+                      as="span"
+                      className="text-keen-gray"
+                    />
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-keen-gray">Customer support automated</span>
+                    <CMSContent
+                      section="hero"
+                      contentKey="agent_feature_2"
+                      fallback="Customer support automated"
+                      as="span"
+                      className="text-keen-gray"
+                    />
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-keen-gray">Data analysis complete</span>
+                    <CMSContent
+                      section="hero"
+                      contentKey="agent_feature_3"
+                      fallback="Data analysis complete"
+                      as="span"
+                      className="text-keen-gray"
+                    />
                   </div>
                 </div>
 
                 {/* Performance Metrics */}
                 <div className="mt-6 grid grid-cols-2 gap-4">
                   <div className="text-center p-3 bg-keen-blue/10 rounded-lg">
-                    <div className="text-2xl font-bold text-keen-blue">99.9%</div>
-                    <div className="text-xs text-keen-gray/70">Uptime</div>
+                    <CMSContent
+                      section="hero"
+                      contentKey="agent_metric_1_value"
+                      fallback="99.9%"
+                      as="div"
+                      className="text-2xl font-bold text-keen-blue"
+                    />
+                    <CMSContent
+                      section="hero"
+                      contentKey="agent_metric_1_label"
+                      fallback="Uptime"
+                      as="div"
+                      className="text-xs text-keen-gray/70"
+                    />
                   </div>
                   <div className="text-center p-3 bg-green-500/10 rounded-lg">
-                    <div className="text-2xl font-bold text-green-500">30%</div>
-                    <div className="text-xs text-keen-gray/70">Faster</div>
+                    <CMSContent
+                      section="hero"
+                      contentKey="agent_metric_2_value"
+                      fallback="30%"
+                      as="div"
+                      className="text-2xl font-bold text-green-500"
+                    />
+                    <CMSContent
+                      section="hero"
+                      contentKey="agent_metric_2_label"
+                      fallback="Faster"
+                      as="div"
+                      className="text-xs text-keen-gray/70"
+                    />
                   </div>
                 </div>
               </motion.div>
